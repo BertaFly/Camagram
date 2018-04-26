@@ -3,10 +3,14 @@
 
 //1. general settings
 //PDO::ERRMODE_EXCEPTION;
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 //2. include file system
 define('ROOT', dirname(__FILE__));
-require_once(ROOT.'/components/Router.php');
+//define('SERVER_ROOT', '/Users/inovykov/Camagru/htdocs');
+//define('SITE_ROOT', '/Users/inovykov/Camagru/htdocs');
+require_once(ROOT.'/components/' . 'Router.php');
 
 //3. setup DB connection
 

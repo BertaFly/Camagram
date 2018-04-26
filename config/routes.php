@@ -1,5 +1,6 @@
 <?php
 return array(
-    '' => 'header',
-  'user' => 'user/signin',
+    '' => 'home/view',
+    'about' => 'home/view',
+    'user' => 'user/signin', //actionSignin in UserController
 );
