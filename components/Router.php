@@ -23,6 +23,8 @@ class Router
 
     public function run()
     {
+        // require_once(ROOT.'/views/' . 'header.php');
+        // require_once(ROOT.'/views/' . 'footer.php');
         // Получить строку запроса
         $uri = $this->getURI();
 //        echo $uri;
@@ -58,11 +60,10 @@ class Router
         $controllerObj = new $controllerName;
         $res = $controllerObj->$actionName();
 
-        print ($actionName);
-        if ($res == true)
-        {
-            return ;
-        }
+    //        while ($res != null)
+    //        {
+    //            self::run();
+    //        }
 
     }
 }

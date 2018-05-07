@@ -15,8 +15,8 @@
     <title>Camarama</title>
 </head>
 <body>
-   <!--  <section class="top" name="menu">
-        <a href="#feed" class="logo">
+    <section class="top" name="menu">
+        <a href="home" class="logo">
             <p>
                 Cramata
             </p>
@@ -29,21 +29,6 @@
                 Log/Sign in
             </a>
         </nav>
-    </section> -->
-
-    <section class="feed" name="feed">
-        <div class="container">
-
-        </div>
     </section>
-
-<!--     <footer>
-        <p>
-            You are welcome to copy and past any code piece whenever you want
-        </p>
-    </footer>
-    <button class="btn-home">
-        <a href="#home"></a>
-    </button> -->
 </body>
 </html>

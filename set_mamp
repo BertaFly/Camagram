@@ -1,0 +1,4 @@
+cd ~/Library/Containers
+rm -rf MAMP
+cd ../..
+open .
