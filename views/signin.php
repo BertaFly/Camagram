@@ -9,9 +9,8 @@
 		minimum-scale=1,
 		maximum-scale=1,
 		user-scalable=0"/>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,400i,500,800,800i" rel="stylesheet">
-    <link rel="stylesheet" href="../templates/css/style2.css">
-    <link rel="stylesheet" href="../templates/css/home.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,400i,500,800i" rel="stylesheet">
+    <link rel="stylesheet" href="../templates/css/authorization.css">
     <title>Camarama</title>
 </head>
 <section class="login-page">
