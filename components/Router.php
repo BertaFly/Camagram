@@ -43,27 +43,30 @@ class Router
                 $actionName = 'action'.ucfirst(array_shift($segments));
 //                print($actionName."<br>");
             }
-        }
+        
 
 //         Подключить файл класса-контроллера
-        $controllerFile = ROOT.'/controllers/'.$controllerName.'.php';
-        print($controllerFile."<br>");
-        if (file_exists($controllerFile))
-        {
-            print("controller name " . $controllerName."<br>");
-            print("action name " . $actionName."<br>");
+            $controllerFile = ROOT.'/controllers/'.$controllerName.'.php';
+            print($controllerFile."<br>");
+            if (file_exists($controllerFile))
+            {
+                print("controller name " . $controllerName."<br>");
+                print("action name " . $actionName."<br>");
 
-            include_once($controllerFile);
-        }
+                include_once($controllerFile);
+            }
 
 //         Создать объект, вызвать метод
-        $controllerObj = new $controllerName;
-        $res = $controllerObj->$actionName();
+            $controllerObj = new $controllerName;
+            $res = $controllerObj->$actionName();
+            print($res);
+           if ($res != true)
+           {
+            print("here");
 
-    //        while ($res != null)
-    //        {
-    //            self::run();
-    //        }
+               break;
+           }
+        }
 
     }
 }
