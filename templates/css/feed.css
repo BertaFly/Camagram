@@ -1,13 +1,11 @@
 .feed {
 	font-family: 'Montserrat', sans-serif;
-	background: #e6e6e6;
 }
 
 .feed-holder {
 	max-width: 1600px;
 	margin: 0 auto;
 	font-size: 0px;
-	background: #cccccc;
 }
 
 	.feed-item {
@@ -16,7 +14,7 @@
 		max-width: 426.6px;
 		margin-right: 10%;
 		margin-top: 4%;
-		background: #944dff;
+		background: #979097;
 	}
 
 	.feed-item:nth-child(3n+3) {
