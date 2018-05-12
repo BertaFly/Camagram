@@ -2,6 +2,8 @@
 
 namespace application\components;
 
+use application\components\View;
+
 class Router
 {
 	// private $routes;
@@ -58,18 +60,18 @@ class Router
 				}
 				else
 				{
-					echo 'action not found';
+					View::errorCode(404);
 				}
 
 			}
 			else
 			{
-				echo 'not found: '.$path;
+				View::errorCode(404);
 			}
 		}
 		else
 		{
-			echo 'no such route';
+			View::errorCode(404);
 		}
 	}
 

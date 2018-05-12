@@ -28,6 +28,11 @@ return [
 		'action' => 'signin',
 	],
 
+	'user/create' => [
+		'controller' => 'user',
+		'action' => 'create',
+	],
+
 	'about' => [
 		'controller' => 'about',
 		'action' => 'view',
