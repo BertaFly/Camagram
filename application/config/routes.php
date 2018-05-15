@@ -28,9 +28,9 @@ return [
 		'action' => 'signin',
 	],
 
-	'user/create' => [
+	'user/confirm' => [
 		'controller' => 'user',
-		'action' => 'create',
+		'action' => 'confirm',
 	],
 
 	'about' => [

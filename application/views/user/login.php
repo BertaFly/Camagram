@@ -1,6 +1,6 @@
 <section class="login-page">
 	<div class="form">
-		<form class="login-form" action="" method="post">
+		<form class="login-form" action="confirm" method="post">
 			<p class="register-form_title">
 				Login in
 			</p>

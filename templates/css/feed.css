@@ -44,10 +44,11 @@
 			display: inline-block;
 			width: 85%;
 			font-size: 20px;
+			color: #395f60;
 		}
 
 	.feed-item--last-com {
-		/**/
+		margin: 10px;
 	}
 
 		.feed-item--last-com_who, .feed-item--last-com_text {
@@ -64,62 +65,103 @@
 		}
 
 /*PAGINATOR*/
-$border-color: #3D315B;
-$background-color: #266DD3;
-$list-background-color: #444B6E;
-$active-list-background-color: #9AB87A;
-$border-radius: 5px;
 
-* {
-  font-family: 'Poppins';
-}
-body {
-  background-color: $background-color;
-  margin: 0;
-}
-a:hover {
-  cursor: pointer;
-}
-#pagination {
-  display: flex;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  li {
-    color: #fff;
-    display: flex;
-    a {
-      background-color: #444B6E;
-      padding: 5px 10px;
-      border: 2px solid $border-color;
-      border-right: 0;
-    }
-  }
-  // li.previous,
-  // li.next {
-  //   animation: fadein .5s;
-  // }
-  li.active a {
-    background-color: $active-list-background-color;
-  }
-  li:first-child a {
-    border-radius: $border-radius 0 0 $border-radius;
-  }
-  li:last-child a {
-    border-radius: 0 $border-radius $border-radius 0;
-    border-right: 2px solid $border-color;
+/*//----------  responsive breakpoints
+//------------------------------------------------------------------------------
+@mixin breakpoint ($value) {
+  @if $value == 'phone' {
+    @media only screen and (min-width: 120px) and (max-width: 767px) { @content; }
+  } @else if $value == 'tablet' {
+    @media only screen and (min-width: 768px) and (max-width: 1024px) { @content; }
+  } @else if $value == 'touch' {
+    @media only screen and (min-width: 120px) and (max-width: 1024px) { @content; }
+  } @else if $value == 'desktop' {
+    @media only screen and (min-width: 1025px) { @content; }
+  } @else {
+    @media only screen and (max-width: $value) { @content; }
   }
 }
 
-// When I feel motivated to get this working
-// @keyframes fadein {
-//   from {opacity: 0;}
-//   to {opacity: 1;}
-// }
+//----------  pagination
+//------------------------------------------------------------------------------*/
+.pagination-wrapper {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.pagination {
+	display: inline-block;
+	height: 55px;
+	margin-top: 25px;
+	padding: 0 25px;
+	border-radius: 35px;
+	background-color: #eee;
+
+	/*@include breakpoint(1199px) {
+		height: 50px;
+		margin-top: 50px;
+		padding: 0 10px;
+		border-radius: 25px;
+	}*/
+}
+
+.page-numbers {
+	display: block;
+	padding: 0 25px;
+	float: left;
+	transition: 400ms ease;
+	color: #595959;
+	font-size: 20px;
+	letter-spacing: 0.1em;
+	line-height: 55px;
+}
+
+	.page-numbers:hover,
+	.page-numbers.current {
+		background-color: #7B90BB;
+		color: #fff;
+	}
+
+	.page-numbers.prev:hover,
+	.page-numbers.next:hover {
+		background-color: transparent;
+    	color: #5772a8;
+	}
+
+	/*@include breakpoint(1199px) {
+		padding: 0 15px;
+		font-size: 16px;
+		line-height: 50px;
+	}*/
+
+	/*@include breakpoint(touch) {
+		padding: 0 14px;
+		display: none;
+
+		&:nth-of-type(2) {
+			position: relative;
+			padding-right: 50px;
+
+			&::after {
+				content: '...';
+				position: absolute;
+				font-size: 25px;
+				top: 0;
+				left: 45px;
+			}
+		}
+
+		&:nth-child(-n+3),
+		&:nth-last-child(-n+3) {
+			display: block;
+		}
+
+		&:nth-last-child(-n+4) {
+			padding-right: 14px;
+
+			&::after {
+				content: none;
+			}
+		}*/
+	/*}
+}*/

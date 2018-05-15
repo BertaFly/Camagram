@@ -62,7 +62,6 @@ class Router
 				{
 					View::errorCode(404);
 				}
-
 			}
 			else
 			{

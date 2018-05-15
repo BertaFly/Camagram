@@ -10,12 +10,12 @@ class HomeController extends Controller
 {
     public function indexAction()
     {
-    	// $db = new Db;
+    	$db = new Db;
     	// $form = '1111; DELET FROM user';
     	
-    	// $data = $db->column('SELECT user_name FROM user WHERE id = :id', $params);
+    	$res = $db->column('SELECT login FROM users');
     	// debug($data);
-    	$res = $this->model->getPics();
+
     	$params = [
     		'items' => $res,
     	];

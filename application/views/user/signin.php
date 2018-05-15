@@ -1,6 +1,15 @@
 <section class="login-page">
+	<div class="form">
+		<?php 
+		if ($msg != null)
+		{
+			echo $msg;
+		}
+
+		?>
+	</div>
   <div class="form">
-		<form class="register-form" action="create" method="post">
+		<form class="register-form" action="#" method="post">
 	 	<p class="register-form_title">
 			Create an account
 		</p>

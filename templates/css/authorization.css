@@ -62,3 +62,50 @@
   .form .message a {
     text-decoration: underline;
   }
+
+[data-tip] {
+  position:relative;
+}
+
+[data-tip]:before {
+  content:'';
+  /* hides the tooltip when not hovered */
+  display:none;
+  content:'';
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #1a1a1a; 
+  position:absolute;
+  top:30px;
+  left:10px;
+  z-index:8;
+  font-size:0;
+  line-height:0;
+  width:0;
+  height:0;
+}
+
+[data-tip]:after {
+  display:none;
+  content:attr(data-tip);
+  position:absolute;
+  top:35px;
+  left:0px;
+  padding:7px 10px;
+  background:#b0cdcf;
+  font-family: "Montserrat", sans-serif;
+  color:#fff;
+  z-index:9;
+  font-size: 0.75em;
+  height:28px;
+  line-height:28px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space:nowrap;
+  word-wrap:normal;
+}
+[data-tip]:hover:before,
+[data-tip]:hover:after {
+  display:block;
+}
