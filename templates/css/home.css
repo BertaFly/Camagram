@@ -40,6 +40,19 @@
         transition: color, 0.2s;
     }
 
+    /*.login:after {
+        content: " ";
+        display: inline-block;
+        width: 1px;
+        height: 20px;
+        background: #8ea2c5;
+    }*/
+
+    .login {
+        text-transform: capitalize;
+        font-style: italic;
+    }
+
 footer {
     background-color: #222a54;
     font-family: 'Montserrat', sans-serif;

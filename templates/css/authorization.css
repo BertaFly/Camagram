@@ -109,3 +109,7 @@
 [data-tip]:hover:after {
   display:block;
 }
+
+.create-wrap {
+  height: 76.1vh;
+}

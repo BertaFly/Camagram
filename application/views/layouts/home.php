@@ -14,36 +14,10 @@
     <link rel="stylesheet" href="../templates/css/home.css">
     <title>Camarama</title>
 </head>
-<body>
-   <!--  <section class="top" name="menu">
-        <a href="#feed" class="logo">
-            <p>
-                Cramata
-            </p>
-        </a>
-        <nav class="menu__unknown">
-            <a href="about">
-                About
-            </a>
-            <a href="user">
-                Log/Sign in
-            </a>
-        </nav>
-    </section> -->
-
     <section class="feed" name="feed">
         <div class="container">
 
         </div>
     </section>
-
-<!--     <footer>
-        <p>
-            You are welcome to copy and past any code piece whenever you want
-        </p>
-    </footer>
-    <button class="btn-home">
-        <a href="#home"></a>
-    </button> -->
 </body>
 </html>

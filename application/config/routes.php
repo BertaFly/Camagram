@@ -33,6 +33,16 @@ return [
 		'action' => 'confirm',
 	],
 
+	'user/confirmEmail/(.*)' => [
+		'controller' => 'user',
+		'action' => 'confirmEmail',
+	],
+
+	'logout' => [
+			'controller' => 'user',
+			'action' => 'logout',
+		],	
+
 	'about' => [
 		'controller' => 'about',
 		'action' => 'view',

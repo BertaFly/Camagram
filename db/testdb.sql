@@ -2,10 +2,10 @@
 -- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: May 11, 2018 at 07:47 AM
--- Server version: 5.7.21
--- PHP Version: 7.1.16
+-- Хост: localhost:3306
+-- Время создания: Май 16 2018 г., 07:49
+-- Версия сервера: 5.7.21
+-- Версия PHP: 7.1.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,64 +19,56 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `testdb`
+-- База данных: `testdb`
 --
-
-CREATE DATABASE testdb;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `random_pic`
+-- Структура таблицы `users`
 --
 
-CREATE TABLE `random_pic` (
-  `id` int(11) NOT NULL,
-  `pic` varchar(256) NOT NULL
+CREATE TABLE `users` (
+  `id` int(10) NOT NULL,
+  `login` text NOT NULL,
+  `pass` text NOT NULL,
+  `email` text NOT NULL,
+  `isEmailConfirmed` tinyint(4) NOT NULL DEFAULT '0',
+  `token` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `random_pic`
+-- Дамп данных таблицы `users`
 --
 
-INSERT INTO `random_pic` (`id`, `pic`) VALUES
-(1, '../templates/img/1.jpg'),
-(2, '../templates/img/2.jpg'),
-(3, '../templates/img/3.jpg'),
-(4, '../templates/img/4.jpg'),
-(5, '../templates/img/5.jpg'),
-(6, '../templates/img/6.jpg');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `user_name` varchar(256) NOT NULL,
-  `passwd` int(11) NOT NULL,
-  `email` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `users` (`id`, `login`, `pass`, `email`, `isEmailConfirmed`, `token`) VALUES
+(1, 'risha1', '$2y$10$WyFIJ4zv6SrwOOAKS5NEnOsBYD/282GSA/PmVcBlDvRlLTAlUU3G2', 'ishtar929@gmail.com', 1, 'j9i7/dWg$f'),
+(2, 'true1', '$2y$10$in70oo9aemBeHKvx1h4NKuvI.Ktm0aUlj0Z5DITUCV6nk3vfV29H2', 'qwerty@gmail.com', 0, 'BT4mi7eo0p'),
+(3, 'zorro', '$2y$10$mL4g2vZijTeq.CLpg2ByseF2tGOam/15CSTbtOKf5O8Ub9X0TIkja', 'iui@lol.com', 0, '/z!nCiM1Po'),
+(4, 'lola1', '$2y$10$exHIcnFbL1IZ/c1KrtxGg.fSJro1yWXCANoFHLB9lYeYa.JunVcOe', 'lola@lol.com', 0, 'BEfT1sklWN'),
+(5, 'woodoo', '$2y$10$0c2TwowR99v70S3DLCAwPOcRN9rNhvhhdTUoLhdXgdSN4O6LsdRXS', 'q1q1q@jij.com', 0, 'l4M(fVHZS/'),
+(6, 'google', '$2y$10$bbworNSJH9BU9XBhoXpJ5.ompIPtZzE5WY4ZxJusFqZfNDoZdzKFa', 'ishtar929@gmail.com', 1, 'xAH/lBfGLp'),
+(7, 'zuzu1', '$2y$10$d5FG9/CIv/7rPs/As/h6c.Yk6K1n6wbh2JcImQ7Eo5431RTcp1Gra', 'ishtar929@gmail.com', 0, 'kht6UiXyFH');
 
 --
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `user_name`, `passwd`, `email`) VALUES
-(1111, 'lola', 11111, 'lola@gmail.com'),
-(2222, 'zorro', 22222, 'zorro@gmail.com');
-
---
--- Indexes for dumped tables
+-- Индексы сохранённых таблиц
 --
 
 --
--- Indexes for table `random_pic`
+-- Индексы таблицы `users`
 --
-ALTER TABLE `random_pic`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

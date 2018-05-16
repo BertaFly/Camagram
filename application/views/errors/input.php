@@ -1,5 +1,5 @@
 <section class="error">
-	<div class="msg">
+	<div class="form">
 		Please check your inputs
 	</div>
 </section>

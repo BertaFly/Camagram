@@ -18,8 +18,18 @@ class View
 	public function render($title, $vars = [])
 	{
 		extract($vars);
-		var_dump($vars);
-		$path = 'application/views/'.$this->path.'.php';
+		// var_dump($vars);
+		// print($this->path);
+		if ($title == "")
+		{
+			$path = 'application/views/'.$this->path.'.php';	
+		}
+		else
+		{
+			$path = 'application/views/'.$title.'.php';	
+		}
+		
+		// print($path);
 		if (file_exists($path))
 		{
 			ob_start();

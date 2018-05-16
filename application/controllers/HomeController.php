@@ -15,10 +15,18 @@ class HomeController extends Controller
     	
     	$res = $db->column('SELECT login FROM users');
     	// debug($data);
-
-    	$params = [
-    		'items' => $res,
-    	];
+        if (array_key_exists('isUser', $_SESSION))
+        {
+            $params = [
+                    'login' => $_SESSION['authorizedUser'],
+                ];
+        }
+        else
+        {
+            $params = [
+                    'login' => '',
+                ];
+        }
         $this->view->render('', $params);
     }
 }

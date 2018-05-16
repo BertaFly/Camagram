@@ -6,7 +6,6 @@ use application\components\View;
 
 class Router
 {
-	// private $routes;
 
 	protected $routes = [];
 	protected $rouparamstes = [];
@@ -14,14 +13,11 @@ class Router
 
 	public function __construct()
 	{
-		// $routesPath = ROOT.'/config/routes.php';
-		// $this->routes = include($routesPath);
 		$arr = require 'application/config/routes.php';
 		foreach ($arr as $key => $value)
 		{
 			$this->add($key, $value);
 		}
-		// debug($arr);
 	}
 
 	public function add($route, $params)
@@ -32,9 +28,19 @@ class Router
 
 	public function match()
 	{
+			// echo "<p>In match func</p>";
+
 		$url = trim($_SERVER['REQUEST_URI'], '/');
+
+			// echo "<p>this is a url: ".$url."</p>";
+
 		foreach ($this->routes as $route => $params)
 		{
+			// echo "<p>this is current route: ".$route."</p>";
+			// echo "<p>this is match: ".$matches."</p>";
+			// echo "<p>this is current params: ".$params."</p>";
+
+
 			if (preg_match($route, $url, $matches))
 			{
 				$this->params = $params;
@@ -46,13 +52,21 @@ class Router
 	}
 
 	public function run(){
-		// echo 'start';
 		if ($this->match())
 		{
+			// echo "<p>In run func</p>";
 			$path = 'application\controllers\\'.ucfirst($this->params['controller']).'Controller';
+			// echo "<p>this is a path: ".$path."</p>";
+
 			if (class_exists($path))
 			{
+				// echo "<p>Class exist</p>";
+
 				$action = $this->params['action'].'Action';
+
+			// echo "<p>this is a action: ".$action."</p>";
+			
+
 				if (method_exists($path, $action))
 				{
 					$controller = new $path($this->params);
@@ -60,6 +74,7 @@ class Router
 				}
 				else
 				{
+					// echo "<p>Im befor error</p>";
 					View::errorCode(404);
 				}
 			}
@@ -73,64 +88,4 @@ class Router
 			View::errorCode(404);
 		}
 	}
-
-	/**
-	 * Return request str
-	 */
-	// private function getURI()
-	// {
-	// 	if (!empty($_SERVER['REQUEST_URI']))
-	// 	{
-	// 		return trim($_SERVER['REQUEST_URI'], '/');
-	// 	}
-	// }
-
-	// public function run()
-	// {
-		// require_once(ROOT.'/views/' . 'header.php');
-		// require_once(ROOT.'/views/' . 'footer.php');
-		// Получить строку запроса
-		// $uri = $this->getURI();
-//        echo $uri;
-		// Проверить есть ли такой запрос в routes.php
-		// foreach ($this->routes as $uriPattern => $path)
-		// {
-			// Если есть совпадение, определить какой контроллер и экшен обрабатывают запрос
-			// if (preg_match("~$uriPattern~", $uri))
-			// {
-				// $segments = explode('/', $path);
-//                print_r($segments);
-				// $controllerName = array_shift($segments).'Controller';
-//                print($controllerName."<br>");
-				// $controllerName = ucfirst($controllerName);
-//                print($controllerName."<br>");
-				// $actionName = 'action'.ucfirst(array_shift($segments));
-//                print($actionName."<br>");
-			// }
-		
-
-//         Подключить файл класса-контроллера
-			// $controllerFile = ROOT.'/controllers/'.$controllerName.'.php';
-			// print($controllerFile."<br>");
-			// if (file_exists($controllerFile))
-			// {
-			// 	print("controller name " . $controllerName."<br>");
-			// 	print("action name " . $actionName."<br>");
-
-			// 	include_once($controllerFile);
-			// }
-
-//         Создать объект, вызвать метод
-	// 		$controllerObj = new $controllerName;
-	// 		$res = $controllerObj->$actionName();
-	// 		print($res);
-	// 	   if ($res != true)
-	// 	   {
-	// 		print("here");
-
-	// 		   break;
-	// 	   }
-	// 	}
-
-	// }
 }

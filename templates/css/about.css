@@ -28,7 +28,6 @@
 
         .about__left p:nth-child(2) {
             font-weight: 300;
-            /*font-size: 18px;*/
             font-size: calc(12px + (22 - 14) * ((100vw - 300px) / (1600 - 300)));
         }
 
