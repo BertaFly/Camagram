@@ -12,12 +12,23 @@ class User extends Model
 		return $res;
 	}
 
+	public function extractUsersByEmail($str)
+	{
+		$res = $this->db->row("SELECT * FROM users WHERE email='$str'");
+		return $res;
+	}
+
 	public function authorize($login)
 	{
 		$_SESSION['isUser'] = 1;
         $_SESSION['authorizedUser'] = $login;
-        header('Location: http://localhost:8070/home');
+  		$this->phpAlert('You are authorized');
+        header('refresh:1; url=http://localhost:8070/home');
         exit();
+	}
+
+	public function phpAlert($msg) {
+    	echo '<script type="text/javascript">alert("'.$msg.'")</script>';
 	}
 
 }

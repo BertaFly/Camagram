@@ -38,6 +38,16 @@ return [
 		'action' => 'confirmEmail',
 	],
 
+	'user/resetPass/initial(.*)' => [
+		'controller' => 'user',
+		'action' => 'resetPass',
+	],
+
+	'user/resetPass/after' => [
+		'controller' => 'user',
+		'action' => 'resetPassAfter',
+	],
+
 	'logout' => [
 			'controller' => 'user',
 			'action' => 'logout',

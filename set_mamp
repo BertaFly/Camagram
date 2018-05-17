@@ -1,4 +1,7 @@
 cd ~/Library/Containers
 rm -rf MAMP
 cd ../..
+echo Include \"/Users/inovykov/Camagru/arbuz.conf\"
+echo ~/Library/Containers/MAMP
+echo ~/Library/Containers/MAMP/php/etc/php.ini
 open .

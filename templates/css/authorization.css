@@ -59,6 +59,11 @@
   font-size: calc(10px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
 }
 
+.form .message.left {
+  margin-bottom: 5px;
+    text-align: left;
+}
+
   .form .message a {
     text-decoration: underline;
   }

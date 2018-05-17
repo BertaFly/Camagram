@@ -30,8 +30,9 @@ class UserController extends Controller {
             }
             else
             {
-                View::errorCode('input');
-                header('Location: http://localhost:8070/user/login');
+                // View::errorCode('input');
+                $this->model->phpAlert("Wrong login or password. In addition, check if your verify your email.");
+                header('refresh:1; url=login');
             }
         }
         else
@@ -51,6 +52,7 @@ class UserController extends Controller {
             $passwd = $_POST['passwd'];
             $cpasswd = $_POST['cpasswd'];
             $email = $_POST['email'];
+            
             $wrongLogin = ($login == "" || strlen($login) < 5);
             $wrongPass = ($passwd == "" || $cpasswd != $passwd || strlen($passwd) < 7);
             if ($wrongLogin || $wrongPass || $email == "")
@@ -58,18 +60,19 @@ class UserController extends Controller {
                 
                 // View::errorCode('input');
                 echo "Check input";
-                header('refresh:1; url=http://localhost:8070/user/signin');
+                header('refresh:2; url=http://localhost:8070/user/signin');
                 exit();
             }
             else
             {
-                $sql = "SELECT id FROM users WHERE login='$login'";
-                $con = new Db;
-                $res = $con->row($sql);
-                if ($res != null)
+                $isLoginTaken = $this->model->extractUsersByLogin($login);
+                $isEmailTaken = $this->model->extractUsersByEmail($email);
+                if ($isLoginTaken != null || $isEmailTaken != null)
                 {
-                    View::errorCode('login');
-                    // var_dump($res);
+                    $isLoginTaken != null ? $msg = 'This login has already taken' : $msg = 'This email has already registered';
+                    $arr['msg'] = $msg;
+                    $this->createAction($arr);
+                    header('refresh:3; url=signin');
                 }
                 else
                 {
@@ -135,17 +138,114 @@ class UserController extends Controller {
             if ($res != null && $res[0]['token'] == $token)
             {
                 $con->query("UPDATE users SET isEmailConfirmed='1' WHERE login='$login'");
-                $res = $con->row("SELECT * FROM users WHERE login='$login'");
-                $_SESSION['isUser'] = 1;
-                $_SESSION['authorizedUser'] = $login;
+                $this->model->authorize($login);
                 header('Location: http://localhost:8070/home');
-                // View::redirect('home');
-                // print_r($_SESSION);
             }
         }
         else
         {
             View::errorCode(404);
+        }
+    }
+
+    public function resetPassAction()
+    {
+        var_dump($_POST);
+        if (isset($_POST['submit']))
+        {
+            $user = $this->model->extractUsersByEmail($_POST['email']);
+
+            //Mail
+            $base_url = 'http://localhost:8070/user/resetPass';
+            $mail_to = $_POST["email"];
+            $mail_subject = 'Reset password';
+            $mail_message = '
+            <p>Hi '.$user[0]['login'].',</p>
+            <p>In order to change your forgotten password, please, follow this link: '.$base_url.'/initial?email='.$_POST['email'].'&token='.$user[0]['token'].' . If you did not request it, just ignore this letter.</p>
+            <p>Best Regards, Cramata</p>';
+
+            $encoding = "utf-8";
+            $from_name = "Cramata";
+            $from_mail = "cramata@lol.com";
+            // Mail header
+                $header = "Content-type: text/html; charset=".$encoding." \r\n";
+                $header .= "From: ".$from_name." <".$from_mail."> \r\n";
+                $header .= "MIME-Version: 1.0 \r\n";
+                $header .= "Content-Transfer-Encoding: 8bit \r\n";
+                $header .= "Date: ".date("r (T)")." \r\n";
+            // Send mail
+            $res = mail($mail_to, $mail_subject, $mail_message, $header);
+                                
+            if ($res == true)
+            {
+                $msg = 'Check your email. We sent you a magic link.';
+            }
+            else
+            {
+                $msg = 'Something went wrong';
+            }         
+            $arr['msg'] = $msg;
+            $this->createAction($arr);
+        }
+        else if (isset($_GET['token']) && isset($_GET['email']))
+        {
+            var_dump($_GET);
+            echo "<p>in session</p>";
+            var_dump($_SESSION);
+
+            $user = $this->model->extractUsersByEmail($_GET['email']);
+            if ($user[0]['token'] == $_GET['token'])
+            {
+                $_SESSION['who_change_pass'] = $user[0]['login'];
+                $this->view->render('user/resetPassAfter');
+            }
+        }
+        else
+        {
+            $this->view->render('user/resetPass');
+        }
+    }
+
+    public function resetPassAfterAction()
+    {
+        var_dump($_POST);
+        echo "<p>in session</p>";
+        var_dump($_SESSION);
+
+        if (isset($_POST['submit']))
+        {
+            $user = $_SESSION['who_change_pass'];
+            $pass = $_POST['passwd'];
+            $tmp = $this->model->extractUsersByLogin($user);
+            if ($pass === $_POST['cpasswd'] && $pass != "" && $_POST['cpasswd'] != "")
+            {
+                if (password_verify($pass, $tmp[0]['pass']))
+                {
+                    $msg = 'New password should differ from old one';
+                    $arr['msg'] = $msg;
+                    $this->createAction($arr);
+                }
+                else
+                {
+                    $con = new Db;
+                    $hashPass = password_hash($pass, PASSWORD_BCRYPT);
+                    $token = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789!$/()*";
+                        $token = str_shuffle($token);
+                        $token = substr($token, 0, 10);
+                    $res = $con->query("UPDATE users SET pass='$hashPass' token='$token' WHERE login='$user'");
+                    if ($res == true)
+                    {
+                        unset($_SESSION['who_change_pass']);
+                        $this->model->authorize($user);
+                    }
+                    else
+                    {
+                        $msg = 'Something went wrong';
+                        $arr['msg'] = $msg;
+                        $this->createAction($arr);
+                    }
+                }
+            }
         }
     }
 

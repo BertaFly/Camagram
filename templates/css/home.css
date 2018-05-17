@@ -48,7 +48,7 @@
         background: #8ea2c5;
     }*/
 
-    .login {
+    .menu__unknown a.login {
         text-transform: capitalize;
         font-style: italic;
     }
