@@ -18,6 +18,11 @@ class User extends Model
 		return $res;
 	}
 
+	public function insertNewUser($str)
+	{
+		$res = $this->db->query($str);
+	}
+
 	public function authorize($login)
 	{
 		$_SESSION['isUser'] = 1;

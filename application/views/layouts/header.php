@@ -5,14 +5,14 @@
             </p>
         </a>
         <nav class="menu__unknown">
-            <a href="about">
+            <a href="http://localhost:8070/about">
                 About
             </a>
             <?php if (array_key_exists('authorizedUser', $_SESSION)): ?>
                 <a href="user/cabinet" class="login">
                     <?php echo $_SESSION['authorizedUser']?>
                 </a>
-                <a href="logout">
+                <a href="user/logout">
                     Logout
                 </a>
             <?php else: ?>

@@ -6,16 +6,33 @@ use application\components\Controller;
 use application\components\View;
 use application\lib\Db;
 
+class UserController extends Controller
+{
 
-// use application\controllers\PHPMailer\src\PHPmailer;
-// use application\controllers\PHPMailer\src\Exception;
+    public function generateToken()
+    {
+        $token = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789!$/()*";
+        $token = str_shuffle($token);
+        $token = substr($token, 0, 20);
+        return $token;
+    }
 
-// require 'path/to/PHPMailer/src/Exception.php';
-// require 'path/to/PHPMailer/src/PHPMailer.php';
-// require 'path/to/PHPMailer/src/SMTP.php';
+    public function sendMail($mail_to, $mail_subject, $mail_message)
+    {
+        $encoding = "utf-8";
+        $from_name = "Cramata";
+        $from_mail = "cramata@lol.com";
+        // Mail header
+        $header = "Content-type: text/html; charset=".$encoding." \r\n";
+        $header .= "From: ".$from_name." <".$from_mail."> \r\n";
+        $header .= "MIME-Version: 1.0 \r\n";
+        $header .= "Content-Transfer-Encoding: 8bit \r\n";
+        $header .= "Date: ".date("r (T)")." \r\n";
+        //Send
+        $res = mail($mail_to, $mail_subject, $mail_message, $header);
+        return $res;
+    }
 
-class UserController extends Controller {
-	
     public function loginAction()
     {
         if (isset($_POST['submit']))
@@ -30,7 +47,6 @@ class UserController extends Controller {
             }
             else
             {
-                // View::errorCode('input');
                 $this->model->phpAlert("Wrong login or password. In addition, check if your verify your email.");
                 header('refresh:1; url=login');
             }
@@ -45,7 +61,6 @@ class UserController extends Controller {
     public function signinAction()
     {
         $msg = "";
-        // var_dump($_POST);
         if (isset($_POST['submit']))
         {
             $login = $_POST['login'];
@@ -57,8 +72,6 @@ class UserController extends Controller {
             $wrongPass = ($passwd == "" || $cpasswd != $passwd || strlen($passwd) < 7);
             if ($wrongLogin || $wrongPass || $email == "")
             {
-                
-                // View::errorCode('input');
                 echo "Check input";
                 header('refresh:2; url=http://localhost:8070/user/signin');
                 exit();
@@ -71,20 +84,15 @@ class UserController extends Controller {
                 {
                     $isLoginTaken != null ? $msg = 'This login has already taken' : $msg = 'This email has already registered';
                     $arr['msg'] = $msg;
-                    $this->createAction($arr);
+                    $this->showMsg($arr);
                     header('refresh:3; url=signin');
                 }
                 else
                 {
-                    $token = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789!$/()*";
-                    $token = str_shuffle($token);
-                    $token = substr($token, 0, 10);
+                    $token = $this->generateToken();
                     $hashPass = password_hash($passwd, PASSWORD_BCRYPT);
-                    $con->query("INSERT INTO users (login,pass,email,isEmailConfirmed,token)
-                        VALUES ('$login', '$hashPass', '$email', '0', '$token')
-                        ");
-
-                    //Mail
+                    $sql = "INSERT INTO users (login,pass,email,isEmailConfirmed,token) VALUES ('$login', '$hashPass', '$email', '0', '$token')";
+                    $this->model->insertNewUser($sql);
                     $base_url = 'http://localhost:8070/user/confirmEmail/';
                     $mail_to = $_POST["email"];
                     $mail_subject = 'Account varification';
@@ -92,31 +100,12 @@ class UserController extends Controller {
                     <p>Hi '.$_POST["login"].',</p>
                     <p>Thanks for registration. In order to use your account at our site, please confirm your email by following this link: '.$base_url.'email_verification?login='.$_POST['login'].'&activation_code='.$token.'</p>
                     <p>Best Regards, Cramata</p>';
-
-                    $encoding = "utf-8";
-                    $from_name = "Cramata";
-                    $from_mail = "cramata@lol.com";
-                    // Mail header
-                        $header = "Content-type: text/html; charset=".$encoding." \r\n";
-                        $header .= "From: ".$from_name." <".$from_mail."> \r\n";
-                        $header .= "MIME-Version: 1.0 \r\n";
-                        $header .= "Content-Transfer-Encoding: 8bit \r\n";
-                        $header .= "Date: ".date("r (T)")." \r\n";
-                    // Send mail
-                    $res = mail($mail_to, $mail_subject, $mail_message, $header);
-                                        
-                    if ($res == true)
-                    {
-                        $msg = 'success, check your email';
-                    }
-                    else
-                    {
-                        $msg = 'something went wrong';
-                    }  
+                    $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                    $res == true ? $msg = 'success, check your email' : $msg = 'something went wrong'; 
                 }
             }       
             $arr['msg'] = $msg;
-            $this->createAction($arr);
+            $this->showMsg($arr);
         }
         else
         {
@@ -150,11 +139,9 @@ class UserController extends Controller {
 
     public function resetPassAction()
     {
-        var_dump($_POST);
         if (isset($_POST['submit']))
         {
             $user = $this->model->extractUsersByEmail($_POST['email']);
-
             //Mail
             $base_url = 'http://localhost:8070/user/resetPass';
             $mail_to = $_POST["email"];
@@ -163,36 +150,13 @@ class UserController extends Controller {
             <p>Hi '.$user[0]['login'].',</p>
             <p>In order to change your forgotten password, please, follow this link: '.$base_url.'/initial?email='.$_POST['email'].'&token='.$user[0]['token'].' . If you did not request it, just ignore this letter.</p>
             <p>Best Regards, Cramata</p>';
-
-            $encoding = "utf-8";
-            $from_name = "Cramata";
-            $from_mail = "cramata@lol.com";
-            // Mail header
-                $header = "Content-type: text/html; charset=".$encoding." \r\n";
-                $header .= "From: ".$from_name." <".$from_mail."> \r\n";
-                $header .= "MIME-Version: 1.0 \r\n";
-                $header .= "Content-Transfer-Encoding: 8bit \r\n";
-                $header .= "Date: ".date("r (T)")." \r\n";
-            // Send mail
-            $res = mail($mail_to, $mail_subject, $mail_message, $header);
-                                
-            if ($res == true)
-            {
-                $msg = 'Check your email. We sent you a magic link.';
-            }
-            else
-            {
-                $msg = 'Something went wrong';
-            }         
+            $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+            $res == true ? $msg = 'Check your email. We sent you a magic link.' : $msg = 'Something went wrong';       
             $arr['msg'] = $msg;
-            $this->createAction($arr);
+            $this->showMsg($arr);
         }
         else if (isset($_GET['token']) && isset($_GET['email']))
         {
-            var_dump($_GET);
-            echo "<p>in session</p>";
-            var_dump($_SESSION);
-
             $user = $this->model->extractUsersByEmail($_GET['email']);
             if ($user[0]['token'] == $_GET['token'])
             {
@@ -208,10 +172,6 @@ class UserController extends Controller {
 
     public function resetPassAfterAction()
     {
-        var_dump($_POST);
-        echo "<p>in session</p>";
-        var_dump($_SESSION);
-
         if (isset($_POST['submit']))
         {
             $user = $_SESSION['who_change_pass'];
@@ -223,15 +183,15 @@ class UserController extends Controller {
                 {
                     $msg = 'New password should differ from old one';
                     $arr['msg'] = $msg;
-                    $this->createAction($arr);
+                    $this->showMsg($arr);
                 }
                 else
                 {
                     $con = new Db;
                     $hashPass = password_hash($pass, PASSWORD_BCRYPT);
                     $token = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789!$/()*";
-                        $token = str_shuffle($token);
-                        $token = substr($token, 0, 10);
+                    $token = str_shuffle($token);
+                    $token = substr($token, 0, 10);
                     $res = $con->query("UPDATE users SET pass='$hashPass' token='$token' WHERE login='$user'");
                     if ($res == true)
                     {
@@ -242,7 +202,7 @@ class UserController extends Controller {
                     {
                         $msg = 'Something went wrong';
                         $arr['msg'] = $msg;
-                        $this->createAction($arr);
+                        $this->showMsg($arr);
                     }
                 }
             }
@@ -254,12 +214,18 @@ class UserController extends Controller {
         unset($_SESSION['authorizedUser']);
         unset($_SESSION['isUser']);
         session_destroy();
-        header('Location: home');
+        $this->view->redirect('http://localhost:8070/home');
         exit();
     }
 
-    public function createAction($arr)
+    public function showMsgAction($arr)
     {
        $this->view->render('user/create', $arr);
     }
+
+    public function cabinetAction()
+    {
+        $this->view->render('user/cabinet');
+    }
+
 }

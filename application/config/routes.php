@@ -48,10 +48,15 @@ return [
 		'action' => 'resetPassAfter',
 	],
 
-	'logout' => [
-			'controller' => 'user',
-			'action' => 'logout',
-		],	
+	'user/logout' => [
+		'controller' => 'user',
+		'action' => 'logout',
+	],
+
+	'user/cabinet' => [
+		'controller' => 'user',
+		'action' => 'cabinet',
+	],
 
 	'about' => [
 		'controller' => 'about',

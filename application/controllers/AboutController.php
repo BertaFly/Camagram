@@ -8,7 +8,6 @@ class AboutController extends Controller
 {
     public function viewAction()
     {
-        // require_once (ROOT.'/views/about.php');
         $this->view->render('');
         return true;
     }
