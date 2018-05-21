@@ -15,6 +15,8 @@
 	<link rel="stylesheet" href="../../templates/css/authorization.css">
 	<link rel="stylesheet" href="../../templates/css/about.css">
 	<link rel="stylesheet" href="../../templates/css/feed.css">
+	<link rel="stylesheet" href="../../templates/css/cabinet.css">
+
 	<title>Camarama</title>
 </head>
 <body>

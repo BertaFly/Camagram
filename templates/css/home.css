@@ -49,7 +49,7 @@
     }*/
 
     .menu__unknown a.login {
-        text-transform: capitalize;
+        text-transform: initial;
         font-style: italic;
     }
 

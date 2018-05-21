@@ -58,6 +58,21 @@ return [
 		'action' => 'cabinet',
 	],
 
+	'user/changeLogin' => [
+		'controller' => 'user',
+		'action' => 'changeLogin',
+	],
+
+	'user/changePass' => [
+		'controller' => 'user',
+		'action' => 'changePass',
+	],
+
+	'user/changeEmail' => [
+		'controller' => 'user',
+		'action' => 'changeEmail',
+	],
+
 	'about' => [
 		'controller' => 'about',
 		'action' => 'view',

@@ -122,13 +122,16 @@ class UserController extends Controller
         {
             $login = $_GET['login'];
             $token = $_GET['activation_code'];
-            $con = new Db;
-            $res = $con->row("SELECT * FROM users WHERE login='$login'");
+            $res = $this->model->extractUsersByLogin($login);
             if ($res != null && $res[0]['token'] == $token)
             {
-                $con->query("UPDATE users SET isEmailConfirmed='1' WHERE login='$login'");
+                $this->model->changeEmailStatus($login, 1);
+                if (isset($_SESSION['emailNew']))
+                {
+                    $res = $this->model->changeEmail($login, $_SESSION['emailNew']);
+                    $res == true ? $msg = 'You successfully changed your email' : $msg = 'Oups, something went wrong';
+                }
                 $this->model->authorize($login);
-                header('Location: http://localhost:8070/home');
             }
         }
         else
@@ -187,15 +190,19 @@ class UserController extends Controller
                 }
                 else
                 {
-                    $con = new Db;
                     $hashPass = password_hash($pass, PASSWORD_BCRYPT);
-                    $token = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789!$/()*";
-                    $token = str_shuffle($token);
-                    $token = substr($token, 0, 10);
-                    $res = $con->query("UPDATE users SET pass='$hashPass' token='$token' WHERE login='$user'");
+                    $token = $this->generateToken();
+                    $res = $this->model->changePass($token, $user, $hashPass);
                     if ($res == true)
                     {
                         unset($_SESSION['who_change_pass']);
+                        $mail_to = $tmp[0]['email'];
+                        $mail_subject = 'Reset password';
+                        $mail_message = '
+                            <p>Hi '.$user.',</p>
+                            <p>You successfully change your password.</p>
+                            <p>Best Regards, Cramata</p>';
+                        $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
                         $this->model->authorize($user);
                     }
                     else
@@ -218,9 +225,148 @@ class UserController extends Controller
         exit();
     }
 
-    public function showMsgAction($arr)
+    public function changeLoginAction()
     {
-       $this->view->render('user/create', $arr);
+        if(isset($_POST['Submit']))
+        {
+            if($_SESSION['authorizedUser'] == $_POST['loginOld'])
+            {
+                if(strlen($_POST['loginNew']) >= 5)
+                {
+                    if($_POST['loginOld'] != $_POST['loginNew'])
+                    {
+                        if ($this->model->changeLogin($_POST['loginOld'], $_POST['loginNew']) == true)
+                        {
+                            $msg = 'Success';
+                            $tmp = $this->model->extractUsersByLogin($_POST['loginNew']);
+                            $mail_to = $tmp[0]['email'];
+                            $mail_subject = 'Login change';
+                            $mail_message = '
+                            <p>Hi '.$_POST["loginOld"].',</p>
+                            <p>You successfully change your login to '.$_POST['loginNew'].'.</p>
+                            <p>Best Regards, Cramata</p>';
+                            $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                            $_SESSION['authorizedUser'] = $_POST['loginNew'];
+                        }
+                        else
+                        {
+                            $msg = 'Oups, please try again later';
+
+                        }
+                    }
+                    else
+                    {
+                        $msg = 'New login should differ from old one';
+                    }
+                }
+                else
+                {
+                    $msg = 'New login should be longer then 4 chars';
+                }
+            }
+            else
+            {
+                $msg = 'Nice try, but please, enter YOUR login';
+            }
+            $arr['msg'] = $msg;
+            $this->showMsg($arr);
+            header('refresh:1; url=http://localhost:8070/user/cabinet');
+        }
+    }
+
+    public function changePassAction()
+    {
+        if(isset($_POST['Submit']))
+        {
+            $tmp = $this->model->extractUsersByLogin($_SESSION['authorizedUser']);
+            if($tmp[0]['pass'] == $_POST['passwdOld'])
+            {
+                if(strlen($_POST['passwdNew']) >= 7)
+                {
+                    if($_POST['passwdOld'] != $_POST['passwdNew'])
+                    {
+                        $token = $this->generateToken();
+                        if ($this->model->changePass($token, $_SESSION['authorizedUser'], $_POST['passwdNew']) == true)
+                        {
+                            $msg = 'Success';
+                            $mail_to = $tmp[0]['email'];
+                            $mail_subject = 'Password change';
+                            $mail_message = '
+                            <p>Hi '.$tmp[0]['user'].',</p>
+                            <p>You successfully change your password.</p>
+                            <p>Best Regards, Cramata</p>';
+                            $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                            $this->showMsg($arr);
+                            header('refresh:1; url=http://localhost:8070/user/cabinet');
+                        }
+                        else
+                        {
+                            $msg = 'Oups, please try again later';
+
+                        }
+                    }
+                    else
+                    {
+                        $msg = 'New password should differ from old one';
+                    }
+                }
+                else
+                {
+                    $msg = 'New password should be longer then 6 chars';
+                }
+            }
+            else
+            {
+                $msg = 'You entered incorect previous password';
+            }
+            $arr['msg'] = $msg;
+            $this->showMsg($arr);
+            header('refresh:2; url=http://localhost:8070/user/cabinet');
+        }
+    }
+
+    public function changeEmailAction()
+    {
+        if(isset($_POST['Submit']))
+        {
+            $tmp = $this->model->extractUsersByLogin($_SESSION['authorizedUser']);
+            if($tmp[0]['email'] == $_POST['emailOld'])
+            {
+                $this->model->changeEmailStatus($login, 0);
+                $token = $this->generateToken();
+                $this->model->changeToken($login, $token);
+
+                            $base_url = 'http://localhost:8070/user/confirmEmail/';
+                            $mail_to = $tmp[0]['email'];
+                            $mail_subject = 'Email change';
+                            $mail_message = '
+                            <p>Hi '.$tmp[0]['login'].',</p>
+                            <p>In order to finish email change, please follow this link: '.$base_url.'email_verification?login='.$tmp[0]['login'].'&activation_code='.$token.' .</p>
+                            <p>Best Regards, Cramata</p>';
+                            $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                        if ($res == true)
+                        {
+                            $_SESSION['emailNew'] = $_POST['emailNew'];
+                            $msg = 'We sent you a magic link. Please follow it in order to complite changing your email';
+                        }
+                        else
+                        {
+                            $msg = 'Oups, please try again later';
+                        }     
+            }
+            else
+            {
+                $msg = 'Nice try, but please, enter YOUR email';
+            }
+            $arr['msg'] = $msg;
+            $this->showMsg($arr);
+            header('refresh:1; url=http://localhost:8070/user/cabinet');
+        }
+    }
+
+    public function showMsg($arr)
+    {
+       $this->view->render('user/showMsg', $arr);
     }
 
     public function cabinetAction()
