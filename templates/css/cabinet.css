@@ -1,6 +1,7 @@
 .cabinet {
 	margin: 0 auto;
 	padding: 20px 0;
+	height: calc(100vh - 146px);
 	font-family: "Montserrat", sans-serif;
 	text-align: center;
 	font-size: calc(10px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));

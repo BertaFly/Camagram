@@ -1,5 +1,5 @@
 .login-page {
-  height: 83.4vh;
+  height: calc(100% - 206px);
 }
 
 .sign-in {

@@ -1,5 +1,6 @@
 .feed {
 	font-family: 'Montserrat', sans-serif;
+	height: calc(100% - 106px);
 }
 
 .feed-holder {
