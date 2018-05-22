@@ -1,5 +1,12 @@
-<div class="container">
+<div class="container cabinet">
+	<h1 class="cabinet-title">
+		Information about me
+	</h1>
 	<div class="cabinet-features">
+		<p class="cabinet-login">
+			My login: 
+			<?php echo $_SESSION['authorizedUser'];?>
+		</p>
 		<button class="change-login" onclick="show('block', 'login');">
 			Change login
 		</button>

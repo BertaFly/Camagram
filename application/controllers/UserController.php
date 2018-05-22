@@ -19,37 +19,50 @@ class UserController extends Controller
 
     public function sendMail($mail_to, $mail_subject, $mail_message)
     {
-        $encoding = "utf-8";
-        $from_name = "Cramata";
-        $from_mail = "cramata@lol.com";
-        // Mail header
-        $header = "Content-type: text/html; charset=".$encoding." \r\n";
-        $header .= "From: ".$from_name." <".$from_mail."> \r\n";
-        $header .= "MIME-Version: 1.0 \r\n";
-        $header .= "Content-Transfer-Encoding: 8bit \r\n";
-        $header .= "Date: ".date("r (T)")." \r\n";
-        //Send
-        $res = mail($mail_to, $mail_subject, $mail_message, $header);
+        $res = false;
+        if ($mail_to != null && $mail_subject != null && $mail_message != null)
+        {
+            $encoding = "utf-8";
+            $from_name = "Cramata";
+            $from_mail = "cramata@lol.com";
+            // Mail header
+            $header = "Content-type: text/html; charset=".$encoding." \r\n";
+            $header .= "From: ".$from_name." <".$from_mail."> \r\n";
+            $header .= "MIME-Version: 1.0 \r\n";
+            $header .= "Content-Transfer-Encoding: 8bit \r\n";
+            $header .= "Date: ".date("r (T)")." \r\n";
+            //Send
+            $res = mail($mail_to, $mail_subject, $mail_message, $header);
+        }
         return $res;
     }
 
     public function loginAction()
     {
-        if (isset($_POST['submit']))
+        if (isset($_POST['submit']) && isset($_POST['login']) && isset($_POST['passwd']))
         {
-
+            $msg = "";
             $login = $_POST['login'];
             $passwd = $_POST['passwd'];
-            $res = $this->model->extractUsersByLogin($login);
-            if ($res != null && password_verify($passwd, $res[0]['pass']) && $res[0]['isEmailConfirmed'] == 1)
+            if ($login != "" && $passwd != "")
             {
-                $this->model->authorize($login);
+                $res = $this->model->extractUsersByLogin($login);
+                if ($res != null && password_verify($passwd, $res[0]['pass']) && $res[0]['isEmailConfirmed'] == 1)
+                {
+                    $this->model->authorize($login);
+                }
+                else
+                {
+                    $msg = "Wrong login or password. In addition, check if your verify your email.";
+                }
             }
             else
             {
-                $this->model->phpAlert("Wrong login or password. In addition, check if your verify your email.");
-                header('refresh:1; url=login');
+                $msg = "Please fill login or password field";
             }
+            $arr['msg'] = $msg;
+            $this->showMsg($arr);
+            header('refresh:2; url=login');
         }
         else
         {
@@ -61,20 +74,18 @@ class UserController extends Controller
     public function signinAction()
     {
         $msg = "";
-        if (isset($_POST['submit']))
+        if (isset($_POST['submit']) && isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['cpasswd']) && isset($_POST['email']))
         {
             $login = $_POST['login'];
             $passwd = $_POST['passwd'];
             $cpasswd = $_POST['cpasswd'];
             $email = $_POST['email'];
-            
             $wrongLogin = ($login == "" || strlen($login) < 5);
             $wrongPass = ($passwd == "" || $cpasswd != $passwd || strlen($passwd) < 7);
-            if ($wrongLogin || $wrongPass || $email == "")
+            $wrongEmail = ($email == "");
+            if ($wrongLogin || $wrongPass || $wrongEmail)
             {
-                echo "Check input";
-                header('refresh:2; url=http://localhost:8070/user/signin');
-                exit();
+                $msg = "Check your inputs";
             }
             else
             {
@@ -83,9 +94,6 @@ class UserController extends Controller
                 if ($isLoginTaken != null || $isEmailTaken != null)
                 {
                     $isLoginTaken != null ? $msg = 'This login has already taken' : $msg = 'This email has already registered';
-                    $arr['msg'] = $msg;
-                    $this->showMsg($arr);
-                    header('refresh:3; url=signin');
                 }
                 else
                 {
@@ -101,11 +109,12 @@ class UserController extends Controller
                     <p>Thanks for registration. In order to use your account at our site, please confirm your email by following this link: '.$base_url.'email_verification?login='.$_POST['login'].'&activation_code='.$token.'</p>
                     <p>Best Regards, Cramata</p>';
                     $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
-                    $res == true ? $msg = 'success, check your email' : $msg = 'something went wrong'; 
+                    $res == true ? $msg = 'Success, check your email' : $msg = 'Something went wrong'; 
                 }
             }       
             $arr['msg'] = $msg;
             $this->showMsg($arr);
+            $msg == "Success, check your email" ? header('refresh:2; url=http://localhost:8070/home') : header('refresh:2; url=http://localhost:8070/user/signin');
         }
         else
         {
@@ -118,20 +127,24 @@ class UserController extends Controller
     {
         $url = trim($_SERVER['REQUEST_URI'], '/');
         $tmp = strstr($url, 'email_verification');
-        if ($tmp != null)
+        if ($tmp != null && isset($_GET['login']) && isset($_GET['activation_code']))
         {
             $login = $_GET['login'];
             $token = $_GET['activation_code'];
-            $res = $this->model->extractUsersByLogin($login);
-            if ($res != null && $res[0]['token'] == $token)
+            if ($login != "" && $token != "")
             {
-                $this->model->changeEmailStatus($login, 1);
-                if (isset($_SESSION['emailNew']))
+                $res = $this->model->extractUsersByLogin($login);
+                if ($res != null && $res[0]['token'] == $token)
                 {
-                    $res = $this->model->changeEmail($login, $_SESSION['emailNew']);
-                    $res == true ? $msg = 'You successfully changed your email' : $msg = 'Oups, something went wrong';
+                    $this->model->changeEmailStatus($login, 1);
+                    //Insert in db new email if user wants to change it
+                    if (isset($_SESSION['emailNew']))
+                    {
+                        $res = $this->model->changeEmail($login, $_SESSION['emailNew']);
+                        $res == true ? $msg = 'You successfully changed your email' : $msg = 'Oups, something went wrong';
+                    }
+                    $this->model->authorize($login);
                 }
-                $this->model->authorize($login);
             }
         }
         else
@@ -142,26 +155,29 @@ class UserController extends Controller
 
     public function resetPassAction()
     {
-        if (isset($_POST['submit']))
+        if (isset($_POST['submit']) && isset($_POST['email']))
         {
             $user = $this->model->extractUsersByEmail($_POST['email']);
-            //Mail
-            $base_url = 'http://localhost:8070/user/resetPass';
-            $mail_to = $_POST["email"];
-            $mail_subject = 'Reset password';
-            $mail_message = '
-            <p>Hi '.$user[0]['login'].',</p>
-            <p>In order to change your forgotten password, please, follow this link: '.$base_url.'/initial?email='.$_POST['email'].'&token='.$user[0]['token'].' . If you did not request it, just ignore this letter.</p>
-            <p>Best Regards, Cramata</p>';
-            $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
-            $res == true ? $msg = 'Check your email. We sent you a magic link.' : $msg = 'Something went wrong';       
-            $arr['msg'] = $msg;
-            $this->showMsg($arr);
+            if ($user != null)
+            {
+                //Mail
+                $base_url = 'http://localhost:8070/user/resetPass';
+                $mail_to = $_POST["email"];
+                $mail_subject = 'Reset password';
+                $mail_message = '
+                <p>Hi '.$user[0]['login'].',</p>
+                <p>In order to change your forgotten password, please, follow this link: '.$base_url.'/initial?email='.$_POST['email'].'&token='.$user[0]['token'].' . If you did not request it, just ignore this letter.</p>
+                <p>Best Regards, Cramata</p>';
+                $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                $res == true ? $msg = 'Check your email. We sent you a magic link.' : $msg = 'Something went wrong';
+                $arr['msg'] = $msg;
+                $this->showMsg($arr);
+            }
         }
         else if (isset($_GET['token']) && isset($_GET['email']))
         {
             $user = $this->model->extractUsersByEmail($_GET['email']);
-            if ($user[0]['token'] == $_GET['token'])
+            if ($user != null && $user[0]['token'] == $_GET['token'])
             {
                 $_SESSION['who_change_pass'] = $user[0]['login'];
                 $this->view->render('user/resetPassAfter');
@@ -175,12 +191,12 @@ class UserController extends Controller
 
     public function resetPassAfterAction()
     {
-        if (isset($_POST['submit']))
+        if (isset($_POST['submit']) && isset($_POST['passwd']) && isset($_SESSION['who_change_pass']))
         {
             $user = $_SESSION['who_change_pass'];
             $pass = $_POST['passwd'];
             $tmp = $this->model->extractUsersByLogin($user);
-            if ($pass === $_POST['cpasswd'] && $pass != "" && $_POST['cpasswd'] != "")
+            if ($tmp != null && $pass === $_POST['cpasswd'] && $pass != "" && $_POST['cpasswd'] != "" && $user != "")
             {
                 if (password_verify($pass, $tmp[0]['pass']))
                 {
@@ -200,7 +216,7 @@ class UserController extends Controller
                         $mail_subject = 'Reset password';
                         $mail_message = '
                             <p>Hi '.$user.',</p>
-                            <p>You successfully change your password.</p>
+                            <p>You successfully changed your password.</p>
                             <p>Best Regards, Cramata</p>';
                         $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
                         $this->model->authorize($user);
@@ -227,7 +243,7 @@ class UserController extends Controller
 
     public function changeLoginAction()
     {
-        if(isset($_POST['Submit']))
+        if(isset($_POST['Submit']) && isset($_POST['loginOld']) && isset($_POST['loginNew']) && isset($_SESSION['authorizedUser']))
         {
             if($_SESSION['authorizedUser'] == $_POST['loginOld'])
             {
@@ -332,27 +348,26 @@ class UserController extends Controller
             $tmp = $this->model->extractUsersByLogin($_SESSION['authorizedUser']);
             if($tmp[0]['email'] == $_POST['emailOld'])
             {
-                $this->model->changeEmailStatus($login, 0);
+                $this->model->changeEmailStatus($tmp[0]['login'], 0);
                 $token = $this->generateToken();
-                $this->model->changeToken($login, $token);
-
-                            $base_url = 'http://localhost:8070/user/confirmEmail/';
-                            $mail_to = $tmp[0]['email'];
-                            $mail_subject = 'Email change';
-                            $mail_message = '
-                            <p>Hi '.$tmp[0]['login'].',</p>
-                            <p>In order to finish email change, please follow this link: '.$base_url.'email_verification?login='.$tmp[0]['login'].'&activation_code='.$token.' .</p>
-                            <p>Best Regards, Cramata</p>';
-                            $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
-                        if ($res == true)
-                        {
-                            $_SESSION['emailNew'] = $_POST['emailNew'];
-                            $msg = 'We sent you a magic link. Please follow it in order to complite changing your email';
-                        }
-                        else
-                        {
-                            $msg = 'Oups, please try again later';
-                        }     
+                $this->model->changeToken($tmp[0]['login'], $token);
+                $base_url = 'http://localhost:8070/user/confirmEmail/';
+                $mail_to = $tmp[0]['email'].", ".$_POST['emailNew'];
+                $mail_subject = 'Email change';
+                $mail_message = '
+                <p>Hi '.$tmp[0]['login'].',</p>
+                <p>In order to finish email change, please follow this link: '.$base_url.'email_verification?login='.$tmp[0]['login'].'&activation_code='.$token.' .</p>
+                <p>Best Regards, Cramata</p>';
+                $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                if ($res == true)
+                {
+                    $_SESSION['emailNew'] = $_POST['emailNew'];
+                    $msg = 'We sent you a magic link. Please follow it in order to complite changing your email';
+                }
+                else
+                {
+                    $msg = 'Oups, please try again later';
+                }     
             }
             else
             {

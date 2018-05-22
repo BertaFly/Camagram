@@ -11,7 +11,7 @@
 				<input type="password" name="passwd" placeholder="password" title="Input at least 7 characters" value="" required/>
 			</div>
 			<input type="password" name="cpasswd" placeholder="confirm your password" value="" required/>
-			<button type="submit" name="submit" value="OK" />login</button>
+			<button type="submit" name="submit" value="OK" />reset</button>
   		</form>
 	</div>
 </section>

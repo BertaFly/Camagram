@@ -48,7 +48,7 @@ return [
 		'action' => 'resetPassAfter',
 	],
 
-	'user/logout' => [
+	'[\w.\-\s\/]{0,25}logout(\W|$)' => [
 		'controller' => 'user',
 		'action' => 'logout',
 	],

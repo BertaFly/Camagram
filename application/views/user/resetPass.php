@@ -5,7 +5,7 @@
 				Reset password
 			</p>
 			<input type="email" name="email" placeholder="email" value="" required/>
-			<button type="submit" name="submit" value="OK" />login</button>
+			<button type="submit" name="submit" value="OK" />reset</button>
   		</form>
 	</div>
 </section>

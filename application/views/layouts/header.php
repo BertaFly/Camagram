@@ -12,7 +12,7 @@
                 <a href="user/cabinet" class="login">
                     <?php echo $_SESSION['authorizedUser']?>
                 </a>
-                <a href="user/logout">
+                <a href="logout">
                     Logout
                 </a>
             <?php else: ?>

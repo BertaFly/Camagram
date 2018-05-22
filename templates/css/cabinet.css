@@ -1,7 +1,25 @@
-.cabinet-features {
+.cabinet {
+	margin: 0 auto;
+	padding: 20px 0;
+	font-family: "Montserrat", sans-serif;
+	text-align: center;
+	font-size: calc(10px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
+}
+
+	.cabinet-title {
+		font-size: 2em;
+		font-weight: bold;
+	}
+
+	.cabinet-login {
+		font-size: 1.5em;
+		margin: 20px;
+	}
+
+/*.cabinet-features {
 	margin: 0 auto;
 	font-family: "Montserrat", sans-serif;
-}
+}*/
 
 	.change-login, .change-pass, .change-email {
 		background: #fff;
@@ -9,14 +27,17 @@
 		border-radius: 3px;
 		padding: 6px 24px;
 		cursor: pointer;
-		font-family: "Montserrat", sans-serif;
+		/*font-family: "Montserrat", sans-serif;*/
+		font-weight: bold;
 		display: block;
 		margin: 10px auto;
 		width: 180px;
+		transition: background 0.3s ease-in;
 	}
 
 	.change-login:hover, .change-email:hover, .change-pass:hover {
-		background: #ccc;
+		background: #578c90;
+		color: #fff;
 	}
 
 	#login, #pass, #email {

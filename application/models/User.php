@@ -38,7 +38,7 @@ class User extends Model
 
 	public function changeToken($login, $token)
 	{
-		$this->db->query("UPDATE users SET token='$token' WHERE login='$login");
+		$this->db->query("UPDATE users SET token='$token' WHERE login='$login'");
 		return true;
 	}
 
