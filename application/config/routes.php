@@ -18,6 +18,11 @@ return [
 		'action' => 'index',
 	],
 
+	'[\w.\-\s\/]{0,25}upload(\W|$)' => [
+		'controller' => 'picture',
+		'action' => 'upload',
+	],
+
 	'user/login' => [
 		'controller' => 'user',
 		'action' => 'login',

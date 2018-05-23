@@ -12,4 +12,10 @@ class Home extends Model
 		$res = $this->db->row('SELECT id, pic FROM random_pic');
 		return $res;
 	}
+
+	public function upload($user_id, $name, $likes, $comments)
+	{
+  		$res = $this->db->query('INSERT INTO pics(user_id,link,likes,comments) values("$user_id","'.$name.'", "$likes","$comments")');
+	}
+
 }

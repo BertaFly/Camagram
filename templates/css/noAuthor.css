@@ -1,0 +1,39 @@
+.index {
+	margin: 0;
+	padding: 0;
+	height: calc(100vh - 106px);
+	background-color: #c6e7ec;
+	font-family: "Montserrat", sans-serif;
+	font-size: calc(10px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
+}
+
+	.index-holder {
+		margin: 0 auto;
+		text-align: center;
+		height: 100%;
+	}
+
+	.index-holder__vertical {
+		position: relative;
+		top: 50%;
+		-webkit-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		transform: translateY(-50%);
+	}
+
+		.index-text {
+			display: inline-block;
+			width: 20%;
+			font-size: 2.5em;
+			font-weight: bold;
+			color: #4d3358;
+			text-align: left;
+			vertical-align: middle;
+		}
+
+		.index-pic {
+			display: inline-block;
+			max-width: 700px;
+			vertical-align: middle;
+			margin-right: 40px;
+		}

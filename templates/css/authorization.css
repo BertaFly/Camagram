@@ -116,5 +116,5 @@
 }
 
 .create-wrap {
-  height: 76.1vh;
+  height: calc(100vh - 206px);
 }

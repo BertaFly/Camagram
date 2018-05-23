@@ -17,18 +17,12 @@
 		margin: 20px;
 	}
 
-/*.cabinet-features {
-	margin: 0 auto;
-	font-family: "Montserrat", sans-serif;
-}*/
-
 	.change-login, .change-pass, .change-email {
 		background: #fff;
 		border: 1px solid #ccc;
 		border-radius: 3px;
 		padding: 6px 24px;
 		cursor: pointer;
-		/*font-family: "Montserrat", sans-serif;*/
 		font-weight: bold;
 		display: block;
 		margin: 10px auto;

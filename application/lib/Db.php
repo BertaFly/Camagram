@@ -25,7 +25,8 @@ class Db
 				$stmt->bindValue(':'.$key, $val);
 			}
 		}
-		$stmt->execute();
+		echo "<br>";
+		var_dump($stmt->execute());
 		return $stmt;
 	}
 

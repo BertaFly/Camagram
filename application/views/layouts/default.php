@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="../../templates/css/about.css">
 	<link rel="stylesheet" href="../../templates/css/feed.css">
 	<link rel="stylesheet" href="../../templates/css/cabinet.css">
+	<link rel="stylesheet" href="../../templates/css/noAuthor.css">
 
 	<title>Camarama</title>
 </head>

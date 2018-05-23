@@ -3,6 +3,10 @@
 namespace application\controllers;
 
 use application\components\Controller;
+use application\controllers\UserController;
+use application\models\User;
+
+
 use application\lib\Db;
 
 
@@ -10,20 +14,14 @@ class HomeController extends Controller
 {
     public function indexAction()
     {
-    	$db = new Db;
-    	$res = $db->column('SELECT login FROM users');
-        if (array_key_exists('isUser', $_SESSION))
+    	if (isset($_SESSION['isUser']))
         {
-            $params = [
-                    'login' => $_SESSION['authorizedUser'],
-                ];
+            $this->view->render('home/index');
         }
         else
         {
-            $params = [
-                    'login' => '',
-                ];
+            $this->view->render('home/noAuthor');
         }
-        $this->view->render('', $params);
     }
+
 }

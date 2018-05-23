@@ -59,7 +59,8 @@ class User extends Model
 
 	public function changePass($token, $login, $pass)
 	{
-		$this->db->query("UPDATE users SET pass='$pass' WHERE login='$login'");
+		$passHash = password_hash($pass, PASSWORD_BCRYPT);
+		$this->db->query("UPDATE users SET pass='$passHash' WHERE login='$login'");
 		$this->db->query("UPDATE users SET token='$token' WHERE login='$login'");
 		return true;
 	}
