@@ -71,6 +71,19 @@ class User extends Model
 		return true;
 	}
 
+	public function extractUsersPics($login)
+	{
+		print_r($login."<br>");
+		$tmp = $this->db->row("SELECT * FROM users WHERE login='$login'");
+		var_dump($tmp);
+		echo "<br>after select user by login<br>";
+		$uI = $tmp[0]['id'];
+		$res = $this->db->row("SELECT * FROM pics WHERE user_id='$uI'");
+		var_dump($res);
+		echo "<br>after select pictuser by user id<br>";
+		return $res;
+	}
+
 	public function phpAlert($msg) {
     	echo '<script type="text/javascript">alert("'.$msg.'")</script>';
 	}

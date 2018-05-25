@@ -5,6 +5,7 @@ namespace application\controllers;
 use application\components\Controller;
 use application\controllers\UserController;
 use application\models\User;
+use application\models\Picture;
 
 
 use application\lib\Db;
@@ -16,7 +17,9 @@ class HomeController extends Controller
     {
     	if (isset($_SESSION['isUser']))
         {
-            $this->view->render('home/index');
+            $feed = new Picture();
+            $arr = $feed->extractPics();
+            $this->view->render('home/index', $arr);
         }
         else
         {

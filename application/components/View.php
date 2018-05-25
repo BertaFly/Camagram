@@ -17,6 +17,7 @@ class View
 	
 	public function render($title, $vars = [])
 	{
+		// echo "<br>before extract vars";
 		extract($vars);
 		// var_dump($vars);
 		// print($this->path);

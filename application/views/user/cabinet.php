@@ -14,20 +14,37 @@
 		<button class="change-pass" onclick="show('block', 'pass');">
 			Change password
 		</button>
+		<div id="grey" onclick="show('none', 'pass')"></div>
+
 		<button class="change-email" onclick="show('block', 'email');">
 			Change email
 		</button>
+		<div id="grey" onclick="show('none', 'email')"></div>
+		
 	</div>
 	<div class="cabinet-pics">
-		<div class="user-pic">
-			<img src="" alt="some photo">
-			<p class="user-pic__likes">
-				99 likes
-			</p>
-			<div class="user-pic__comments">
-				some text
+
+		<?php foreach ($vars as $val): ?>
+			<div class="feed-item">
+				<div class="feed-item--pic">
+					<img src=
+						<?php echo '"'.$val['link'].'"'?>
+					>
+				</div>
+				<div class="feed-item--like">
+					<img src="../../templates/img/like5.jpg">
+				</div>
+				<div class="feed-item--like-count">
+					<?php echo '"'.$val['likes'].'"'?>
+				</div>
+				<div class="feed-item--last-com">
+					<p class="feed-item--comment">
+						Lora: Lorem Ipsum
+					</p>
+				</div>
 			</div>
-		</div>
+		<?php endforeach; ?>
+		
 	</div>
 	<div id="login">
 		<div class="pop-up">
@@ -74,6 +91,7 @@
 			</form>
 		</div>
 	</div>
+	
 	<script>
 		function show(state, str) {
 			document.getElementById(str).style.display = state;	

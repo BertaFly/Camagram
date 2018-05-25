@@ -18,9 +18,19 @@ return [
 		'action' => 'index',
 	],
 
-	'[\w.\-\s\/]{0,25}upload(\W|$)' => [
+	'picture/upload' => [
 		'controller' => 'picture',
 		'action' => 'upload',
+	],
+	
+	'[\w.\-\s\/]{0,25}PictureController(.*)' => [
+		'controller' => 'picture',
+		'action' => 'savePhoto',
+	],
+
+	'picture/camera' => [
+		'controller' => 'picture',
+		'action' => 'index',
 	],
 
 	'user/login' => [

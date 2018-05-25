@@ -409,7 +409,8 @@ class UserController extends Controller
 
     public function cabinetAction()
     {
-        $this->view->render('user/cabinet');
+        $userPics = $this->model->extractUsersPics($_SESSION['authorizedUser']);
+        $this->view->render('user/cabinet', $userPics);
     }
 
 }

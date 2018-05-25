@@ -81,3 +81,14 @@ footer {
     box-shadow: 1px 1px 15px rgba(0,0,0,.3);
 }
 
+.addPic {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    max-width: 100px;
+    background: #ccc;
+    border-radius: 50px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+}
