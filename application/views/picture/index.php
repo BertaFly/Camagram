@@ -50,7 +50,7 @@
 		req.addEventListener('load', function(){
 			console.log(req.responseText);
 		});
-		req.open('POST', 'picture/upload');
+		req.open('POST', 'http://localhost:8070/picture/upload');
 		req.send(formData);
 	});
 </script>

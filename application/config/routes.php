@@ -22,6 +22,11 @@ return [
 		'controller' => 'picture',
 		'action' => 'upload',
 	],
+
+	'picture/like' => [
+		'controller' => 'picture',
+		'action' => 'like',
+	],
 	
 	'[\w.\-\s\/]{0,25}PictureController(.*)' => [
 		'controller' => 'picture',

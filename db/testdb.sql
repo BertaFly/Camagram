@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 25, 2018 at 07:42 AM
+-- Generation Time: May 31, 2018 at 09:34 AM
 -- Server version: 5.7.21
 -- PHP Version: 7.1.16
 
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
   `id_pic` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `comment` text NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `who_comment` int(11) NOT NULL,
+  `comment_text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -44,9 +44,29 @@ CREATE TABLE `comments` (
 CREATE TABLE `likes` (
   `id_pic` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `comment` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `likes`
+--
+
+INSERT INTO `likes` (`id_pic`, `user_id`, `time`) VALUES
+(24, 1, '2018-05-31 10:30:10'),
+(25, 1, '2018-05-31 10:34:24'),
+(6, 1, '2018-05-31 14:31:07'),
+(10, 1, '2018-05-31 14:31:31'),
+(9, 1, '2018-05-31 14:33:37'),
+(11, 1, '2018-05-31 14:34:29'),
+(8, 1, '2018-05-31 14:35:35'),
+(12, 1, '2018-05-31 14:39:37'),
+(13, 1, '2018-05-31 14:40:29'),
+(14, 1, '2018-05-31 14:44:17'),
+(15, 1, '2018-05-31 14:45:12'),
+(26, 1, '2018-05-31 15:14:48'),
+(30, 1, '2018-05-31 16:27:05'),
+(1, 1, '2018-05-31 16:33:33'),
+(3, 1, '2018-05-31 16:33:39');
 
 -- --------------------------------------------------------
 
@@ -67,18 +87,21 @@ CREATE TABLE `pics` (
 --
 
 INSERT INTO `pics` (`id_pic`, `user_id`, `link`, `likes`, `date`) VALUES
-(1, 1, '../../public/test/lWJviz1yFS.png', 0, '2018-05-25 11:33:13'),
-(2, 1, '../../public/test/6X9xedftAo.png', 0, '2018-05-25 11:36:41'),
-(3, 1, '../../public/test/bKglXGWZv6.png', 0, '2018-05-25 11:36:41'),
-(4, 1, '../../public/test/ngE3Ozs4fS.png', 0, '2018-05-25 11:37:01'),
-(5, 1, '../../public/test/iIxX3oE1BL.png', 0, '2018-05-25 11:38:03'),
-(6, 1, '../../public/test/RHcwung43h.png', 0, '2018-05-25 11:41:18'),
-(8, 1, '../../public/test/9skGWOuMwg.png', 0, '2018-05-25 13:44:25'),
-(9, 1, '../../public/test/vaeyNwcrqI.png', 0, '2018-05-25 13:46:23'),
-(10, 1, '../../public/test/HOPgw6r0nC.png', 0, '2018-05-25 13:48:29'),
-(11, 1, '../../public/test/PLDIiUvrhq.png', 0, '2018-05-25 13:51:23'),
-(12, 1, '../../public/test/L9gisoTAnl.png', 0, '2018-05-25 13:51:32'),
-(13, 1, '../../public/test/FxRNg6PdXl.png', 0, '2018-05-25 14:41:32');
+(1, 1, '../../public/test/lWJviz1yFS.png', 1, '2018-05-25 11:33:13'),
+(2, 1, '../../public/test/6X9xedftAo.png', 3, '2018-05-25 11:36:41'),
+(3, 1, '../../public/test/bKglXGWZv6.png', 3, '2018-05-25 11:36:41'),
+(4, 1, '../../public/test/ngE3Ozs4fS.png', 1, '2018-05-25 11:37:01'),
+(6, 1, '../../public/test/RHcwung43h.png', 1, '2018-05-25 11:41:18'),
+(8, 1, '../../public/test/9skGWOuMwg.png', 1, '2018-05-25 13:44:25'),
+(9, 1, '../../public/test/vaeyNwcrqI.png', 1, '2018-05-25 13:46:23'),
+(10, 1, '../../public/test/HOPgw6r0nC.png', 1, '2018-05-25 13:48:29'),
+(13, 1, '../../public/test/FxRNg6PdXl.png', 1, '2018-05-25 14:41:32'),
+(14, 1, '../../public/test/yBOi5o19a6.png', 1, '2018-05-31 10:16:56'),
+(15, 1, '../../public/test/IkDFqe9ASg.png', 1, '2018-05-31 10:18:39'),
+(16, 1, '../../public/test/Lk5iVBqyOS.png', 0, '2018-05-31 10:20:38'),
+(18, 1, '../../public/test/hfvd4UM7YK.png', 0, '2018-05-31 10:22:25'),
+(19, 1, '../../public/test/80t2IVPLYh.png', 0, '2018-05-31 10:26:14'),
+(20, 1, '../../public/test/31b5c6EiO0.png', 0, '2018-05-31 10:27:09');
 
 -- --------------------------------------------------------
 
@@ -113,6 +136,12 @@ INSERT INTO `users` (`id`, `login`, `pass`, `email`, `isEmailConfirmed`, `token`
 --
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `pics`
 --
 ALTER TABLE `pics`
@@ -129,10 +158,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `pics`
 --
 ALTER TABLE `pics`
-  MODIFY `id_pic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_pic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `users`

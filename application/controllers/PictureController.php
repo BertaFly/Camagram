@@ -40,7 +40,7 @@ class PictureController extends Controller
 		echo "user id = ".$user_id;
 
 		$link = '../../public/test/'.$picName.'.png';
-		echo "link = ".$link;
+		echo "/n link = ".$link;
 
 
 		$this->model->insertLink($user_id, $link);
@@ -52,7 +52,7 @@ class PictureController extends Controller
 
 	public function savePhotoAction()
 	{
-		echo "called UserController<br>";
+		// echo "called UserController<br>";
 
 		$user = new User();
 		$userRow = $user->extractUsersByLogin($_SESSION['authorizedUser']);
@@ -87,5 +87,20 @@ class PictureController extends Controller
 	public function indexAction()
 	{
 		$this->view->render("");
+	}
+
+	public function likeAction()
+	{
+		$user = new User();
+		$userRow = $user->extractUsersByLogin($_SESSION['authorizedUser']);
+		// print_r($_POST);
+		// print_r($userRow);
+		// $pic = $this->model->extractPicById($_POST['link']);
+		// print_r("pictue id = ".$pic);
+		if ($this->model->likeCheck($_POST['link'], $userRow[0]['id']) == null)
+			$this->model->likeAdd($_POST['link'], $userRow[0]['id']);
+		else
+			$this->model->likeDel($_POST['link'], $userRow[0]['id']);
+		echo $this->model->likeCount($_POST['link']);
 	}
 }
