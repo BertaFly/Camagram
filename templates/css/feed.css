@@ -44,9 +44,22 @@
 			padding-top: 2%;
 			vertical-align: top;
 			display: inline-block;
-			width: 85%;
+			width: 10%;
 			font-size: 20px;
 			color: #395f60;
+		}
+
+	.feed-item--author {
+		background: #cdd4e5;
+	    font-size: 20px;
+	    line-height: 35px;
+	    padding: 2%;
+	    text-align: center;
+	    color: #395f60;
+	}
+
+		b {
+			font-weight: bold;
 		}
 
 	.feed-item--last-com {

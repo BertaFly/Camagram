@@ -17,7 +17,7 @@ class PictureController extends Controller
 	public function uploadAction()
 	{
 				// Проверяем пришел ли файл
-		if( !empty( $_FILES['photo']['name'] ) ) {
+		if(!empty($_FILES['photo']['name']) && $_FILES['photo']['size'] > 0 && $_FILES['photo']['size'] <= 102400) {
 		  // Проверяем, что при загрузке не произошло ошибок
 		  if ( $_FILES['photo']['error'] == 0 ) {
 		    // Если файл загружен успешно, то проверяем - графический ли он
@@ -97,10 +97,10 @@ class PictureController extends Controller
 		// print_r($userRow);
 		// $pic = $this->model->extractPicById($_POST['link']);
 		// print_r("pictue id = ".$pic);
-		if ($this->model->likeCheck($_POST['link'], $userRow[0]['id']) == null)
-			$this->model->likeAdd($_POST['link'], $userRow[0]['id']);
+		if ($this->model->likeCheck($_POST['pic_id'], $userRow[0]['id']) == true)
+			$this->model->likeAdd($_POST['pic_id'], $userRow[0]['id']);
 		else
-			$this->model->likeDel($_POST['link'], $userRow[0]['id']);
-		echo $this->model->likeCount($_POST['link']);
+			$this->model->likeDel($_POST['pic_id'], $userRow[0]['id']);
+		echo $this->model->likeCount($_POST['pic_id']);
 	}
 }

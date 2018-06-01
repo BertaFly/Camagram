@@ -24,7 +24,11 @@ class Picture extends Model
 	public function likeCheck($pic_id, $user_id)
 	{
 		$item = $this->db->row("SELECT user_id FROM likes WHERE id_pic='$pic_id'");
-		return $item;
+		foreach ($item as $val) {
+			if ($val['user_id'] == $user_id)
+				return false;
+		}
+		return true;
 	}
 
 	public function likeAdd($pic_id, $user_id)

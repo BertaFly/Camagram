@@ -88,4 +88,12 @@ class User extends Model
     	echo '<script type="text/javascript">alert("'.$msg.'")</script>';
 	}
 
+	public function extractLoginByPic($pic_id)
+	{
+		$tmp = $this->db->row("SELECT user_id FROM pics WHERE id_pic='$pic_id'");
+		$who = $tmp[0]["user_id"];
+		$res = $this->db->row("SELECT login FROM users WHERE id='$who'");
+		return $res[0]['login'];
+	}
+
 }

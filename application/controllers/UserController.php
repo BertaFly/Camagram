@@ -22,6 +22,12 @@ class UserController extends Controller
         $res = false;
         if ($mail_to != null && $mail_subject != null && $mail_message != null)
         {
+            $subject_preferences = array(
+                "input-charset" => $encoding,
+                "output-charset" => $encoding,
+                "line-length" => 76,
+                "line-break-chars" => "\r\n"
+            );
             $encoding = "utf-8";
             $from_name = "Cramata";
             $from_mail = "cramata@lol.com";
@@ -31,6 +37,7 @@ class UserController extends Controller
             $header .= "MIME-Version: 1.0 \r\n";
             $header .= "Content-Transfer-Encoding: 8bit \r\n";
             $header .= "Date: ".date("r (T)")." \r\n";
+            $header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
             //Send
             $res = mail($mail_to, $mail_subject, $mail_message, $header);
         }
