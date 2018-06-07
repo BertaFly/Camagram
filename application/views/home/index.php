@@ -13,7 +13,6 @@ use application\models\Picture;
 
 <section class="feed">
 	<div class="feed-holder">
-		<?php print_r($_SESSION);?>
 </form>
 		<?php foreach ($vars as $val): ?>
 			<div class="feed-item">
@@ -25,9 +24,12 @@ use application\models\Picture;
 					<?php echo "<b>".$author."'s</b> picture"?>
 				</div>
 				<div class="feed-item--pic">
-					<img name="link" src=
+					<a href=<?php echo "'"."singlePhoto/".substr($val["link"], 6)."'"?>
+						>>
+						<img name="link" src=
 						<?php echo '"'.$val['link'].'"'?>
-					>
+						>
+					</a>
 				</div>
 				<div class="feed-item--like">
 					<button class="like" data-pic-id=<?php echo '"'.$val['id_pic'].'"'?>>
@@ -71,29 +73,11 @@ use application\models\Picture;
 	<img src="../../templates/img/cam.png">
 </a>
 <script type="text/javascript">
-	// var like_btn = document.getElementsByClassName('like');
-	// for (var i = 0 ; i < like_btn.length; i++) {
-	//    like_btn[i].addEventListener('click', like(like_btn[i]), false ) ; 
-	// };
-	// function like(event){
-	// 	var item = event.querySelector('.link img')
-	// 	const req = new XMLHttpRequest();
-	// 	req.open('POST', 'http://localhost:8070/picture/like');
-	// 	// var tmp = event.parentElement.getAttribute('src');
-	// 	var body = "link=" + item;
-	// 	alert(item);
-		
-	// 	req.addEventListener("load", function(event) {
- //            console.log(event.target.responseText);
- //        });
-	// 	req.send(body);
-	// };
 	const like_btn = document.getElementsByClassName('like');
 	for (var i = 0 ; i < like_btn.length; i++) {
 	   like_btn[i].addEventListener('click', like, false);
 	};
 	   	function like(ev){
-		// var item = ev.firstChild;
 		var item = this.getAttribute('data-pic-id');
 		var body = "pic_id=" + item;
 		const req = new XMLHttpRequest();
@@ -105,23 +89,13 @@ use application\models\Picture;
             let likesNumber = event.target.responseText;
 
             let button = document.querySelectorAll("[data-pic-id='" + item + "']")[0];
-            var tmp = parseInt(button.parentElement.nextElementSibling.innerHTML);
+            let tmp = parseInt(button.parentElement.nextElementSibling.innerHTML);
             if (likesNumber - tmp == -1)
             	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8070/templates/img/like4.png'));
             else
             	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8070/templates/img/like3.png'));
-            // console.log("button:", button);
             button.parentElement.nextElementSibling.innerHTML = likesNumber;
-            // var newDiv = document.createElement('div')
-
-			// newDiv.innerHTML = event.target.responseText;
-			// newDiv.appendChild(event.target);
-            // event.target.innerHTML = '"' + event.target.responseText + '"';
         });
-		// console.log(ev[0].childNodes[0]);
-		// console.log(body);
-		// console.log(ev);
 		req.send(body);
 		}; 
-
 </script>

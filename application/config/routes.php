@@ -38,6 +38,16 @@ return [
 		'action' => 'index',
 	],
 
+	'picture/comment' => [
+		'controller' => 'picture',
+		'action' => 'comment',
+	],
+
+	'singlePhoto/(.*)' => [
+		'controller' => 'picture',
+		'action' => 'singlePhoto',
+	],
+
 	'user/login' => [
 		'controller' => 'user',
 		'action' => 'login',

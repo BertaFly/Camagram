@@ -93,14 +93,42 @@ class PictureController extends Controller
 	{
 		$user = new User();
 		$userRow = $user->extractUsersByLogin($_SESSION['authorizedUser']);
-		// print_r($_POST);
-		// print_r($userRow);
-		// $pic = $this->model->extractPicById($_POST['link']);
-		// print_r("pictue id = ".$pic);
 		if ($this->model->likeCheck($_POST['pic_id'], $userRow[0]['id']) == true)
 			$this->model->likeAdd($_POST['pic_id'], $userRow[0]['id']);
 		else
 			$this->model->likeDel($_POST['pic_id'], $userRow[0]['id']);
 		echo $this->model->likeCount($_POST['pic_id']);
+	}
+	
+	public function singlePhotoAction()
+	{
+		$url = trim($_SERVER['REQUEST_URI'], '/');
+		$url = "../..".substr($url, 11);
+        $row = $this->model->extractPicByLink($url);
+        $this->view->render('picture/singlePhoto', $row);
+	}
+
+	public function commentAction()
+	{
+		$txt = $_POST['txt'];
+		$id_pic = $_POST['id_pic'];
+
+		$user = new User();
+		$userRow = $user->extractUsersByLogin($_SESSION['authorizedUser']);
+		$picLink = $this->model->extractPicById($id_pic);
+		$picLink = substr($picLink[0]['link'], 6);
+
+		$subscriptionPreference = true; // need new table form user and mail spam options
+		if ($subscriptionPreference == true)//need to add check who comment not same as post author, not logic to send notif to self about done comment
+		{
+			$whoPictureBelongs = $user->extractLoginByPic($id_pic);
+			$mail_to = $user->extractUsersByLogin($whoPictureBelongs);
+			$mail_to = $mail_to[0]['email'];
+			$mail_subject = 'You got new comment (=^-^=)';
+			$mail_message = 'Hey, '.$whoPictureBelongs.'<br>Your <a href="http://localhost:8070/singlePhoto/'.$picLink.'">photo</a> was commented by '.$_SESSION['authorizedUser'].': "'.$_POST['txt'].'".<br>Best regurds, Cramata';
+			UserController::sendMail($mail_to, $mail_subject, $mail_message);
+		}
+		$this->model->insertComment($id_pic, $userRow[0]['id'], $txt);
+		echo "<div class='comment-who'>".$_SESSION['authorizedUser'].": </div><div class='comment-txt'>".$txt."</div>";
 	}
 }

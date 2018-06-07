@@ -17,18 +17,18 @@ class UserController extends Controller
         return $token;
     }
 
-    public function sendMail($mail_to, $mail_subject, $mail_message)
+    static public function sendMail($mail_to, $mail_subject, $mail_message)
     {
         $res = false;
         if ($mail_to != null && $mail_subject != null && $mail_message != null)
         {
+            $encoding = "utf-8";
             $subject_preferences = array(
                 "input-charset" => $encoding,
                 "output-charset" => $encoding,
                 "line-length" => 76,
                 "line-break-chars" => "\r\n"
             );
-            $encoding = "utf-8";
             $from_name = "Cramata";
             $from_mail = "cramata@lol.com";
             // Mail header

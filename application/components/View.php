@@ -23,7 +23,7 @@ class View
 		// print($this->path);
 		if ($title == "")
 		{
-			$path = 'application/views/'.$this->path.'.php';	
+			$path = 'application/views/'.$this->path.'.php';
 		}
 		else
 		{

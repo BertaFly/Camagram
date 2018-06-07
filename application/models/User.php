@@ -12,6 +12,12 @@ class User extends Model
 		return $res;
 	}
 
+	public function extractUserLoginById($user_id)
+	{
+		$res = $this->db->row("SELECT login FROM users WHERE id='$user_id'");
+		return $res[0]['login'];
+	}
+
 	public function extractUsersByEmail($str)
 	{
 		$res = $this->db->row("SELECT * FROM users WHERE email='$str'");
@@ -73,14 +79,14 @@ class User extends Model
 
 	public function extractUsersPics($login)
 	{
-		print_r($login."<br>");
+		// print_r($login."<br>");
 		$tmp = $this->db->row("SELECT * FROM users WHERE login='$login'");
-		var_dump($tmp);
-		echo "<br>after select user by login<br>";
+		// var_dump($tmp);
+		// echo "<br>after select user by login<br>";
 		$uI = $tmp[0]['id'];
 		$res = $this->db->row("SELECT * FROM pics WHERE user_id='$uI'");
-		var_dump($res);
-		echo "<br>after select pictuser by user id<br>";
+		// var_dump($res);
+		// echo "<br>after select pictuser by user id<br>";
 		return $res;
 	}
 

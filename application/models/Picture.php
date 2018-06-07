@@ -3,6 +3,8 @@
 namespace application\models;
 
 use application\components\Model;
+use application\models\User;
+
 
 class Picture extends Model
 {
@@ -19,6 +21,11 @@ class Picture extends Model
 	public function extractPics()
 	{
 		return ($this->db->row("SELECT * FROM pics"));
+	}
+
+	public function extractPicById($id)
+	{
+		return ($this->db->row("SELECT * FROM pics WHERE id_pic='$id'"));
 	}
 
 	public function likeCheck($pic_id, $user_id)
@@ -51,6 +58,30 @@ class Picture extends Model
 	{
 		$item = $this->db->row("SELECT likes FROM pics WHERE id_pic='$pic_id'");
 		return $item[0]['likes'];
+	}
+
+	public function extractPicByLink($link)
+	{
+		$item = $this->db->row("SELECT * FROM pics WHERE link='$link'");
+		return $item;
+	}
+
+	public function extractComments($id_pic)
+	{
+		$item = $this->db->row("SELECT * FROM comments WHERE id_pic='$id_pic'");
+		$i = 0;
+		$user = new User();
+		foreach ($item as $ar) {
+			$user_id = $ar['who_comment'];
+			$item[$i]['who_comment'] = $user->extractUserLoginById($user_id);
+			$i++;
+		}
+		return $item;
+	}
+
+	public function insertComment($id_pic, $who_comment, $comment_txt)
+	{
+		$this->db->query("INSERT INTO comments (id_pic, who_comment, comment_text) VALUES ('$id_pic', '$who_comment', '$comment_txt')");
 	}
 
 }
