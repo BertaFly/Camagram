@@ -43,7 +43,7 @@ return [
 		'action' => 'comment',
 	],
 
-	'singlePhoto/(.*)' => [
+	'(.*)singlePhoto/(.*)' => [
 		'controller' => 'picture',
 		'action' => 'singlePhoto',
 	],
@@ -78,7 +78,7 @@ return [
 		'action' => 'resetPassAfter',
 	],
 
-	'[\w.\-\s\/]{0,25}logout(\W|$)' => [
+	'(.*)logout' => [
 		'controller' => 'user',
 		'action' => 'logout',
 	],
@@ -101,6 +101,11 @@ return [
 	'user/changeEmail' => [
 		'controller' => 'user',
 		'action' => 'changeEmail',
+	],
+
+	'user/changeSubscription(.*)' => [
+		'controller' => 'user',
+		'action' => 'changeSubscription',
 	],
 
 	'about' => [

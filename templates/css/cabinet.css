@@ -1,7 +1,7 @@
 .cabinet {
 	margin: 0 auto;
 	padding: 20px 0;
-	height: calc(100vh - 146px);
+	/*height: calc(100vh - 146px);*/
 	font-family: "Montserrat", sans-serif;
 	text-align: center;
 	font-size: calc(10px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
@@ -10,6 +10,10 @@
 	.cabinet-title {
 		font-size: 2em;
 		font-weight: bold;
+	}
+
+	.cabinet-pics {
+		text-align: left;
 	}
 
 	.cabinet-login {
@@ -91,4 +95,19 @@
 		bottom: 0;
 		display: none;
 		z-index: 100;
+	}
+
+	.feed-item--comment {
+		font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
+	}
+
+	.feed-item--dell {
+		line-height: 30px;
+    	font-size: calc(18px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
+    	font-weight: bold;
+    	text-align: center;
+	}
+
+	.top {
+		vertical-align: top;
 	}

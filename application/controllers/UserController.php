@@ -49,11 +49,11 @@ class UserController extends Controller
         if (isset($_POST['submit']) && isset($_POST['login']) && isset($_POST['passwd']))
         {
             $msg = "";
-            $login = $_POST['login'];
+            $login = html_entity_decode($_POST['login']);
             $passwd = $_POST['passwd'];
             if ($login != "" && $passwd != "")
             {
-                $res = $this->model->extractUsersByLogin($login);
+                $res = $this->model->extractUserByLogin($login);
                 if ($res != null && password_verify($passwd, $res[0]['pass']) && $res[0]['isEmailConfirmed'] == 1)
                 {
                     $this->model->authorize($login);
@@ -83,12 +83,12 @@ class UserController extends Controller
         $msg = "";
         if (isset($_POST['submit']) && isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['cpasswd']) && isset($_POST['email']))
         {
-            $login = $_POST['login'];
+            $login = html_entity_decode($_POST['login']);
             $passwd = $_POST['passwd'];
             $cpasswd = $_POST['cpasswd'];
             $email = $_POST['email'];
             $wrongLogin = ($login == "" || strlen($login) < 5);
-            $wrongPass = ($passwd == "" || $cpasswd != $passwd || strlen($passwd) < 7);
+            $wrongPass = ($passwd == "" || $cpasswd != $passwd || strlen($passwd) < 7 || strlen($passwd) > 140);
             $wrongEmail = ($email == "" || filter_var($email, FILTER_VALIDATE_EMAIL) == false);
             if ($wrongLogin || $wrongPass || $wrongEmail)
             {
@@ -96,7 +96,7 @@ class UserController extends Controller
             }
             else
             {
-                $isLoginTaken = $this->model->extractUsersByLogin($login);
+                $isLoginTaken = $this->model->extractUserByLogin($login);
                 $isEmailTaken = $this->model->extractUsersByEmail($email);
                 if ($isLoginTaken != null || $isEmailTaken != null)
                 {
@@ -112,8 +112,8 @@ class UserController extends Controller
                     $mail_to = $_POST["email"];
                     $mail_subject = 'Account varification';
                     $mail_message = '
-                    <p>Hi '.$_POST["login"].',</p>
-                    <p>Thanks for registration. In order to use your account at our site, please confirm your email by following this link: '.$base_url.'email_verification?login='.$_POST['login'].'&activation_code='.$token.'</p>
+                    <p>Hi '.$login.',</p>
+                    <p>Thanks for registration. In order to use your account at our site, please confirm your email by following this link: '.$base_url.'email_verification?login='.$login.'&activation_code='.$token.'</p>
                     <p>Best Regards, Cramata</p>';
                     $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
                     $res == true ? $msg = 'Success, check your email' : $msg = 'Something went wrong'; 
@@ -137,11 +137,11 @@ class UserController extends Controller
         if ($tmp != null && isset($_GET['login']) && isset($_GET['activation_code']))
         {
             $msg = '';
-            $login = $_GET['login'];
-            $token = $_GET['activation_code'];
+            $login = html_entity_decode($_GET['login']);
+            $token = html_entity_decode($_GET['activation_code']);
             if ($login != "" && $token != "")
             {
-                $res = $this->model->extractUsersByLogin($login);
+                $res = $this->model->extractUserByLogin($login);
                 if ($res != null && $res[0]['token'] == $token)
                 {
                     $this->model->changeEmailStatus($login, 1);
@@ -160,6 +160,7 @@ class UserController extends Controller
                     }
                     if ($msg != 'Oups, something went wrong')
                     {
+                        $this->model->insertUserSubscription($login);
                         $this->model->authorize($login);
                     }
                 }
@@ -219,7 +220,7 @@ class UserController extends Controller
         {
             $user = $_SESSION['who_change_pass'];
             $pass = $_POST['passwd'];
-            $tmp = $this->model->extractUsersByLogin($user);
+            $tmp = $this->model->extractUserByLogin($user);
             if ($tmp != null && $pass === $_POST['cpasswd'] && $pass != "" && $_POST['cpasswd'] != "" && $user != "")
             {
                 if (password_verify($pass, $tmp[0]['pass']))
@@ -261,31 +262,39 @@ class UserController extends Controller
         unset($_SESSION['authorizedUser']);
         unset($_SESSION['isUser']);
         session_destroy();
-        $this->view->redirect('http://localhost:8070/home');
-        exit();
+        header('location: http://localhost:8070/home');
+        // exit();
     }
 
     public function changeLoginAction()
     {
         if(isset($_POST['Submit']) && isset($_POST['loginOld']) && isset($_POST['loginNew']) && isset($_SESSION['authorizedUser']))
         {
-            if($_SESSION['authorizedUser'] == $_POST['loginOld'])
+            if($_SESSION['authorizedUser'] == html_entity_decode($_POST['loginOld']))
             {
                 if(strlen($_POST['loginNew']) >= 5)
                 {
-                    if($_POST['loginOld'] != $_POST['loginNew'])
+                    if($_POST['loginOld'] != html_entity_decode($_POST['loginNew']))
                     {
-                        if ($this->model->changeLogin($_POST['loginOld'], $_POST['loginNew']) == true)
+                        if ($this->model->changeLogin($_POST['loginOld'], html_entity_decode($_POST['loginNew'])) == true)
                         {
                             $msg = 'Success';
-                            $tmp = $this->model->extractUsersByLogin($_POST['loginNew']);
-                            $mail_to = $tmp[0]['email'];
-                            $mail_subject = 'Login change';
-                            $mail_message = '
-                            <p>Hi '.$_POST["loginOld"].',</p>
-                            <p>You successfully change your login to '.$_POST['loginNew'].'.</p>
-                            <p>Best Regards, Cramata</p>';
-                            $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                            $params = array("login" => $_POST['loginNew'],
+                                "checkLogin" => "yes");
+
+                            // $this->model->checkSubscription($arr);
+                            
+                            if ($this->model->checkSubscription($params) === true)
+                            {
+                                $tmp = $this->model->extractUserByLogin($_POST['loginNew']);
+                                $mail_to = $tmp[0]['email'];
+                                $mail_subject = 'Login change';
+                                $mail_message = '
+                                <p>Hi '.$_POST["loginOld"].',</p>
+                                <p>You successfully change your login to '.$_POST['loginNew'].'.</p>
+                                <p>Best Regards, Cramata</p>';
+                                $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                            }
                             $_SESSION['authorizedUser'] = $_POST['loginNew'];
                         }
                         else
@@ -318,7 +327,7 @@ class UserController extends Controller
     {
         if(isset($_POST['Submit']))
         {
-            $tmp = $this->model->extractUsersByLogin($_SESSION['authorizedUser']);
+            $tmp = $this->model->extractUserByLogin($_SESSION['authorizedUser']);
             if(password_verify($_POST['passwdOld'], $tmp[0]['pass']))
             {
                 if(strlen($_POST['passwdNew']) >= 7)
@@ -329,13 +338,18 @@ class UserController extends Controller
                         if ($this->model->changePass($token, $_SESSION['authorizedUser'], $_POST['passwdNew']) == true)
                         {
                             $msg = 'Success';
-                            $mail_to = $tmp[0]['email'];
-                            $mail_subject = 'Password change';
-                            $mail_message = '
-                            <p>Hi '.$tmp[0]['login'].',</p>
-                            <p>You successfully changed your password.</p>
-                            <p>Best Regards, Cramata</p>';
-                            $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                            $params = array("login" => $_SESSION['authorizedUser'],
+                                "checkPass" => "yes");
+                            if ($this->model->checkSubscription($arr) === true)
+                            {
+                                $mail_to = $tmp[0]['email'];
+                                $mail_subject = 'Password change';
+                                $mail_message = '
+                                <p>Hi '.$tmp[0]['login'].',</p>
+                                <p>You successfully changed your password.</p>
+                                <p>Best Regards, Cramata</p>';
+                                $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+                            }
                         }
                         else
                         {
@@ -367,7 +381,7 @@ class UserController extends Controller
     {
         if(isset($_POST['Submit']))
         {
-            $tmp = $this->model->extractUsersByLogin($_SESSION['authorizedUser']);
+            $tmp = $this->model->extractUserByLogin($_SESSION['authorizedUser']);
             if($tmp[0]['email'] == $_POST['emailOld'])
             {
                 $isEmailTaken = $this->model->extractUsersByEmail($_POST['emailNew']);
@@ -418,6 +432,22 @@ class UserController extends Controller
     {
         $userPics = $this->model->extractUsersPics($_SESSION['authorizedUser']);
         $this->view->render('user/cabinet', $userPics);
+    }
+
+    public function changeSubscriptionAction()
+    {
+        if (isset($_SESSION['authorizedUser']))
+        {
+            $tmp = $this->model->extractUserByLogin($_SESSION['authorizedUser']);
+            $user_id = $tmp[0]['id'];
+            $user_sub = $this->model->getSubscriptionPreferences($user_id);
+            if (isset($_GET["login"]) || isset($_GET["pass"]) || isset($_GET["comment"]))
+            {
+                $this->model->changeSubscriptionPreferences($_GET, $user_sub);
+            }
+            $userPics = $this->model->extractUsersPics($_SESSION['authorizedUser']);
+            header('location: http://localhost:8070/user/cabinet');
+        }
     }
 
 }

@@ -7,13 +7,10 @@ use application\controllers\PictureController;
 use application\components\Model;
 use application\models\User;
 use application\models\Picture;
-
-
 ?>
 
 <section class="feed">
 	<div class="feed-holder">
-</form>
 		<?php foreach ($vars as $val): ?>
 			<div class="feed-item">
 				<?php 
@@ -35,7 +32,7 @@ use application\models\Picture;
 					<button class="like" data-pic-id=<?php echo '"'.$val['id_pic'].'"'?>>
 						<?php
 							$user = new User();
-							$userRow = $user->extractUsersByLogin($_SESSION['authorizedUser']);
+							$userRow = $user->extractUserByLogin($_SESSION['authorizedUser']);
 							$like = new Picture();
 							if ($like->likeCheck($val['id_pic'], $userRow[0]['id']) == true)
 								$like_src = '../../templates/img/like4.png';
@@ -52,21 +49,21 @@ use application\models\Picture;
 		<?php endforeach; ?>
 		
 		<div class="pagination-wrapper">
-		  <div class="pagination">
-		    <a class="prev page-numbers" href="javascript:;">prev</a>
-		    <span aria-current="page" class="page-numbers current">1</span>
-		    <a class="page-numbers" href="javascript:;">2</a>
-		    <a class="page-numbers" href="javascript:;">3</a>
-		    <a class="page-numbers" href="javascript:;">4</a>
-		    <a class="page-numbers" href="javascript:;">5</a>
-		    <a class="page-numbers" href="javascript:;">6</a>
-		    <a class="page-numbers" href="javascript:;">7</a>
-		    <a class="page-numbers" href="javascript:;">8</a>
-		    <a class="page-numbers" href="javascript:;">9</a>
-		    <a class="page-numbers" href="javascript:;">10</a>
-		    <a class="next page-numbers" href="javascript:;">next</a>
+		  	<div class="pagination">
+			    <a class="prev page-numbers" href="javascript:;">prev</a>
+			    <span aria-current="page" class="page-numbers current">1</span>
+			    <a class="page-numbers" href="javascript:;">2</a>
+			    <a class="page-numbers" href="javascript:;">3</a>
+			    <a class="page-numbers" href="javascript:;">4</a>
+			    <a class="page-numbers" href="javascript:;">5</a>
+			    <a class="page-numbers" href="javascript:;">6</a>
+			    <a class="page-numbers" href="javascript:;">7</a>
+			    <a class="page-numbers" href="javascript:;">8</a>
+			    <a class="page-numbers" href="javascript:;">9</a>
+			    <a class="page-numbers" href="javascript:;">10</a>
+			    <a class="next page-numbers" href="javascript:;">next</a>
+			</div>
 		</div>
-</div>
 	</div>
 </section>
 <a href="http://localhost:8070/picture/camera" class="addPic">

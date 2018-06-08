@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 01, 2018 at 03:58 AM
+-- Generation Time: Jun 08, 2018 at 10:51 AM
 -- Server version: 5.7.21
 -- PHP Version: 7.1.16
 
@@ -34,6 +34,26 @@ CREATE TABLE `comments` (
   `who_comment` int(11) NOT NULL,
   `comment_text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `id_pic`, `who_comment`, `comment_text`) VALUES
+(12, 2, 1, 'qwerty'),
+(13, 2, 1, 'tyuio'),
+(14, 2, 1, 'Мы только что получили запрос на изменение вашего пароля.\nЕсли вы не отправляли подобный запрос, проигнорируйте это сообщение. Однако, если'),
+(15, 2, 1, 'If this is your first visit, be sure to check out the FAQ by clicking the link above. You may have to register before you can post: click th'),
+(16, 2, 1, 'margin:0;\n		margin-top:3%;\n		border:0;\n		padding:1%;\n		display: block;\n		vertical-align:top;\n		white-space:normal;\n		background:none;\n		line'),
+(18, 10, 11, 'very good)'),
+(19, 10, 11, 'nice'),
+(20, 10, 11, 'againe'),
+(21, 10, 11, 'hopeless'),
+(22, 38, 1, 'very good)'),
+(23, 38, 1, 'ertyui'),
+(24, 38, 1, '(=^-^=)'),
+(25, 38, 1, 'like)'),
+(26, 1, 1, 'some txt');
 
 -- --------------------------------------------------------
 
@@ -72,7 +92,8 @@ INSERT INTO `likes` (`id_pic`, `user_id`, `time`) VALUES
 (3, 9, '2018-06-01 10:09:00'),
 (33, 10, '2018-06-01 10:16:01'),
 (35, 10, '2018-06-01 10:51:24'),
-(37, 10, '2018-06-01 10:51:29');
+(37, 10, '2018-06-01 10:51:29'),
+(2, 1, '2018-06-08 09:57:17');
 
 -- --------------------------------------------------------
 
@@ -94,11 +115,11 @@ CREATE TABLE `pics` (
 
 INSERT INTO `pics` (`id_pic`, `user_id`, `link`, `likes`, `date`) VALUES
 (1, 1, '../../public/test/lWJviz1yFS.png', 999999, '2018-05-25 11:33:13'),
-(2, 1, '../../public/test/6X9xedftAo.png', 4, '2018-05-25 11:36:41'),
+(2, 1, '../../public/test/6X9xedftAo.png', 5, '2018-05-25 11:36:41'),
 (3, 1, '../../public/test/bKglXGWZv6.png', 3, '2018-05-25 11:36:41'),
 (4, 1, '../../public/test/ngE3Ozs4fS.png', 1, '2018-05-25 11:37:01'),
 (6, 1, '../../public/test/RHcwung43h.png', 1, '2018-05-25 11:41:18'),
-(8, 1, '../../public/test/9skGWOuMwg.png', 0, '2018-05-25 13:44:25'),
+(8, 1, '../../public/test/9skGWOuMwg.png', 1, '2018-05-25 13:44:25'),
 (9, 1, '../../public/test/vaeyNwcrqI.png', 1, '2018-05-25 13:46:23'),
 (10, 1, '../../public/test/HOPgw6r0nC.png', 1, '2018-05-25 13:48:29'),
 (13, 1, '../../public/test/FxRNg6PdXl.png', 1, '2018-05-25 14:41:32'),
@@ -112,7 +133,36 @@ INSERT INTO `pics` (`id_pic`, `user_id`, `link`, `likes`, `date`) VALUES
 (33, 1, '../../public/test/5scDTb17fj.png', 2, '2018-06-01 08:54:54'),
 (34, 9, '../../public/test/bSJzhmxeL2.png', 0, '2018-06-01 09:40:42'),
 (35, 9, '../../public/test/AK5SY6POHG.png', 1, '2018-06-01 09:40:52'),
-(37, 10, '../../public/test/yEFrJ7dxw9.png', 1, '2018-06-01 10:51:13');
+(37, 10, '../../public/test/yEFrJ7dxw9.png', 1, '2018-06-01 10:51:13'),
+(38, 11, '../../public/test/VAxn7uo8Z9.png', 0, '2018-06-08 14:46:16'),
+(39, 1, '../../public/test/V1nCIbRBml.png', 0, '2018-06-08 15:50:06'),
+(40, 1, '../../public/test/CpoDQ4ak7F.png', 0, '2018-06-08 15:51:32'),
+(41, 1, '../../public/test/bEMBf7cNhI.png', 0, '2018-06-08 15:53:41'),
+(42, 1, '../../public/test/EA0SOm7Xtc.png', 0, '2018-06-08 15:54:55'),
+(43, 1, '../../public/test/DbKmq7Xlzc.png', 0, '2018-06-08 15:56:12'),
+(44, 1, '../../public/test/816nXyS50a.png', 0, '2018-06-08 16:32:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subscription`
+--
+
+CREATE TABLE `subscription` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `sub_comment` tinyint(4) NOT NULL DEFAULT '1',
+  `sub_pass` tinyint(4) NOT NULL DEFAULT '1',
+  `sub_login` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `subscription`
+--
+
+INSERT INTO `subscription` (`id`, `user_id`, `sub_comment`, `sub_pass`, `sub_login`) VALUES
+(1, 1, 0, 1, 1),
+(2, 11, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -143,7 +193,9 @@ INSERT INTO `users` (`id`, `login`, `pass`, `email`, `isEmailConfirmed`, `token`
 (7, 'zuzu1', '$2y$10$d5FG9/CIv/7rPs/As/h6c.Yk6K1n6wbh2JcImQ7Eo5431RTcp1Gra', 'ishtar9@gmail.com', 0, 'kht6UiXyFH'),
 (8, 'soap5', '$2y$10$ZNdFS2HgPsw1NK7PMwrpaOgGyx602gyOdGB1kd9rjUhX16pGB0.oC', 'soap5@i.ua', 0, '/pnBhS4bGlL5$RAXicCD'),
 (9, 'soap4', '$2y$10$vbYTBgPZUcaXftqsjj5bdOtY4PIu3PoSyScxo2ycWFZsmv6M8uje2', 'tqwqts@gmail.com', 1, 'NJhfi132Rm(nlWQEFrcu'),
-(10, 'PineApple', '$2y$10$Bm/DYYDgejrrPeQ.0zkjquJsoZ6ZihbxLiQp2IdV5Cy0m/ExuQ/oy', 'ishtar929@gmail.com', 1, 'mX7AOfhj/pBt2ezR53wq');
+(10, 'PineApple', '$2y$10$Bm/DYYDgejrrPeQ.0zkjquJsoZ6ZihbxLiQp2IdV5Cy0m/ExuQ/oy', 'istar929@gmail.com', 1, 'mX7AOfhj/pBt2ezR53wq'),
+(11, 'mamboJambo', '$2y$10$DMu1QC2Ka3U/r6ep862IJuDc/pJPuiiechSTsuiPkUWK4xOz3iJte', 'ishar929@gmail.com', 1, '9KHrbku*Is03Pn8a/wlA'),
+(15, '<script type=\"text/javascript\">alert(\"111\")</script>', '$2y$10$AtzoCz/CySlfnn/H4jWifeH6ZF3OJ0ueItVy1wM0BCuTOXhoqUZW6', 'ishtar929@gmail.com', 0, 'mGYHRkP(eDoNJ8Q*5iVt');
 
 --
 -- Indexes for dumped tables
@@ -162,6 +214,12 @@ ALTER TABLE `pics`
   ADD PRIMARY KEY (`id_pic`);
 
 --
+-- Indexes for table `subscription`
+--
+ALTER TABLE `subscription`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -175,19 +233,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `pics`
 --
 ALTER TABLE `pics`
-  MODIFY `id_pic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id_pic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT for table `subscription`
+--
+ALTER TABLE `subscription`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

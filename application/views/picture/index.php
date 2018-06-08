@@ -26,13 +26,10 @@
 				XHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				var body = 'image=' + img;
 				XHR.addEventListener("load", function(event) {
-                console.log(event.target.responseText);
+                	console.log(event.target.responseText);
             
-        });
- XHR.send(body);
-
-
-        
+       			});
+ 				XHR.send(body);
 			};
 
 		}, function(err){alert("there was error " + err)},
@@ -42,14 +39,19 @@
 	input.addEventListener('change', function(ev){
 		// console.log(ev);
 		const files = ev.target.files;
+		// console.log(files);
+
 		const file = files[0];
+		console.log(files);
+
 		const formData = new FormData();
 		formData.append('photo', file);
-
 		const req = new XMLHttpRequest();
+		
 		req.addEventListener('load', function(){
 			console.log(req.responseText);
 		});
+
 		req.open('POST', 'http://localhost:8070/picture/upload');
 		req.send(formData);
 	});

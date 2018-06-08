@@ -6,7 +6,7 @@ use application\components\Model;
 
 class User extends Model
 {
-	public function extractUsersByLogin($str)
+	public function extractUserByLogin($str)
 	{
 		$res = $this->db->row("SELECT * FROM users WHERE login='$str'");
 		return $res;
@@ -27,6 +27,47 @@ class User extends Model
 	public function insertNewUser($str)
 	{
 		$res = $this->db->query($str);
+	}
+
+	public function insertUserSubscription($str)
+	{
+		$user = $this->extractUserByLogin($str);
+		$user_id = $user[0]['id'];
+		$this->db->query("INSERT INTO subscription (user_id) VALUES ('$user_id')");
+	}
+
+	public function getSubscriptionPreferences($user_id)
+	{
+		return ($this->db->row("SELECT * FROM subscription WHERE user_id='$user_id'"));
+	}
+
+	public function changeSubscriptionPreferences($arr, $user_sub)
+	{
+		if ($arr != null)
+		{
+			$user_id = $user_sub[0]['user_id'];
+			if (isset($_GET["login"]))
+	        {
+	            if ($arr["login"] == "no" && $user_sub[0]['sub_login'] == 1)
+	                $this->db->query("UPDATE subscription SET sub_login = 0 WHERE user_id='$user_id'");
+	            elseif ($arr["login"] == "yes" && $user_sub[0]['sub_login'] === '0')
+	                $this->db->query("UPDATE subscription SET sub_login = 1 WHERE user_id='$user_id'");
+	        }
+	        if (isset($arr["pass"]))
+	        {
+	            if ($arr["pass"] == "no" && $user_sub[0]['sub_pass'] == 1)
+	                $this->db->query("UPDATE subscription SET sub_pass = 0 WHERE user_id='$user_id'");
+	            elseif ($arr["pass"] == "yes" && $user_sub[0]['sub_pass'] === '0')
+	                $this->db->query("UPDATE subscription SET sub_pass = 1 WHERE user_id='$user_id'");
+	        }
+	        if (isset($arr["comment"]))
+	        {
+	            if ($arr["comment"] == "no" && $user_sub[0]['sub_comment'] == 1)
+	                $this->db->query("UPDATE subscription SET sub_comment = 0 WHERE user_id='$user_id'");
+	            elseif ($arr["comment"] == "yes" && $user_sub[0]['sub_comment'] === '0')
+	                $this->db->query("UPDATE subscription SET sub_comment = 1 WHERE user_id='$user_id'");
+	        }
+	    }
 	}
 
 	public function changeEmailStatus($login, $status)
@@ -100,6 +141,40 @@ class User extends Model
 		$who = $tmp[0]["user_id"];
 		$res = $this->db->row("SELECT login FROM users WHERE id='$who'");
 		return $res[0]['login'];
+	}
+
+	public function checkSubscription($param)
+	{
+		if (array_key_exists("login", $param) === true)
+		{
+			// echo "in checking<br>";
+			$user = $this->extractUserByLogin($param['login']);
+			$user_id = $user[0]['id'];
+			// echo "user_id = ".$user_id."<br>";
+
+			$subPreferences = $this->db->row("SELECT * FROM subscription WHERE user_id='$user_id'");
+			// var_dump($subPreferences);
+
+			if (array_key_exists("checkLogin", $param) === true) {
+				// echo "HERE 1<br>";
+
+				if ($subPreferences[0]['sub_login'] == 1)
+					return true;
+			}
+			elseif (array_key_exists("checkPass", $param) === true) {
+				// echo "HERE 2<br>";
+
+				if ($subPreferences[0]['sub_pass'] == 1)
+					return true;
+			}
+			elseif (array_key_exists("checkComment", $param) === true) {
+				// echo "HERE 3<br>";
+
+				if ($subPreferences[0]['sub_comment'] == 1)
+					return true;
+			}
+		}
+		return false;
 	}
 
 }

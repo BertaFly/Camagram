@@ -25,7 +25,7 @@ use application\models\Picture;
 		<div class="feed-item--like">
 			<button class="like" data-pic-id=<?php echo '"'.$vars[0]['id_pic'].'"'?>>
 				<?php
-					$userRow = $user->extractUsersByLogin($_SESSION['authorizedUser']);
+					$userRow = $user->extractUserByLogin($_SESSION['authorizedUser']);
 					$pic = new Picture();
 					if ($pic->likeCheck($vars[0]['id_pic'], $userRow[0]['id']) == true)
 						$like_src = '/templates/img/like4.png';
@@ -42,20 +42,21 @@ use application\models\Picture;
 			<img src="/templates/img/com4.png">
 		</div>
 		<div class="feed-item--comment">
-		<?php
-			$comments = $pic->extractComments($vars[0]['id_pic']);
-			if ($comments != null)
-			{
-				foreach ($comments as $com) {
-					echo "<div class='comment-row'>";
-					echo "<div class='comment-who'>".$com['who_comment'].": </div>";
-					echo "<div class='comment-txt'>".$com['comment_text']."</div>";
-					echo "</div>";
+			<?php
+				$comments = $pic->extractComments($vars[0]['id_pic']);
+				if ($comments != null)
+				{
+					foreach ($comments as $com) {
+						echo "<div class='comment-row'>";
+						echo "<div class='comment-who'>".$com['who_comment'].": </div>";
+						echo "<div class='comment-txt'>".$com['comment_text']."</div>";
+						echo "</div>";
+					}
 				}
-			}
-			else
-				echo "<div class='comment-init'>Be first who comment this photo</div>"
-		?>
+				else
+					echo "<div class='comment-init'>Be first who comment this photo</div>"
+			?>
+		</div>
 	</div>
 </section>
 <script type="text/javascript">
@@ -115,8 +116,19 @@ use application\models\Picture;
 					var newRow =  document.createElement('div');
 					newRow.className = "comment-row";
 					newRow.innerHTML = event.target.responseText;
-					const place = document.getElementsByClassName('comment-row')[document.getElementsByClassName('comment-row').length - 1];
-					place.appendChild(newRow);
+					let place = document.getElementsByClassName('comment-row');
+					if (place.length === 0)
+					{
+						place = lastCom;
+						let rowToDell = document.getElementsByClassName('comment-init')[0];
+						place.insertBefore(newRow, rowToDell);
+						rowToDell.remove();
+					}
+					else
+					{
+						place = place[place.length - 1];
+						place.appendChild(newRow);
+					}					
 					document.getElementsByTagName('textarea')[0].value = '';
 				});
 				req.send(body);
