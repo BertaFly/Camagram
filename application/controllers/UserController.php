@@ -98,7 +98,7 @@ class UserController extends Controller
             {
                 $isLoginTaken = $this->model->extractUserByLogin($login);
                 $isEmailTaken = $this->model->extractUsersByEmail($email);
-                if ($isLoginTaken != null || $isEmailTaken != null)
+                if ($isLoginTaken != null || ($isEmailTaken != null && $isEmailTaken[0]['isEmailConfirmed'] === '0'))
                 {
                     $isLoginTaken != null ? $msg = 'This login has already taken' : $msg = 'This email has already registered';
                 }

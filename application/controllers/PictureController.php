@@ -132,4 +132,12 @@ class PictureController extends Controller
 		$this->model->insertComment($id_pic, $userRow[0]['id'], $txt);
 		echo "<div class='comment-who'>".$_SESSION['authorizedUser'].": </div><div class='comment-txt'>".$txt."</div>";
 	}
+
+	public function dellAction()
+	{
+		if (!empty($_POST) && $_POST['author'] === $_SESSION['authorizedUser'])
+		{
+			$this->model->dellPic($_POST['toDell']);
+		}
+	}
 }

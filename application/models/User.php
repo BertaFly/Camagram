@@ -125,7 +125,7 @@ class User extends Model
 		// var_dump($tmp);
 		// echo "<br>after select user by login<br>";
 		$uI = $tmp[0]['id'];
-		$res = $this->db->row("SELECT * FROM pics WHERE user_id='$uI'");
+		$res = $this->db->row("SELECT * FROM pics WHERE user_id='$uI' ORDER BY id_pic DESC");
 		// var_dump($res);
 		// echo "<br>after select pictuser by user id<br>";
 		return $res;

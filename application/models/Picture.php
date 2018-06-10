@@ -20,7 +20,7 @@ class Picture extends Model
 
 	public function extractPics()
 	{
-		return ($this->db->row("SELECT * FROM pics"));
+		return ($this->db->row("SELECT * FROM pics ORDER BY id_pic DESC"));
 	}
 
 	public function extractPicById($id)
@@ -82,6 +82,12 @@ class Picture extends Model
 	public function insertComment($id_pic, $who_comment, $comment_txt)
 	{
 		$this->db->query("INSERT INTO comments (id_pic, who_comment, comment_text) VALUES ('$id_pic', '$who_comment', '$comment_txt')");
+	}
+
+	public function dellPic($id_pic)
+	{
+		$this->db->query("DELETE FROM pics WHERE id_pic='$id_pic'");
+		$this->db->query("DELETE FROM comments WHERE id_pic='$id_pic'");
 	}
 
 }

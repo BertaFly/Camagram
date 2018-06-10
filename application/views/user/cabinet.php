@@ -33,6 +33,9 @@ use application\models\Picture;
 		<div id="grey" onclick="show('none', 'email')"></div>
 
 		<form class="subscription-preferences" action="changeSubscription" method="get">
+			<legend class="subscription-preferences--title">
+				Subscription preferences
+			</legend>
 		    <div class="switch-field">
 		      <div class="switch-title">Do you want to get notifications after changing login?</div>
 		      <input type="radio" id="switch_left" name="login" value="yes" checked/>
@@ -65,20 +68,21 @@ use application\models\Picture;
 	<div class="cabinet-pics">
 
 		<?php foreach ($vars as $val): ?>
-			<div class="feed-item top">
+			<div class="cabinet-photo">
 				<?php 
 					$user = new User();
 					$author = $user->extractLoginByPic($val['id_pic']);
 				?>
-				<div class="feed-item--dell" data-author=<?php echo '"'.$author.'"'?>>
+				<div class="feed-item--dell" data-author=<?php echo '"'.$author.'"'?> data-pic-id=<?php echo '"'.$val['id_pic'].'"'?>>
 					Dell this picture
 				</div>
 				<div class="feed-item--pic">
-					
+					<a href=<?php echo "'"."http://localhost:8070/singlePhoto/".substr($val["link"], 6)."'"?>
+						>
 						<img name="link" src=
 						<?php echo '"'.$val['link'].'"'?>
 						>
-					
+					</a>
 				</div>
 				<div class="feed-item--like">
 					<button class="like" data-pic-id=<?php echo '"'.$val['id_pic'].'"'?>>
@@ -94,24 +98,8 @@ use application\models\Picture;
 						<img src=<?php echo '"'.$like_src.'"'?>>
 					</button>
 				</div>
-				<div class="feed-item--like-count">
+				<div class="cabinet-photo-like-count">
 					<?php echo $val['likes']?>
-				</div>
-				<div class="feed-item--comment">
-					<?php
-						$comments = $pic->extractComments($val['id_pic']);
-						if ($comments != null)
-						{
-							foreach ($comments as $com) {
-								echo "<div class='comment-row'>";
-								echo "<div class='comment-who'>".$com['who_comment'].": </div>";
-								echo "<div class='comment-txt'>".$com['comment_text']."</div>";
-								echo "</div>";
-							}
-						}
-						else
-							echo "<div class='comment-init'>Be first who comment this photo</div>"
-					?>
 				</div>
 			</div>
 		<?php endforeach; ?>
@@ -195,5 +183,25 @@ use application\models\Picture;
 	        });
 			req.send(body);
 			};
+	</script>
+	<script type="text/javascript">
+		const dell_btn = document.getElementsByClassName('feed-item--dell');
+		for (var i = 0 ; i < like_btn.length; i++) {
+			dell_btn[i].addEventListener('click', dell, false);
+		};
+
+		function dell(ev) {
+			var toDell = this.getAttribute('data-pic-id');
+			console.log(toDell);
+			var author = this.getAttribute('data-author');
+			var body = "toDell=" + toDell + "&author=" + author;
+			const req = new XMLHttpRequest();
+			req.open('POST', 'http://localhost:8070/picture/dell');
+			req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			req.addEventListener("load", function(event) {
+				document.querySelectorAll("[data-pic-id='" + toDell + "']")[0].parentNode.remove();  
+	        });
+			req.send(body);
+		};
 	</script>
 </div>

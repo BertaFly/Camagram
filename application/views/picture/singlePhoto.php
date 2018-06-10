@@ -71,10 +71,8 @@ use application\models\Picture;
 		req.open('POST', 'http://localhost:8070/picture/like');
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		req.addEventListener("load", function(event) {
-
 			console.log("responseText:", event.target.responseText);
             let likesNumber = event.target.responseText;
-
             let button = document.querySelectorAll("[data-pic-id='" + item + "']")[0];
             let tmp = parseInt(button.parentElement.nextElementSibling.innerHTML);
             if (likesNumber - tmp == -1)

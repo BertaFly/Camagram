@@ -106,6 +106,14 @@
     text-align: left;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
+
+	.subscription-preferences--title {
+		font-size: calc(18px + (22 - 14) * ((100vw - 300px) / (1600 - 300)));
+		text-align: center;
+		font-weight: bold;
+    	letter-spacing: 1px;
+	}
+
 	.switch-field, .switch-field2, .switch-field3 {
 		overflow: hidden;
 		margin-top: 2%;
@@ -181,7 +189,7 @@
   transition:         all 0.1s ease-in-out;
 }
 
-.switch-field label:hover {
+.switch-field label:hover, .switch-field2 label:hover, .switch-field3 label:hover {
 	cursor: pointer;
 }
 

@@ -13,7 +13,7 @@ return [
 		'action' => 'index',
 	],
 
-	'home' => [
+	'home(.*)' => [
 		'controller' => 'home',
 		'action' => 'index',
 	],
@@ -41,6 +41,11 @@ return [
 	'picture/comment' => [
 		'controller' => 'picture',
 		'action' => 'comment',
+	],
+
+	'picture/dell' => [
+		'controller' => 'picture',
+		'action' => 'dell',
 	],
 
 	'(.*)singlePhoto/(.*)' => [
