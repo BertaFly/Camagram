@@ -88,24 +88,29 @@ return [
 		'action' => 'logout',
 	],
 
-	'user/cabinet' => [
+	'user/cabinet(.*)' => [
 		'controller' => 'user',
 		'action' => 'cabinet',
 	],
 
-	'user/changeLogin' => [
-		'controller' => 'user',
-		'action' => 'changeLogin',
-	],
+	// 'user/changeLogin' => [
+	// 	'controller' => 'user',
+	// 	'action' => 'changeLogin',
+	// ],
 
-	'user/changePass' => [
-		'controller' => 'user',
-		'action' => 'changePass',
-	],
+	// 'user/changePass' => [
+	// 	'controller' => 'user',
+	// 	'action' => 'changePass',
+	// ],
 
-	'user/changeEmail' => [
+	// 'user/changeEmail' => [
+	// 	'controller' => 'user',
+	// 	'action' => 'changeEmail',
+	// ],
+
+	'user/changeUserData' => [
 		'controller' => 'user',
-		'action' => 'changeEmail',
+		'action' => 'changeUserData',
 	],
 
 	'user/changeSubscription(.*)' => [

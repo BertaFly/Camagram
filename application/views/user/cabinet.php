@@ -18,19 +18,19 @@ use application\models\Picture;
 			My login: 
 			<?php echo $_SESSION['authorizedUser'];?>
 		</p>
-		<button class="change-login" onclick="show('block', 'login');">
-			Change login
+		<button class="change-data" onclick="show('block', 'change-user-data');">
+			Change my data
 		</button>
-		<div id="grey" onclick="show('none', 'login')"></div>
-		<button class="change-pass" onclick="show('block', 'pass');">
+		<div id="grey" onclick="show('none', 'change-user-data')"></div>
+		<!-- <button class="change-pass" onclick="show('block', 'pass');">
 			Change password
 		</button>
-		<div id="grey" onclick="show('none', 'pass')"></div>
+		<div id="grey" onclick="show('none', 'pass')"></div> -->
 
-		<button class="change-email" onclick="show('block', 'email');">
+		<!-- <button class="change-email" onclick="show('block', 'email');">
 			Change email
 		</button>
-		<div id="grey" onclick="show('none', 'email')"></div>
+		<div id="grey" onclick="show('none', 'email')"></div> -->
 
 		<form class="subscription-preferences" action="changeSubscription" method="get">
 			<legend class="subscription-preferences--title">
@@ -66,31 +66,37 @@ use application\models\Picture;
 		
 	</div>
 	<div class="cabinet-pics">
-
-		<?php foreach ($vars as $val): ?>
+		<?php 
+			$len = count($vars);
+			$count = 9; //items per page
+			$pageNbr = floor($len/$count);
+			$p = isset($_GET["p"]) ? (int)$_GET["p"] : 0;
+		?>
+		<?php for ($i = $p * $count; $i < ($p + 1) * $count; $i++){
+			if (!empty($vars[$i])){ ?>
 			<div class="cabinet-photo">
 				<?php 
 					$user = new User();
-					$author = $user->extractLoginByPic($val['id_pic']);
+					$author = $user->extractLoginByPic($vars[$i]['id_pic']);
 				?>
-				<div class="feed-item--dell" data-author=<?php echo '"'.$author.'"'?> data-pic-id=<?php echo '"'.$val['id_pic'].'"'?>>
-					Dell this picture
+				<div class="feed-item--dell" data-author=<?php echo '"'.$author.'"'?> data-pic-id=<?php echo '"'.$vars[$i]['id_pic'].'"'?>>
+					Delete this picture
 				</div>
 				<div class="feed-item--pic">
-					<a href=<?php echo "'"."http://localhost:8070/singlePhoto/".substr($val["link"], 6)."'"?>
+					<a href=<?php echo "'"."http://localhost:8070/singlePhoto/".substr($vars[$i]["link"], 6)."'"?>
 						>
 						<img name="link" src=
-						<?php echo '"'.$val['link'].'"'?>
+						<?php echo '"'.$vars[$i]['link'].'"'?>
 						>
 					</a>
 				</div>
 				<div class="feed-item--like">
-					<button class="like" data-pic-id=<?php echo '"'.$val['id_pic'].'"'?>>
+					<button class="like" data-pic-id=<?php echo '"'.$vars[$i]['id_pic'].'"'?>>
 						<?php
 							$user = new User();
 							$userRow = $user->extractUserByLogin($_SESSION['authorizedUser']);
 							$pic = new Picture();
-							if ($pic->likeCheck($val['id_pic'], $userRow[0]['id']) == true)
+							if ($pic->likeCheck($vars[$i]['id_pic'], $userRow[0]['id']) == true)
 								$like_src = '../../templates/img/like4.png';
 							else
 								$like_src = '../../templates/img/like3.png';
@@ -99,28 +105,64 @@ use application\models\Picture;
 					</button>
 				</div>
 				<div class="cabinet-photo-like-count">
-					<?php echo $val['likes']?>
+					<?php echo $vars[$i]['likes']?>
 				</div>
 			</div>
-		<?php endforeach; ?>
-		
+		<?php }}; ?>		
 	</div>
-	<div id="login">
+	<div class="pagination-wrapper">
+		<div class="pagination">
+			<a class="prev page-numbers" href=
+				<?php 
+					if($p === 0)
+						echo ('"?p=0"');
+					else
+						echo ('"?p='.((int)$p - 1).'"');
+				?>
+				>prev
+			</a>
+			<?php for ($i = 0; $i <= $pageNbr; $i++){
+				if ($p == $i)
+					echo '<a class="page-numbers current" href="?p='.$i.'">'.($i + 1).'</a>';
+				else
+					echo '<a class="page-numbers" href="?p='.$i.'">'.($i + 1).'</a>';
+			};?>
+			<a class="next page-numbers" href=
+				<?php
+					if((int)$p == ((int)$pageNbr) )
+						echo ('"?p='.(int)$p.'"');
+					else
+						echo ('"?p='.((int)$p + 1).'"');
+				?>
+				>next
+			</a>
+		</div>
+	</div>
+	<div id="change-user-data">
 		<div class="pop-up">
-			<img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'login');">
+			<!-- <img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'login');"> -->
+			<img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'change-user-data');">
 			<h2>
-				Change login
+				Change my information
 			</h2>
-			<form action="changeLogin" name="f1" method="post">
-				<input type="text" name="loginOld" placeholder="enter current login" class="input" required/>
+			
+			<form action="changeUserData" name="f1" method="post">
+			<!-- <form action="changeLogin" name="f1" method="post"> -->
+				<!-- <input type="text" name="loginOld" placeholder="enter current login" class="input" required/> -->
 				<div data-tip="Input at least 5 characters">
-					<input type="text" name="loginNew" placeholder="enter new login" class="input" required/>
+					<input type="text" name="loginNew" placeholder="My new login" class="input"/>
 				</div>
-				<input type="submit" name="Submit" value="Submit" class="input submit" required/>
+				<div data-tip="Input at least 7 characters">
+					<input type="password" name="passwdNew" placeholder="My new password" class="input"/>
+				</div>
+				<div data-tip="We will send you an activation link, please enter valid email">
+					<input type="email" name="emailNew" placeholder="My new email" class="input"/>
+				</div>
+				<input type="submit" name="Submit" value="Submit" class="input submit"/>
 			</form>
 		</div>
 	</div>
-	<div id="pass">
+	<!-- <div id="pass">
 		<div class="pop-up">
 			<img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'pass');">
 			<h2>
@@ -134,8 +176,8 @@ use application\models\Picture;
 				<input type="submit" name="Submit" value="Submit" class="input submit" required/>
 			</form>
 		</div>
-	</div>
-	<div id="email">
+	</div> -->
+	<!-- <div id="email">
 		<div class="pop-up">
 			<img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'email');">
 			<h2>
@@ -149,7 +191,7 @@ use application\models\Picture;
 				<input type="submit" name="Submit" value="Submit" class="input submit" required/>
 			</form>
 		</div>
-	</div>
+	</div> -->
 	
 	<script>
 		function show(state, str) {

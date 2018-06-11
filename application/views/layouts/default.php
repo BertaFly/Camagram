@@ -18,6 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="/../../templates/css/cabinet.css">
 	<link rel="stylesheet" type="text/css" href="/../../templates/css/noAuthor.css">
 	<link rel="stylesheet" type="text/css" href="/../../templates/css/singlePhoto.css">
+	<link rel="stylesheet" type="text/css" href="/../../templates/css/camera.css">
 
 	<title>Camarama</title>
 </head>

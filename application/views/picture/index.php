@@ -1,11 +1,18 @@
-<section>
-	<video id="video" width="640" height="480" style="background-color: #000;" autoplay></video>
-		<button id="snap">Snap Photo</button>
-		<canvas id="canvas" width="640" height="480" style="background-color: #000;"></canvas>
-		<form method="post" action="/">
-			
-Изображение: <input type="file" name="image" id="photo"/>
-<input type="submit" value="Загрузить" />
+<section class="camera">
+	<div class="container">
+		<video id="video" width="640" height="480" style="background-color: #000;" autoplay></video>
+		<div class="camera-featurs">
+			<button id="snap">Snap Photo</button>
+			<form method="post" action="/" class="camera-featurs--upload">
+				<p> <label for="photo" class="capture-btn">Upload file</label>
+    				<input type="file" id="photo" name="image" accept="image/*"></p>
+				<!-- <input type="file" name="image" id="photo"/> -->
+				<!-- <input type="submit" value="Загрузить" /> -->
+			</form>
+		</div>
+			<canvas id="canvas" width="640" height="480" style="background-color: #000;"></canvas>
+
+</div>
 </section>
 <script type="text/javascript">
 	navigator.getUserMedia(

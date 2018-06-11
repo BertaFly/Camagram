@@ -50,7 +50,7 @@
 		margin: 20px;
 	}
 
-	.change-login, .change-pass, .change-email {
+	.change-data, .change-pass, .change-email {
 		background: #fff;
 		border: 1px solid #ccc;
 		border-radius: 3px;
@@ -63,14 +63,14 @@
 		transition: background 0.3s ease-in;
 	}
 
-	.change-login:hover, .change-email:hover, .change-pass:hover {
+	.change-data:hover, .change-email:hover, .change-pass:hover {
 		background: #578c90;
 		color: #fff;
 	}
 
-	#login, #pass, #email {
+	#change-user-data {
 		width: 350px;
-		height: 170px;
+		height: 185px;
 		margin: 40px auto;
 		background:  #fff;
 		border: 1px solid #fff;

@@ -72,14 +72,12 @@ use application\models\Picture;
 					else
 						echo '<a class="page-numbers" href="?p='.$i.'">'.($i + 1).'</a>';
 				};?>
-					
-				<!-- <span aria-current="page" class="page-numbers current">1</span> -->
 				<a class="next page-numbers" href=
 					<?php
-							if((int)$p == ((int)$pageNbr) )
-								echo ('"?p='.(int)$p.'"');
-							else
-								echo ('"?p='.((int)$p + 1).'"');
+						if((int)$p == ((int)$pageNbr) )
+							echo ('"?p='.(int)$p.'"');
+						else
+							echo ('"?p='.((int)$p + 1).'"');
 					?>
 					>next
 				</a>

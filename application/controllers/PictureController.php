@@ -112,7 +112,7 @@ class PictureController extends Controller
 
 	public function commentAction()
 	{
-		$txt = html_entity_decode($_POST['txt']);
+		$txt = htmlspecialchars($_POST['txt'], ENT_QUOTES);
 		$id_pic = intval($_POST['id_pic']);
 
 		$user = new User();
