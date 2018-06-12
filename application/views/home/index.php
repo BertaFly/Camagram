@@ -85,7 +85,7 @@ use application\models\Picture;
 		</div>
 	</div>
 </section>
-<a href="http://localhost:8070/picture/camera" class="addPic">
+<a href="http://localhost:8100/picture/camera" class="addPic">
 	<img src="../../templates/img/cam.png">
 </a>
 <script type="text/javascript">
@@ -97,7 +97,7 @@ use application\models\Picture;
 		var item = this.getAttribute('data-pic-id');
 		var body = "pic_id=" + item;
 		const req = new XMLHttpRequest();
-		req.open('POST', 'http://localhost:8070/picture/like');
+		req.open('POST', 'http://localhost:8100/picture/like');
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		req.addEventListener("load", function(event) {
 
@@ -107,21 +107,11 @@ use application\models\Picture;
             let button = document.querySelectorAll("[data-pic-id='" + item + "']")[0];
             let tmp = parseInt(button.parentElement.nextElementSibling.innerHTML);
             if (likesNumber - tmp == -1)
-            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8070/templates/img/like4.png'));
+            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like4.png'));
             else
-            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8070/templates/img/like3.png'));
+            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like3.png'));
             button.parentElement.nextElementSibling.innerHTML = likesNumber;
         });
 		req.send(body);
 		}; 
 </script>
-<!-- <script>
-	const paginator = document.getElementsByClassName('page-numbers');
-	for (i = 0; i < paginator.length(); i++)
-	{
-		paginator[i].addEventListener('click', press, false);
-	}
-	function press(ev){
-		.innerHTML == 
-	}
-</script> -->

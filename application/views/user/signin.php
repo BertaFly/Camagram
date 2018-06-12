@@ -20,7 +20,7 @@
 	  	</div>
 
 	  	<button type="submit" name="submit" value="OK"/>create</button>
-	  	<p class="message">Already registered? <a href="login">Login In</a></p>
+	  	<p class="message">Already registered? <a href="http://localhost:8100/user/login">Login In</a></p>
 		</form>
 	</div>
 </section>

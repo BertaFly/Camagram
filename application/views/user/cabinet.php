@@ -22,16 +22,6 @@ use application\models\Picture;
 			Change my data
 		</button>
 		<div id="grey" onclick="show('none', 'change-user-data')"></div>
-		<!-- <button class="change-pass" onclick="show('block', 'pass');">
-			Change password
-		</button>
-		<div id="grey" onclick="show('none', 'pass')"></div> -->
-
-		<!-- <button class="change-email" onclick="show('block', 'email');">
-			Change email
-		</button>
-		<div id="grey" onclick="show('none', 'email')"></div> -->
-
 		<form class="subscription-preferences" action="changeSubscription" method="get">
 			<legend class="subscription-preferences--title">
 				Subscription preferences
@@ -61,9 +51,7 @@ use application\models\Picture;
 		    </div>
 
 		    <input type="submit" name="submit" id="change-pref" value="submit">
-		    
-		</form>
-		
+		</form>		
 	</div>
 	<div class="cabinet-pics">
 		<?php 
@@ -83,7 +71,7 @@ use application\models\Picture;
 					Delete this picture
 				</div>
 				<div class="feed-item--pic">
-					<a href=<?php echo "'"."http://localhost:8070/singlePhoto/".substr($vars[$i]["link"], 6)."'"?>
+					<a href=<?php echo "'"."http://localhost:8100/singlePhoto/".substr($vars[$i]["link"], 6)."'"?>
 						>
 						<img name="link" src=
 						<?php echo '"'.$vars[$i]['link'].'"'?>
@@ -208,7 +196,7 @@ use application\models\Picture;
 			var item = this.getAttribute('data-pic-id');
 			var body = "pic_id=" + item;
 			const req = new XMLHttpRequest();
-			req.open('POST', 'http://localhost:8070/picture/like');
+			req.open('POST', 'http://localhost:8100/picture/like');
 			req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			req.addEventListener("load", function(event) {
 
@@ -218,9 +206,9 @@ use application\models\Picture;
 	            let button = document.querySelectorAll("[data-pic-id='" + item + "']")[0];
 	            let tmp = parseInt(button.parentElement.nextElementSibling.innerHTML);
 	            if (likesNumber - tmp == -1)
-	            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8070/templates/img/like4.png'));
+	            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like4.png'));
 	            else
-	            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8070/templates/img/like3.png'));
+	            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like3.png'));
 	            button.parentElement.nextElementSibling.innerHTML = likesNumber;
 	        });
 			req.send(body);
@@ -238,7 +226,7 @@ use application\models\Picture;
 			var author = this.getAttribute('data-author');
 			var body = "toDell=" + toDell + "&author=" + author;
 			const req = new XMLHttpRequest();
-			req.open('POST', 'http://localhost:8070/picture/dell');
+			req.open('POST', 'http://localhost:8100/picture/dell');
 			req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			req.addEventListener("load", function(event) {
 				document.querySelectorAll("[data-pic-id='" + toDell + "']")[0].parentNode.remove();  

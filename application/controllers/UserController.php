@@ -19,27 +19,30 @@ class UserController extends Controller
 
 	static public function sendMail($mail_to, $mail_subject, $mail_message)
 	{
-		$res = false;
-		if ($mail_to != null && $mail_subject != null && $mail_message != null)
+		if (isset($_SESSION['isUser']))
 		{
-			$encoding = "utf-8";
-			$subject_preferences = array(
-				"input-charset" => $encoding,
-				"output-charset" => $encoding,
-				"line-length" => 76,
-				"line-break-chars" => "\r\n"
-			);
-			$from_name = "Cramata";
-			$from_mail = "cramata@lol.com";
-			// Mail header
-			$header = "Content-type: text/html; charset=".$encoding." \r\n";
-			$header .= "From: ".$from_name." <".$from_mail."> \r\n";
-			$header .= "MIME-Version: 1.0 \r\n";
-			$header .= "Content-Transfer-Encoding: 8bit \r\n";
-			$header .= "Date: ".date("r (T)")." \r\n";
-			$header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
-			//Send
-			$res = mail($mail_to, $mail_subject, $mail_message, $header);
+			$res = false;
+			if ($mail_to != null && $mail_subject != null && $mail_message != null)
+			{
+				$encoding = "utf-8";
+				$subject_preferences = array(
+					"input-charset" => $encoding,
+					"output-charset" => $encoding,
+					"line-length" => 76,
+					"line-break-chars" => "\r\n"
+				);
+				$from_name = "Cramata";
+				$from_mail = "cramata@lol.com";
+				// Mail header
+				$header = "Content-type: text/html; charset=".$encoding." \r\n";
+				$header .= "From: ".$from_name." <".$from_mail."> \r\n";
+				$header .= "MIME-Version: 1.0 \r\n";
+				$header .= "Content-Transfer-Encoding: 8bit \r\n";
+				$header .= "Date: ".date("r (T)")." \r\n";
+				$header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
+				//Send
+				$res = mail($mail_to, $mail_subject, $mail_message, $header);
+			}
 		}
 		return $res;
 	}
@@ -259,156 +262,161 @@ class UserController extends Controller
 
 	public function logoutAction()
 	{
-		unset($_SESSION['authorizedUser']);
-		unset($_SESSION['isUser']);
-		session_destroy();
-		header('location: http://localhost:8100/home');
-		// exit();
+		if (isset($_SESSION['isUser']))
+		{
+			unset($_SESSION['authorizedUser']);
+			unset($_SESSION['isUser']);
+			session_destroy();
+			header('location: http://localhost:8100/home');
+		}
 	}
 
 	public function changeUserDataAction()
 	{
-		$logout = false;
-		if(isset($_POST['Submit']))
-		{
-			$msg = '';
-			//if user wants to CHANGE LOGIN
-			if(($_POST['loginNew']) !== '')
+		if (isset($_SESSION['isUser']))
 			{
-				if(isset($_SESSION['authorizedUser']) && strlen($_POST['loginNew']) >= 5 && strlen($_POST['loginNew']) <= 30)
+			$logout = false;
+			if(isset($_POST['Submit']))
+			{
+				$msg = '';
+				//if user wants to CHANGE LOGIN
+				if(($_POST['loginNew']) !== '')
 				{
-					$newLogin = htmlspecialchars($_POST['loginNew'], ENT_QUOTES);
-					if ($_SESSION['authorizedUser'] != $newLogin)
+					if(isset($_SESSION['authorizedUser']) && strlen($_POST['loginNew']) >= 5 && strlen($_POST['loginNew']) <= 30)
 					{
-						if($this->model->changeLogin($_SESSION['authorizedUser'], $newLogin) == true)
+						$newLogin = htmlspecialchars($_POST['loginNew'], ENT_QUOTES);
+						if ($_SESSION['authorizedUser'] != $newLogin)
 						{
-							$msg = 'Successfully changed login.';
-							$params = array("login" => $newLogin, "checkLogin" => "yes");
-							if ($this->model->checkSubscription($params) === true)
+							if($this->model->changeLogin($_SESSION['authorizedUser'], $newLogin) == true)
 							{
-								$tmp = $this->model->extractUserByLogin($newLogin);
-								$mail_to = $tmp[0]['email'];
-								$mail_subject = 'Login change';
-								$mail_message = '
-								<p>Hi '.$_SESSION['authorizedUser'].',</p>
-								<p>You successfully changed your login to '.$newLogin.'.</p>
-								<p>Best Regards, Cramata</p>';
-								$res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+								$msg = 'Successfully changed login.';
+								$params = array("login" => $newLogin, "checkLogin" => "yes");
+								if ($this->model->checkSubscription($params) === true)
+								{
+									$tmp = $this->model->extractUserByLogin($newLogin);
+									$mail_to = $tmp[0]['email'];
+									$mail_subject = 'Login change';
+									$mail_message = '
+									<p>Hi '.$_SESSION['authorizedUser'].',</p>
+									<p>You successfully changed your login to '.$newLogin.'.</p>
+									<p>Best Regards, Cramata</p>';
+									$res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+								}
+								$_SESSION['authorizedUser'] = $newLogin;
 							}
-							$_SESSION['authorizedUser'] = $newLogin;
-						}
-						else
-						{
-							$msg = 'Oups, please try again later';
-						}
-					}
-					else
-					{
-						$msg = 'New login should differ from old one';
-					}
-				}
-				else
-				{
-					$msg = 'New login should be longer then 4 chars and shorter then 31 chars';
-				}
-			}
-			//if user wants to CHANGE PASSWORD
-			if(($_POST['passwdNew']) !== '')
-			{
-				if(isset($_SESSION['authorizedUser']) && strlen($_POST['passwdNew']) >= 7 && strlen($_POST['passwdNew']) <= 140)
-				{
-					$tmp = $this->model->extractUserByLogin($_SESSION['authorizedUser']);
-					if(password_verify($_POST['passwdNew'], $tmp[0]['pass']) === false)
-					{
-						$token = $this->generateToken();
-						if ($this->model->changePass($token, $_SESSION['authorizedUser'], $_POST['passwdNew']) == true)
-						{
-							$msg == "" ? $msg = 'Successfully changed password.' : $msg = $msg.'<br>Successfully changed password.';
-							$params = array("login" => $_SESSION['authorizedUser'],
-								"checkPass" => "yes");
-							if ($this->model->checkSubscription($params) === true)
+							else
 							{
-								$mail_to = $tmp[0]['email'];
-								$mail_subject = 'Password change';
-								$mail_message = '
-								<p>Hi '.$tmp[0]['login'].',</p>
-								<p>You successfully changed your password.</p>
-								<p>Best Regards, Cramata</p>';
-								$res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+								$msg = 'Oups, please try again later';
 							}
 						}
 						else
 						{
-							$msg == "" ? $msg = 'Oups, please try again later' : $msg = $msg.'<br>Oups, please try to change password again later';
+							$msg = 'New login should differ from old one';
 						}
 					}
 					else
 					{
-						if ($msg == '')
-							$msg = 'New password should differ from old one';
-						else
-							$msg = $msg.'<br>New password should differ from old one';
+						$msg = 'New login should be longer then 4 chars and shorter then 31 chars';
 					}
 				}
-				else
+				//if user wants to CHANGE PASSWORD
+				if(($_POST['passwdNew']) !== '')
 				{
-					$msg == "" ? 'New password should be longer then 6 chars and shorter then 141 chars' : $msg = $msg.'<br>New password should be longer then 6 chars and shorter then 141 chars';
-				}
-			}
-			//if user wants to CHANGE EMAIL
-			if($_POST['emailNew'] !== '')
-			{
-				if (isset($_SESSION['authorizedUser']) && filter_var($_POST['emailNew'], FILTER_VALIDATE_EMAIL))
-				{
-					$isEmailTaken = $this->model->extractUsersByEmail($_POST['emailNew']);
-					$tmp = $this->model->extractUserByLogin($_SESSION['authorizedUser']);
-					if ($isEmailTaken == null || (int)($isEmailTaken[0]['isEmailConfirmed']) == 0)
+					if(isset($_SESSION['authorizedUser']) && strlen($_POST['passwdNew']) >= 7 && strlen($_POST['passwdNew']) <= 140)
 					{
-						$this->model->changeEmailStatus($_SESSION['authorizedUser'], 0);
-		                $token = $this->generateToken();
-		                $this->model->changeToken($_SESSION['authorizedUser'], $token);
-		                $base_url = 'http://localhost:8100/user/confirmEmail/';
-		                $mail_to = $tmp[0]['email'].", ".$_POST['emailNew'];
-		                $mail_subject = 'Email change';
-		                $mail_message = '
-		                 <p>Hi '.$tmp[0]['login'].',</p>
-		                 <p>In order to finish email change, please follow this link: '.$base_url.'email_verification?login='.$tmp[0]['login'].'&activation_code='.$token.' .</p>
-		                 <p>Best Regards, Cramata</p>';
-		                $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
-	                	unset($_SESSION['authorizedUser']);
-						unset($_SESSION['isUser']);
-						session_destroy();
-						$logout = true;
-		                if ($res == true)
-		                {
-		                    $_SESSION['emailNew'] = $_POST['emailNew'];
-		                    $msg == "" ? $msg = 'We sent you a magic link. Please follow it in order to complite changing your email' : $msg = $msg.'<br>We sent you a magic link. Please follow it in order to complite changing your email';
-		                }
-		                else
-		                {
-		                    $msg == "" ? $msg = 'Oups, please try again later' : $msg = $msg.'<br>Oups, please try change email again later';
-		                }
+						$tmp = $this->model->extractUserByLogin($_SESSION['authorizedUser']);
+						if(password_verify($_POST['passwdNew'], $tmp[0]['pass']) === false)
+						{
+							$token = $this->generateToken();
+							if ($this->model->changePass($token, $_SESSION['authorizedUser'], $_POST['passwdNew']) == true)
+							{
+								$msg == "" ? $msg = 'Successfully changed password.' : $msg = $msg.'<br>Successfully changed password.';
+								$params = array("login" => $_SESSION['authorizedUser'],
+									"checkPass" => "yes");
+								if ($this->model->checkSubscription($params) === true)
+								{
+									$mail_to = $tmp[0]['email'];
+									$mail_subject = 'Password change';
+									$mail_message = '
+									<p>Hi '.$tmp[0]['login'].',</p>
+									<p>You successfully changed your password.</p>
+									<p>Best Regards, Cramata</p>';
+									$res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+								}
+							}
+							else
+							{
+								$msg == "" ? $msg = 'Oups, please try again later' : $msg = $msg.'<br>Oups, please try to change password again later';
+							}
+						}
+						else
+						{
+							if ($msg == '')
+								$msg = 'New password should differ from old one';
+							else
+								$msg = $msg.'<br>New password should differ from old one';
+						}
 					}
 					else
 					{
-						$msg == "" ? $msg = 'Your new email has already taken' : $msg = $msg.'<br>Your new email has already taken';
+						$msg == "" ? 'New password should be longer then 6 chars and shorter then 141 chars' : $msg = $msg.'<br>New password should be longer then 6 chars and shorter then 141 chars';
 					}
 				}
-				else
+				//if user wants to CHANGE EMAIL
+				if($_POST['emailNew'] !== '')
 				{
-					$msg == "" ? $msg = 'Please enter valid email' : $msg = $msg.'<br>Please enter valid email';
+					if (isset($_SESSION['authorizedUser']) && filter_var($_POST['emailNew'], FILTER_VALIDATE_EMAIL))
+					{
+						$isEmailTaken = $this->model->extractUsersByEmail($_POST['emailNew']);
+						$tmp = $this->model->extractUserByLogin($_SESSION['authorizedUser']);
+						if ($isEmailTaken == null || (int)($isEmailTaken[0]['isEmailConfirmed']) == 0)
+						{
+							$this->model->changeEmailStatus($_SESSION['authorizedUser'], 0);
+			                $token = $this->generateToken();
+			                $this->model->changeToken($_SESSION['authorizedUser'], $token);
+			                $base_url = 'http://localhost:8100/user/confirmEmail/';
+			                $mail_to = $tmp[0]['email'].", ".$_POST['emailNew'];
+			                $mail_subject = 'Email change';
+			                $mail_message = '
+			                 <p>Hi '.$tmp[0]['login'].',</p>
+			                 <p>In order to finish email change, please follow this link: '.$base_url.'email_verification?login='.$tmp[0]['login'].'&activation_code='.$token.' .</p>
+			                 <p>Best Regards, Cramata</p>';
+			                $res = $this->sendMail($mail_to, $mail_subject, $mail_message);
+		                	unset($_SESSION['authorizedUser']);
+							unset($_SESSION['isUser']);
+							session_destroy();
+							$logout = true;
+			                if ($res == true)
+			                {
+			                    $_SESSION['emailNew'] = $_POST['emailNew'];
+			                    $msg == "" ? $msg = 'We sent you a magic link. Please follow it in order to complite changing your email' : $msg = $msg.'<br>We sent you a magic link. Please follow it in order to complite changing your email';
+			                }
+			                else
+			                {
+			                    $msg == "" ? $msg = 'Oups, please try again later' : $msg = $msg.'<br>Oups, please try change email again later';
+			                }
+						}
+						else
+						{
+							$msg == "" ? $msg = 'Your new email has already taken' : $msg = $msg.'<br>Your new email has already taken';
+						}
+					}
+					else
+					{
+						$msg == "" ? $msg = 'Please enter valid email' : $msg = $msg.'<br>Please enter valid email';
+					}
+				}					
+				$arr['msg'] = $msg;
+				if ($msg != '')
+				{
+					$this->showMsg($arr);
 				}
-			}					
-			$arr['msg'] = $msg;
-			if ($msg != '')
-			{
-				$this->showMsg($arr);
 			}
+			if ($logout === true)
+				header('refresh:3; url=http://localhost:8100/home');
+			else
+				header('refresh:3; url=http://localhost:8100/user/cabinet');
 		}
-		if ($logout === true)
-			header('refresh:3; url=http://localhost:8070/home');
-		else
-			header('refresh:3; url=http://localhost:8070/user/cabinet');
 	}
 
 	public function showMsg($arr)
@@ -418,8 +426,11 @@ class UserController extends Controller
 
 	public function cabinetAction()
 	{
-		$userPics = $this->model->extractUsersPics($_SESSION['authorizedUser']);
-		$this->view->render('user/cabinet', $userPics);
+		if (isset($_SESSION['isUser']))
+		{
+			$userPics = $this->model->extractUsersPics($_SESSION['authorizedUser']);
+			$this->view->render('user/cabinet', $userPics);
+		}
 	}
 
 	public function changeSubscriptionAction()

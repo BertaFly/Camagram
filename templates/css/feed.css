@@ -1,6 +1,5 @@
 .feed {
 	font-family: 'Montserrat', sans-serif;
-	height: calc(100% - 106px);
 }
 
 .feed-holder {
@@ -107,7 +106,7 @@
 .pagination {
 	display: inline-block;
 	height: 55px;
-	margin-top: 35px;
+	margin: 2% 0;
 	padding: 0 25px;
 	border-radius: 35px;
 	background-color: #eee;

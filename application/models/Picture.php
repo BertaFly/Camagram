@@ -10,7 +10,6 @@ class Picture extends Model
 {
 	public function insertLink($user_id, $link)
 	{
-		print("in insertLink\n");
 		$this->db->query("INSERT INTO pics (user_id,link,likes) VALUES ($user_id,'$link', 0)");
 		// $item = $this->db->row("SELECT id_pic FROM pics WHERE link='$link'");
 		// print_r($item);

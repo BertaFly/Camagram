@@ -94,7 +94,7 @@ class User extends Model
 		$_SESSION['isUser'] = 1;
         $_SESSION['authorizedUser'] = $login;
   		$this->phpAlert('You are authorized');
-        header('refresh:1; url=http://localhost:8070/home');
+        header('refresh:1; url=http://localhost:8100/home');
         exit();
 	}
 
