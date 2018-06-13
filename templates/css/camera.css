@@ -2,6 +2,10 @@
 	margin: 10px 0;
 	position: relative;
 }
+	.photo-holder {
+		display: flex;
+		justify-content: space-around;
+	}
 
 .camera-featurs {
 	width: 40%;
@@ -10,9 +14,14 @@
 	justify-content: space-around;
 }
 
+.video-holder {
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+}
+
 #video {
-	display: block;
-	margin: 10px auto;
+
 }
 
 #snap, label.capture-btn, #sendPic {
@@ -49,3 +58,50 @@ input[type="file"] {
 	top: 0;
 	z-index:-1;
 }
+
+#preCanvas {
+	position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+aside.right, aside.left {
+	display: inline-block;
+	width: 20%;
+	overflow-y :scroll;
+	height: 480px;
+	background: #e2ddee;
+}
+
+aside.right div:focus, aside.left div:focus {
+	box-sizing: border-box;
+	border: 1px solid #598c90;
+	/*background: #598c90;*/
+}
+
+	.layers {
+		position: relative;
+	}
+
+		.layers input{
+		    position: absolute !important;
+		    clip: rect(0, 0, 0, 0);
+		    height: 1px;
+		    width: 1px;
+		    border: 0;
+		    overflow: hidden;
+		}
+
+		.layers label {
+			display: inline-block;
+		}
+
+		.layers label:hover,{
+			cursor: pointer;
+			height: 100px;
+		}
+
+		.layers input:checked + label{
+			background: #90b8bb;
+		}

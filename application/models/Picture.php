@@ -89,4 +89,9 @@ class Picture extends Model
 		$this->db->query("DELETE FROM comments WHERE id_pic='$id_pic'");
 	}
 
+	public function getSuperposableImages()
+	{
+		return ($this->db->row("SELECT * FROM layers"));
+	}
+
 }

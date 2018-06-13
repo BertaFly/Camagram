@@ -85,9 +85,11 @@ use application\models\Picture;
 		</div>
 	</div>
 </section>
-<a href="http://localhost:8100/picture/camera" class="addPic">
-	<img src="../../templates/img/cam.png">
-</a>
+<div class="addPic">
+	<a href="http://localhost:8100/picture/camera">
+		<img src="../../templates/img/cam.png">
+	</a>
+</div>
 <script type="text/javascript">
 	const like_btn = document.getElementsByClassName('like');
 	for (var i = 0 ; i < like_btn.length; i++) {

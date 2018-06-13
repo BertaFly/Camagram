@@ -9,6 +9,7 @@
 		minimum-scale=1,
 		maximum-scale=1,
 		user-scalable=0"/>
+	<link rel="icon" type="image/png" href="/../../templates/img/favicon.ico">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,400i,500,800i" rel="stylesheet" type="text/css" >
 	<link rel="stylesheet" type="text/css" href="/../../templates/css/style2.css">
 	<link rel="stylesheet" type="text/css" href="/../../templates/css/home.css">
