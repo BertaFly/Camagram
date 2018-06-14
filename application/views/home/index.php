@@ -54,6 +54,7 @@ use application\models\Picture;
 					</div>
 				</div>
 		<?php }}; ?>
+		</div>
 		
 		<div class="pagination-wrapper">
 			<div class="pagination">
@@ -83,7 +84,7 @@ use application\models\Picture;
 				</a>
 			</div>
 		</div>
-	</div>
+	
 </section>
 <div class="addPic">
 	<a href="http://localhost:8100/picture/camera">
@@ -116,4 +117,22 @@ use application\models\Picture;
         });
 		req.send(body);
 		}; 
+</script>
+<script type="text/javascript">
+	function resize()
+    {
+    	if(window.innerWidth < 1019)
+    		return;
+    	const menu = document.getElementsByClassName('top')[0].offsetHeight;
+    	console.log(menu);
+
+        var heights = window.innerHeight - menu - 40;
+    	console.log(heights);
+
+        document.getElementsByClassName("feed")[0].style.height = heights + "px";
+    }
+    resize();
+    window.onresize = function() {
+        resize();
+    };
 </script>

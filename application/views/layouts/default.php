@@ -21,7 +21,7 @@
 	<link rel="stylesheet" type="text/css" href="/../../templates/css/singlePhoto.css">
 	<link rel="stylesheet" type="text/css" href="/../../templates/css/camera.css">
 
-	<title>Camarama</title>
+	<title>Cramata</title>
 </head>
 <body>
 	<?php 

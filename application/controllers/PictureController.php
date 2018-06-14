@@ -14,74 +14,22 @@ use application\lib\Db;
 
 class PictureController extends Controller
 {
-	// public function uploadAction()
-	// {
-	// 	// Проверяем пришел ли файл
-	// 	var_dump($_FILES['photo']['size']);
-	// 	if(!empty($_FILES['photo']['name']) && $_FILES['photo']['size'] > 0 && $_FILES['photo']['size'] < 5242880) {
-	// 		// echo "TUT0";
-	// 	  // Проверяем, что при загрузке не произошло ошибок
-	// 		if ( $_FILES['photo']['error'] == 0 ) {
-	// 		// Если файл загружен успешно, то проверяем - графический ли он
-	// 			if( substr($_FILES['photo']['type'], 0, 5) == 'image' ) {
-	// 			  // Читаем содержимое файла
-	// 				$image = file_get_contents( $_FILES['photo']['tmp_name'] );
-	// 			  // echo $image;
-	// 				$str = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
-	// 				$str = str_shuffle($str);
-	// 				$picName = substr($str, 0, 10);
-	// 				$fname = ROOT.'/public/test/'.$picName.'.png';
-	// 				$myfile = fopen($fname, 'x');
-
-	// 				// echo "after open file<br>";
-
-	// 				fwrite($myfile, $image);
-	// 				$user = new User();
-	// 				$userRow = $user->extractUserByLogin($_SESSION['authorizedUser']);
-	// 				$user_id = $userRow[0]['id'];
-	// 				// echo "user id = ".$user_id;
-
-	// 				$link = '../../public/test/'.$picName.'.png';
-	// 				// echo "/n link = ".$link;
-
-
-	// 				$this->model->insertLink($user_id, $link);
-	// 				fclose($myfile);
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	public function savePhotoAction()
 	{
-		// echo "called UserController<br>";
-		// var_dump($_POST);
 		$user = new User();
 		$userRow = $user->extractUserByLogin($_SESSION['authorizedUser']);
 		$img = str_replace('data:image/png;base64,', '', $_POST['image']);
 		$img = str_replace(' ', '+', $img);
 		
 		$img = base64_decode($img);
-		// echo "after base64 img<br>";
 		$str = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
 		$str = str_shuffle($str);
 		$picName = substr($str, 0, 10);
 		$fname = ROOT.'/public/test/'.$picName.'.png';
 		$myfile = fopen($fname, 'x');
-
-		// echo "after open file<br>";
-
 		fwrite($myfile, $img);
-
-		// echo "tipe zapisali v file<br>";
-
-		// var_dump($userRow);
-		// echo "<br>";
-
 		$user_id = $userRow[0]['id'];
-
 		$link = '../../public/test/'.$picName.'.png';
-
 		$this->model->insertLink($user_id, $link);
 		fclose($myfile);
 	}

@@ -40,14 +40,6 @@
         transition: color, 0.2s;
     }
 
-    /*.login:after {
-        content: " ";
-        display: inline-block;
-        width: 1px;
-        height: 20px;
-        background: #8ea2c5;
-    }*/
-
     .menu__unknown a.login {
         text-transform: initial;
         font-style: italic;
@@ -112,8 +104,8 @@ footer {
 .addPic {
     display: block;
     position: fixed;
-    bottom: 0;
-    right: 0;
+    top: 80px;
+    left: 12px;
     max-width: 80px;
     height: 80px;
     background: #ccc;
@@ -130,4 +122,48 @@ footer {
        .addPic a > img {
             width: 50%;
             margin: -25% auto;
-       } 
+       }
+
+@media only screen and (max-width: 525px) {
+    .addPic {
+        top: 68px;
+        left: 5px;
+        max-width: 55px;
+        height: 55px;
+    }
+}
+
+@media only screen and (max-width: 454px) {
+    .top {
+        line-height: 35px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .menu__unknown a:nth-child(1) {
+        margin-right: 5px;
+    }
+    .addPic {
+        top: 48px;
+        left: 2px;
+        max-width: 50px;
+        height: 50px;
+    }
+}
+@media only screen and (max-width: 400px) {
+
+    footer {
+        font-size: 10px;
+        text-align: center;
+    }
+}
+@media only screen and (max-width: 333px) {
+    .menu__unknown {
+        font-size: 11px;
+    }
+    footer {
+        font-size: 8px;
+    }
+}

@@ -36,3 +36,28 @@
         float: right;
         width: 43%;
     }
+
+@media only screen and (max-width: 1600px) {
+    .about__left {
+        margin-left: 10%;
+    }
+}
+@media only screen and (max-width: 636px) {
+    .about-title {
+        font-size: 2em;
+    }
+    .about__left {
+        margin-left: 5%;
+    }
+}
+@media only screen and (max-width: 417px) {
+    .about-title {
+        font-size: 1em;
+    }
+    .about__left p:first-child {
+        font-size: 0.8em;
+    }
+    .about__left p:nth-child(2) {
+        font-size: 11px;
+    }
+}

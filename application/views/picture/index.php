@@ -22,12 +22,9 @@ use application\models\Picture;
 
 			</aside>
 			<div class="video-holder">
-				<video id="video" width="640" height="480" style="background-color: #000;" autoplay></video>
-				<canvas id="preCanvas" width="640" height="480" style="background-color: rgba(0, 0, 0, 0.3);"></canvas>
+				<video id="video" width="540" height="400" style="background-color: #000;" autoplay></video>
+				<canvas id="preCanvas" width="426" height="400"></canvas>
 			</div>
-			<aside class="right">
-				
-			</aside>
 		</div>
 		<div class="camera-featurs">
 			<button id="snap">Snap Photo</button>
@@ -37,7 +34,7 @@ use application\models\Picture;
 			</form>
 			<button id="sendPic">post picture</button>
 		</div>
-			<canvas id="canvas" width="640" height="480" style="background-color: #000;"></canvas>
+			<canvas id="canvas" width="426" height="400"></canvas>
 			
 
 </div>
@@ -47,11 +44,12 @@ use application\models\Picture;
 	const video = document.getElementById('video');
 	const canvas = document.getElementById('canvas');
 	var photo;
+	var forDrow = new Map();
+	const place = document.getElementById('preCanvas');
 	const input = document.querySelector('input[type=file]');
 	const sendPic = document.getElementById('sendPic');
 	var inputs = document.getElementsByTagName("input"); //or document.forms[0].elements;
 	var layers = []; //will contain all checkboxes
-	var checked = []; //will contain all checked checkboxes
 	for (var i = 0; i < inputs.length; i++) {
 	  if (inputs[i].type == "checkbox") {
 	    layers.push(inputs[i]);
@@ -59,43 +57,114 @@ use application\models\Picture;
 	}
 	
 	for (var i = 0; i < layers.length; i++) {
-		layers[i].addEventListener('click', drawLayer, false);
+		layers[i].addEventListener('click', addCheck, false);
 	};
 
-	function drawLayer(){
-		const place = document.getElementById('preCanvas');
-		place.getContext("2d").clearRect( 0,0, place.width, place.height );
+	function addCheck(){
+		var key = this.getAttribute('id');
 		var tmp = document.querySelector('label[for="' + this.getAttribute('id') + '"]');
-		this.setAttribute('input', 'checked');
 		tmp = tmp.childNodes[1];
 		var link = tmp.getAttribute('src');
+		if(this.hasAttribute('checked'))
+		{
+			this.removeAttribute('checked');
+			forDrow.delete(key);
+		}
+		else
+		{
+			this.setAttributeNode(document.createAttribute('checked'));
+			forDrow.set(key, link);
+		}
+		drawLayers(forDrow);
+	};
+	
+	function logMapElements(value, key, map) {
+		var x;
+		var y;
+		var width;
+		var height;
 		var sticker = new Image();
-		console.log(this);
-		var wipe = this.getAttribute('input');
-		// if (wipe != null)
-			// sticker.src = link;
-		// else
-			// sticker.src = '';
-			this.onclick = function(){
-				// console.log("qewrtyq");
-				this.removeAttribute('input');
-			// place.getContext("2d").clearRect( 0,0, place.width, place.height );
+		sticker.src = value;
+		if(key == 1)
+		{
+			x = 260;
+			y = 230;
+			width = 200;
+			height = 170;
+		}
+		if(key == 2)
+		{
+			x = 110;
+			y = 70;
+			width = 220;
+			height = 260;
+		}
+		if(key == 3)
+		{
+			x = 0;
+			y = 0;
+			width = 250;
+			height = 200;
+		}
+		if(key == 4)
+		{
+			x = 0;
+			y = 180;
+			width = 220;
+			height = 220;
+		}
+		if(key == 5)
+		{
+			x = 180;
+			y = 180;
+			width = 220;
+			height = 220;
+		}
+		if(key == 6)
+		{
+			x = 10;
+			y = 190;
+			width = 220;
+			height = 220;
+		}
+		if(key == 7)
+		{
+			x = 150;
+			y = 100;
+			width = 160;
+			height = 200;
+		}
+		if(key == 8)
+		{
+			x = 170;
+			y = 80;
+			width = 230;
+			height = 320;
+		}
+		if(key == 9)
+		{
+			x = 0;
+			y = 0;
+			width = 400;
+			height = 400;
+		}
+		if(key == 15)
+		{
+			x = 50;
+			y = 30;
+			width = 340;
+			height = 340;
+		}
+		place.getContext("2d").drawImage(sticker, x, y, width, height);
+	};
 
-			};
-		// console.log(wipe);
-		// console.log(this);
-
-		// if (wipe != null)
-		// {
-			sticker.src = link;
-			place.getContext("2d").drawImage(sticker, 0, 0, 380, 380);
-		// }
-		// else
-		// 	place.getContext("2d").clearRect( 0,0, place.width, place.height );
+	function drawLayers(){
+		place.getContext("2d").clearRect( 0,0, place.width, place.height );
+		forDrow.forEach(logMapElements);
 	};
 
 if (navigator.getUserMedia) {
-   navigator.getUserMedia({ audio: false, video: { width: 640, height: 480 } },
+   navigator.getUserMedia({ audio: false, video: { width: 426, height: 400 } },
 	  function(stream) {
 		 video.srcObject = stream;
 		 video.onloadedmetadata = function(e) {
@@ -112,14 +181,9 @@ if (navigator.getUserMedia) {
 
 	var snap = document.getElementById('snap');
 	snap.onclick = function draw(){
-		canvas.getContext("2d").drawImage(video, 0, 0, 640, 480, 0, 0, 640, 480);
-		var tmp = document.querySelector('input="checked"');
-		tmp = tmp.childNodes[1];
-		var link = tmp.getAttribute('src');
-		var sticker = new Image();
-		sticker.src = link;
-		canvas.getContext("2d").drawImage(sticker, 0, 0, 380, 380);
-
+		canvas.getContext("2d").drawImage(video, 0, 0, 426, 400, 0, 0, 426, 400);
+		var tmp = document.getElementById('preCanvas');
+		canvas.getContext("2d").drawImage(tmp, 0, 0, 426, 400, 0, 0, 426, 400);
 		photo = canvas.toDataURL();
 	};
 
@@ -130,7 +194,7 @@ if (navigator.getUserMedia) {
 		FR.onload = function(e) {
 		   var img = new Image();
 		   img.addEventListener("load", function() {
-			 canvas.getContext("2d").drawImage(img, 0, 0, 640, 480);
+			 canvas.getContext("2d").drawImage(img, 0, 0, 426, 400);
 				photo = canvas.toDataURL();
 		   });
 		   img.src = e.target.result;
@@ -139,19 +203,18 @@ if (navigator.getUserMedia) {
 	});
 
 	sendPic.onclick = function(){
-		if (photo != '')
+		if (photo !== undefined)
 		{
 			const req = new XMLHttpRequest();
 			req.open("POST", "PictureController.php", true);
 			req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			var body = 'image=' + photo;
 			req.addEventListener("load", function(event) {
-				console.log(event.target.responseText);
-		
+				alert("Your photo was uploaded");
+				canvas.getContext("2d").clearRect( 0,0, 426, 400 );
+				photo = undefined;
 			});
 			req.send(body);
 		}
 	};
-
-
 </script>

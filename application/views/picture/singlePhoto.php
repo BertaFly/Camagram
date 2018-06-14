@@ -88,6 +88,9 @@ use application\models\Picture;
 	const commentBtn = document.getElementsByClassName('comment-btn')[0];
 	commentBtn.addEventListener('click', drowCommField, false);
 	function drowCommField(ev){
+		const duplicate = document.getElementsByTagName('textarea');
+		if(duplicate.length != 0)
+			return;
 		let lastCom = document.getElementsByClassName('feed-item--comment')[0];
 		var commentBox =  document.createElement('textarea');
 		commentBox.className = "commentBox";
@@ -133,4 +136,20 @@ use application\models\Picture;
 			}
 		});
 	};
+</script>
+<script type="text/javascript">
+	function resize()
+    {
+    	const menu = document.getElementsByClassName('top')[0].offsetHeight;
+    	console.log(menu);
+
+        var heights = window.innerHeight - menu - 104;
+    	console.log(heights);
+
+        document.getElementsByClassName("single-photo")[0].style.height = heights + "px";
+    }
+    resize();
+    window.onresize = function() {
+        resize();
+    };
 </script>

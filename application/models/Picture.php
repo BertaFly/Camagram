@@ -11,10 +11,6 @@ class Picture extends Model
 	public function insertLink($user_id, $link)
 	{
 		$this->db->query("INSERT INTO pics (user_id,link,likes) VALUES ($user_id,'$link', 0)");
-		// $item = $this->db->row("SELECT id_pic FROM pics WHERE link='$link'");
-		// print_r($item);
-		// $id_pic = $item[0]['id_pic'];
-		// $this->db->query("INSERT INTO likes (id_pic,user_id) VALUES ('$id_pic','$user_id')");
 	}
 
 	public function extractPics()
@@ -86,6 +82,7 @@ class Picture extends Model
 	public function dellPic($id_pic)
 	{
 		$this->db->query("DELETE FROM pics WHERE id_pic='$id_pic'");
+		$this->db->query("DELETE FROM likes WHERE id_pic='$id_pic'");
 		$this->db->query("DELETE FROM comments WHERE id_pic='$id_pic'");
 	}
 

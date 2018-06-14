@@ -144,3 +144,8 @@
 			background-color: #7d90ba;
     		color: #fff;
 		}
+
+.pagination-wrapper-cabinet {
+	text-align: center;
+  	margin: 0 auto;
+}

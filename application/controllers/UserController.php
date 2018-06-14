@@ -19,31 +19,39 @@ class UserController extends Controller
 
 	static public function sendMail($mail_to, $mail_subject, $mail_message)
 	{
-		if (isset($_SESSION['isUser']))
+		if ($mail_to != null && $mail_subject != null && $mail_message != null)
 		{
-			$res = false;
-			if ($mail_to != null && $mail_subject != null && $mail_message != null)
-			{
-				$encoding = "utf-8";
-				$subject_preferences = array(
-					"input-charset" => $encoding,
-					"output-charset" => $encoding,
-					"line-length" => 76,
-					"line-break-chars" => "\r\n"
-				);
-				$from_name = "Cramata";
-				$from_mail = "cramata@lol.com";
-				// Mail header
-				$header = "Content-type: text/html; charset=".$encoding." \r\n";
-				$header .= "From: ".$from_name." <".$from_mail."> \r\n";
-				$header .= "MIME-Version: 1.0 \r\n";
-				$header .= "Content-Transfer-Encoding: 8bit \r\n";
-				$header .= "Date: ".date("r (T)")." \r\n";
-				$header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
-				//Send
-				$res = mail($mail_to, $mail_subject, $mail_message, $header);
-			}
+			// echo "<br>I'm here";
+			$encoding = "utf-8";
+			$subject_preferences = array(
+				"input-charset" => $encoding,
+				"output-charset" => $encoding,
+				"line-length" => 76,
+				"line-break-chars" => "\r\n"
+			);
+			$from_name = "Cramata";
+			$from_mail = "cramata@lol.com";
+			// Mail header
+			$header = "Content-type: text/html; charset=".$encoding." \r\n";
+			$header .= "From: ".$from_name." <".$from_mail."> \r\n";
+			$header .= "MIME-Version: 1.0 \r\n";
+			$header .= "Content-Transfer-Encoding: 8bit \r\n";
+			$header .= "Date: ".date("r (T)")." \r\n";
+			$header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
+			//Send
+			// echo "<br>";
+			// print($mail_to);
+			// echo "<br>";
+
+			// print($mail_subject);
+			// echo "<br>";
+
+			// print($mail_message);
+			// echo "<br>";
+
+			$res = mail($mail_to, $mail_subject, $mail_message, $header);
 		}
+		// var_dump($res);
 		return $res;
 	}
 
@@ -84,6 +92,7 @@ class UserController extends Controller
 	public function signinAction()
 	{
 		$msg = "";
+		// var_dump($_POST);
 		if (isset($_POST['submit']) && isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['cpasswd']) && isset($_POST['email']))
 		{
 			$login = htmlspecialchars($_POST['login'], ENT_QUOTES);
@@ -126,10 +135,10 @@ class UserController extends Controller
 			$this->showMsg($arr);
 			$msg == "Success, check your email" ? header('refresh:2; url=http://localhost:8100/home') : header('refresh:2; url=http://localhost:8100/user/signin');
 		}
-		else
-		{
+		elseif (isset($_SESSION['isUser']) == false)
 			$this->view->render('');
-		}
+		else
+			$this->view->render('home');
 		return true;
 	}
 
@@ -285,7 +294,8 @@ class UserController extends Controller
 					if(isset($_SESSION['authorizedUser']) && strlen($_POST['loginNew']) >= 5 && strlen($_POST['loginNew']) <= 30)
 					{
 						$newLogin = htmlspecialchars($_POST['loginNew'], ENT_QUOTES);
-						if ($_SESSION['authorizedUser'] != $newLogin)
+						$isTaken = $this->model->extractUserByLogin($newLogin);
+						if ($_SESSION['authorizedUser'] != $newLogin && $isTaken == null)
 						{
 							if($this->model->changeLogin($_SESSION['authorizedUser'], $newLogin) == true)
 							{
@@ -311,7 +321,7 @@ class UserController extends Controller
 						}
 						else
 						{
-							$msg = 'New login should differ from old one';
+							$isTaken == null ? $msg = 'New login should differ from old one' : $msg = 'This login has already taken, pls come up with another one';
 						}
 					}
 					else

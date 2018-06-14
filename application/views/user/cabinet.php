@@ -98,34 +98,36 @@ use application\models\Picture;
 			</div>
 		<?php }}; ?>		
 	</div>
-	<div class="pagination-wrapper">
-		<div class="pagination">
-			<a class="prev page-numbers" href=
-				<?php 
-					if($p === 0)
-						echo ('"?p=0"');
+	<?php if($vars != null): ?>
+		<div class="pagination-wrapper-cabinet">
+			<div class="pagination">
+				<a class="prev page-numbers" href=
+					<?php 
+						if($p === 0)
+							echo ('"?p=0"');
+						else
+							echo ('"?p='.((int)$p - 1).'"');
+					?>
+					>prev
+				</a>
+				<?php for ($i = 0; $i <= $pageNbr; $i++){
+					if ($p == $i)
+						echo '<a class="page-numbers current" href="?p='.$i.'">'.($i + 1).'</a>';
 					else
-						echo ('"?p='.((int)$p - 1).'"');
-				?>
-				>prev
-			</a>
-			<?php for ($i = 0; $i <= $pageNbr; $i++){
-				if ($p == $i)
-					echo '<a class="page-numbers current" href="?p='.$i.'">'.($i + 1).'</a>';
-				else
-					echo '<a class="page-numbers" href="?p='.$i.'">'.($i + 1).'</a>';
-			};?>
-			<a class="next page-numbers" href=
-				<?php
-					if((int)$p == ((int)$pageNbr) )
-						echo ('"?p='.(int)$p.'"');
-					else
-						echo ('"?p='.((int)$p + 1).'"');
-				?>
-				>next
-			</a>
+						echo '<a class="page-numbers" href="?p='.$i.'">'.($i + 1).'</a>';
+				};?>
+				<a class="next page-numbers" href=
+					<?php
+						if((int)$p == ((int)$pageNbr) )
+							echo ('"?p='.(int)$p.'"');
+						else
+							echo ('"?p='.((int)$p + 1).'"');
+					?>
+					>next
+				</a>
+			</div>
 		</div>
-	</div>
+	<?php endif; ?>
 	<div id="change-user-data">
 		<div class="pop-up">
 			<!-- <img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'login');"> -->
@@ -135,8 +137,6 @@ use application\models\Picture;
 			</h2>
 			
 			<form action="changeUserData" name="f1" method="post">
-			<!-- <form action="changeLogin" name="f1" method="post"> -->
-				<!-- <input type="text" name="loginOld" placeholder="enter current login" class="input" required/> -->
 				<div data-tip="Input at least 5 characters">
 					<input type="text" name="loginNew" placeholder="My new login" class="input"/>
 				</div>
@@ -150,36 +150,11 @@ use application\models\Picture;
 			</form>
 		</div>
 	</div>
-	<!-- <div id="pass">
-		<div class="pop-up">
-			<img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'pass');">
-			<h2>
-				Change password
-			</h2>
-			<form action="changePass" name="f2" method="post">
-				<input type="password" name="passwdOld" placeholder="enter current password" class="input" required/>
-				<div data-tip="Input at least 7 characters">
-					<input type="password" name="passwdNew" placeholder="enter new password" class="input" required/>
-				</div>
-				<input type="submit" name="Submit" value="Submit" class="input submit" required/>
-			</form>
-		</div>
-	</div> -->
-	<!-- <div id="email">
-		<div class="pop-up">
-			<img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'email');">
-			<h2>
-				Change email
-			</h2>
-			<form action="changeEmail" name="f3" method="post">
-				<input type="email" name="emailOld" placeholder="enter current email" class="input" required/>
-				<div data-tip="We will send you an activation link">
-					<input type="email" name="emailNew" placeholder="enter new email" class="input" required/>
-				</div>
-				<input type="submit" name="Submit" value="Submit" class="input submit" required/>
-			</form>
-		</div>
-	</div> -->
+	<div class="addPic">
+		<a href="http://localhost:8100/picture/camera">
+			<img src="../../templates/img/cam.png">
+		</a>
+	</div>
 	
 	<script>
 		function show(state, str) {

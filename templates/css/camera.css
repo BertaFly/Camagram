@@ -5,6 +5,7 @@
 	.photo-holder {
 		display: flex;
 		justify-content: space-around;
+     	margin-bottom: 2%;
 	}
 
 .camera-featurs {
@@ -18,10 +19,6 @@
 	display: inline-block;
 	vertical-align: top;
 	position: relative;
-}
-
-#video {
-
 }
 
 #snap, label.capture-btn, #sendPic {
@@ -46,42 +43,42 @@
 
 .camera-featurs--upload {
 	display: inline-block;
+	position: relative;
 }
 
 #canvas {
 	margin: 0 auto;
 	display: block;
+	background-image: url(../../templates/img/bgr.png);
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-color: rgba(0,0,0,0.3);
 }
 
 input[type="file"] {
 	position: absolute;
 	top: 0;
 	z-index:-1;
+	font-size: 0;
 }
 
 #preCanvas {
 	position: absolute;
     top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.3);
+    left: 57px;
 }
 
-aside.right, aside.left {
+aside.left {
 	display: inline-block;
-	width: 20%;
-	overflow-y :scroll;
-	height: 480px;
+	width: 50%;
 	background: #e2ddee;
-}
-
-aside.right div:focus, aside.left div:focus {
-	box-sizing: border-box;
-	border: 1px solid #598c90;
-	/*background: #598c90;*/
 }
 
 	.layers {
 		position: relative;
+	    display: flex;
+	    justify-content: space-around;
+	    flex-wrap: wrap;
 	}
 
 		.layers input{
@@ -95,11 +92,11 @@ aside.right div:focus, aside.left div:focus {
 
 		.layers label {
 			display: inline-block;
+			width: 20%;
 		}
 
-		.layers label:hover,{
+		.layers label:hover {
 			cursor: pointer;
-			height: 100px;
 		}
 
 		.layers input:checked + label{
