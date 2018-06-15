@@ -1,7 +1,7 @@
 cd ~/Library/Containers
 rm -rf MAMP
 cd ../..
-echo Include \"/Users/inovykov/Camagru/arbuz.conf\"
+echo Include \"/Users/inovykov/Camagru/camagru.conf\"
 echo ~/Library/Containers/MAMP
 echo ~/Library/Containers/MAMP/php/etc/php.ini
 echo "sed -i -e 's/opcache.revalidate_freq=60/opcache.revalidate_freq=0/g' ~/Library/Containers/MAMP/php/etc/php.ini"

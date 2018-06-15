@@ -21,7 +21,6 @@ class UserController extends Controller
 	{
 		if ($mail_to != null && $mail_subject != null && $mail_message != null)
 		{
-			// echo "<br>I'm here";
 			$encoding = "utf-8";
 			$subject_preferences = array(
 				"input-charset" => $encoding,
@@ -39,19 +38,8 @@ class UserController extends Controller
 			$header .= "Date: ".date("r (T)")." \r\n";
 			$header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
 			//Send
-			// echo "<br>";
-			// print($mail_to);
-			// echo "<br>";
-
-			// print($mail_subject);
-			// echo "<br>";
-
-			// print($mail_message);
-			// echo "<br>";
-
 			$res = mail($mail_to, $mail_subject, $mail_message, $header);
 		}
-		// var_dump($res);
 		return $res;
 	}
 
@@ -283,10 +271,11 @@ class UserController extends Controller
 	public function changeUserDataAction()
 	{
 		if (isset($_SESSION['isUser']))
-			{
+		{
 			$logout = false;
 			if(isset($_POST['Submit']))
 			{
+				$trick = 0;
 				$msg = '';
 				//if user wants to CHANGE LOGIN
 				if(($_POST['loginNew']) !== '')
@@ -328,6 +317,7 @@ class UserController extends Controller
 					{
 						$msg = 'New login should be longer then 4 chars and shorter then 31 chars';
 					}
+					$trick++;
 				}
 				//if user wants to CHANGE PASSWORD
 				if(($_POST['passwdNew']) !== '')
@@ -368,9 +358,8 @@ class UserController extends Controller
 						}
 					}
 					else
-					{
 						$msg == "" ? 'New password should be longer then 6 chars and shorter then 141 chars' : $msg = $msg.'<br>New password should be longer then 6 chars and shorter then 141 chars';
-					}
+					$trick++;
 				}
 				//if user wants to CHANGE EMAIL
 				if($_POST['emailNew'] !== '')
@@ -412,10 +401,11 @@ class UserController extends Controller
 						}
 					}
 					else
-					{
 						$msg == "" ? $msg = 'Please enter valid email' : $msg = $msg.'<br>Please enter valid email';
-					}
-				}					
+					$trick++;
+				}
+				if($trick === 0)
+					header('location: http://localhost:8100/user/cabinet');
 				$arr['msg'] = $msg;
 				if ($msg != '')
 				{

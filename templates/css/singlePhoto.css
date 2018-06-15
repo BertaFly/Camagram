@@ -96,6 +96,7 @@
 
 
 .subscription-preferences {
+	border-radius: 3px;
 	position: relative;
 	font-family: "Montserrat", sans-serif;
     z-index: 1;
@@ -195,21 +196,16 @@
 
 .switch-field input:checked + label {
   background-color: #9e8fc6;
-  /*background-color: #7d90ba;*/
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 .switch-field2 input:checked + label {
-  /*background-color: #7d90ba;*/
   background-color: #9e8fc6;
-
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 .switch-field3 input:checked + label {
   background-color: #9e8fc6;
-  /*background-color: #7d90ba;*/
-
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -240,4 +236,76 @@
 #change-pref:hover {
 	background-color: #9e8fc6;
 	color: #fff;
+}
+
+@media only screen and (min-width: 2100px) {
+	.single-photo--item {
+	    max-width: 560px;
+	}
+}
+@media only screen and (min-width: 2100px) {
+    .pagination-wrapper-cabinet {
+    	margin: 33px auto 0px;
+    }
+    	.pagination-cabinet {
+    		margin: 0;
+    	}
+}
+@media only screen and (max-width: 1900px) {
+    .pagination-wrapper-cabinet {
+    	margin: 0;
+    }
+}
+@media only screen and (max-width: 1217px) {
+    .pagination-wrapper-cabinet {
+    	position: absolute;
+    	bottom: 3%;
+    	left: 23%;
+    }
+}
+@media only screen and (max-width: 1030px) {
+    .pagination-wrapper-cabinet {
+    	position: inherit;
+    }
+}
+@media only screen and (max-width: 454px) {
+    .pagination-cabinet {
+        height: 30px;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+	.switch-field label, .switch-field2 label, .switch-field3 label {
+		width: 37%;
+	}
+	#change-pref {
+		margin: 3% 0;
+		width: 99%;
+	}
+}
+@media only screen and (max-width: 329px) {
+	.cabinet-title {
+		margin-left: 20px;
+	}
+	.switch-field label, .switch-field2 label, .switch-field3 label {
+		width: 33%;
+		font-size: 10px;
+	}
+	.subscription-preferences {
+		padding: 8px;
+	}
+	.subscription-preferences--title {
+    	font-size: 12px;
+	}
+	.switch-title {
+		font-size: 9px;
+	}
+	#change-pref {
+		margin: 5px auto 0;
+		width: 35%;
+		font-size: 11px;
+		line-height: 20px;
+		font-weight: normal;
+		text-transform: capitalize;
+	}
 }

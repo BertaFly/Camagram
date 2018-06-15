@@ -1,13 +1,11 @@
 <?php
 
 include('database.php');
+$script_path = "testdb.sql";
 
-try {
-	$db = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	//
-	// структура БД
-	//
-	} catch (PDOException $e) {
-    echo 'Connection failed: ' . $e->getMessage();
-}
+$command = "~/Library/Containers/MAMP/mysql/bin/mysql -u{$DB_USER} -p{$DB_PASSWORD} "
+    . "-h {$DB_HOST} testdb < {$script_path}";
+$output = shell_exec($command);
+echo $output;
+
+?>

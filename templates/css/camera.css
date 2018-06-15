@@ -21,6 +21,10 @@
 	position: relative;
 }
 
+	#video {
+		background-color: #000;
+	}
+
 #snap, label.capture-btn, #sendPic {
 	background-color: #f2f2f2;
 	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
@@ -47,6 +51,8 @@
 }
 
 #canvas {
+	width: 540px;
+	height: 400px;
 	margin: 0 auto;
 	display: block;
 	background-image: url(../../templates/img/bgr.png);
@@ -62,10 +68,14 @@ input[type="file"] {
 	font-size: 0;
 }
 
+	input[type="file"]:focus {
+		outline: none;
+	}
+
 #preCanvas {
 	position: absolute;
     top: 0;
-    left: 57px;
+    left: 0;
 }
 
 aside.left {
@@ -102,3 +112,129 @@ aside.left {
 		.layers input:checked + label{
 			background: #90b8bb;
 		}
+
+@media only screen and (max-width: 1080px) {
+	.camera {
+		margin: 0;
+	}
+
+		aside.left {
+			height: 400px;
+		}
+}
+
+@media only screen and (max-width: 947px) {
+	.camera {
+		margin: 0;
+	}
+
+		aside.left {
+			height: 400px;
+		}
+
+		.camera-featurs {
+			width: 100%;
+		}
+}
+
+@media only screen and (max-width: 770px) {
+	.layers {
+		flex-direction: column;
+		height: 400px;
+	}
+}
+
+/*JUST FOR IPADS*/
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+	.layers label {
+	    display: inline-block;
+	    width: 36%;
+	}
+}
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+	.layers label {
+	    width: 25%;
+	}
+}
+
+/*END IPADS*/
+
+@media only screen and (max-width: 737px) {
+	.layers {
+		display: block;
+		width: 100%;
+		overflow-y: scroll;
+	}
+		.layers label {
+			display: block;
+			width: 100%;
+		}
+}
+
+@media only screen and (max-width: 590px) {
+	.photo-holder {
+		display: block;
+	}
+	aside.left {
+		height: 120px;
+		display: block;
+		width: 100%;
+	}
+	.layers {
+		display: flex;
+		width: 100%;
+		height: 120px;
+		overflow-x: scroll;
+		overflow-y: hidden;
+	}
+		.layers label {
+			display: block;
+			width: 15%;
+		}
+
+	.video-holder {
+		display: block;
+	}
+		#video {
+			margin: 0 auto;
+    		display: block;
+		}
+		#preCanvas {
+			left: 82px;
+		}
+}
+
+@media only screen and (max-width: 539px) {
+	.layers label {
+		width: 20%;
+	}
+	#video {
+		background-color: #fff;
+	}
+	#preCanvas {
+		width: 400px;
+    	height: 400px;
+    	left: 70px;
+	}
+
+}
+@media only screen and (max-width: 375px) {
+	#snap, label.capture-btn, #sendPic {
+		line-height: 12px;
+    	font-size: 12px;
+	}
+}
+@media only screen and (max-width: 320px) {
+	.layers label {
+		width: 22%;
+	}
+}

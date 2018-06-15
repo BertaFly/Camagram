@@ -1,11 +1,11 @@
 <?php
-use application\components\Controller;
-use application\components\View;
-use application\controllers\UserController;
-use application\controllers\PictureController;
-use application\components\Model;
-use application\models\User;
-use application\models\Picture;
+	use application\components\Controller;
+	use application\components\View;
+	use application\controllers\UserController;
+	use application\controllers\PictureController;
+	use application\components\Model;
+	use application\models\User;
+	use application\models\Picture;
 ?>
 
 <section class="single-photo">
@@ -64,30 +64,30 @@ use application\models\Picture;
 	for (var i = 0 ; i < like_btn.length; i++) {
 	   like_btn[i].addEventListener('click', like, false);
 	};
-	   	function like(ev){
+   	function like(ev){
 		var item = this.getAttribute('data-pic-id');
 		var body = "pic_id=" + item;
 		const req = new XMLHttpRequest();
 		req.open('POST', 'http://localhost:8100/picture/like');
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		req.addEventListener("load", function(event) {
-			console.log("responseText:", event.target.responseText);
-            let likesNumber = event.target.responseText;
-            let button = document.querySelectorAll("[data-pic-id='" + item + "']")[0];
-            let tmp = parseInt(button.parentElement.nextElementSibling.innerHTML);
-            if (likesNumber - tmp == -1)
-            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like4.png'));
-            else
-            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like3.png'));
-            button.parentElement.nextElementSibling.innerHTML = likesNumber;
-        });
+	        let likesNumber = event.target.responseText;
+	        let button = document.querySelectorAll("[data-pic-id='" + item + "']")[0];
+	        let tmp = parseInt(button.parentElement.nextElementSibling.innerHTML);
+	        if (likesNumber - tmp == -1)
+	        	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like4.png'));
+	        else
+	        	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like3.png'));
+	        button.parentElement.nextElementSibling.innerHTML = likesNumber;
+	    });
 		req.send(body);
-		}; 
+	}; 
 </script>
 <script type="text/javascript">
 	const commentBtn = document.getElementsByClassName('comment-btn')[0];
 	commentBtn.addEventListener('click', drowCommField, false);
-	function drowCommField(ev){
+	function drowCommField(ev)
+	{
 		const duplicate = document.getElementsByTagName('textarea');
 		if(duplicate.length != 0)
 			return;
@@ -141,11 +141,7 @@ use application\models\Picture;
 	function resize()
     {
     	const menu = document.getElementsByClassName('top')[0].offsetHeight;
-    	console.log(menu);
-
-        var heights = window.innerHeight - menu - 104;
-    	console.log(heights);
-
+        var heights = window.innerHeight - menu - 100;
         document.getElementsByClassName("single-photo")[0].style.height = heights + "px";
     }
     resize();

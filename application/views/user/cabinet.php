@@ -3,7 +3,6 @@ use application\components\Controller;
 use application\components\View;
 use application\controllers\UserController;
 use application\controllers\PictureController;
-
 use application\components\Model;
 use application\models\User;
 use application\models\Picture;
@@ -26,7 +25,7 @@ use application\models\Picture;
 			<legend class="subscription-preferences--title">
 				Subscription preferences
 			</legend>
-		    <div class="switch-field">
+		    <div class="switch-field">	
 		      <div class="switch-title">Do you want to get notifications after changing login?</div>
 		      <input type="radio" id="switch_left" name="login" value="yes" checked/>
 		      <label for="switch_left">Yes</label>
@@ -100,7 +99,7 @@ use application\models\Picture;
 	</div>
 	<?php if($vars != null): ?>
 		<div class="pagination-wrapper-cabinet">
-			<div class="pagination">
+			<div class="pagination-cabinet">
 				<a class="prev page-numbers" href=
 					<?php 
 						if($p === 0)
@@ -130,12 +129,10 @@ use application\models\Picture;
 	<?php endif; ?>
 	<div id="change-user-data">
 		<div class="pop-up">
-			<!-- <img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'login');"> -->
 			<img src="../../../templates/img/close.png" alt="close" class="close" onclick="show('none', 'change-user-data');">
 			<h2>
 				Change my information
 			</h2>
-			
 			<form action="changeUserData" name="f1" method="post">
 				<div data-tip="Input at least 5 characters">
 					<input type="text" name="loginNew" placeholder="My new login" class="input"/>
@@ -165,28 +162,25 @@ use application\models\Picture;
 	<script type="text/javascript">
 		const like_btn = document.getElementsByClassName('like');
 		for (var i = 0 ; i < like_btn.length; i++) {
-		   like_btn[i].addEventListener('click', like, false);
+			like_btn[i].addEventListener('click', like, false);
 		};
-		   	function like(ev){
-			var item = this.getAttribute('data-pic-id');
-			var body = "pic_id=" + item;
-			const req = new XMLHttpRequest();
-			req.open('POST', 'http://localhost:8100/picture/like');
-			req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			req.addEventListener("load", function(event) {
-
-				console.log("responseText:", event.target.responseText);
-	            let likesNumber = event.target.responseText;
-
-	            let button = document.querySelectorAll("[data-pic-id='" + item + "']")[0];
-	            let tmp = parseInt(button.parentElement.nextElementSibling.innerHTML);
-	            if (likesNumber - tmp == -1)
-	            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like4.png'));
-	            else
-	            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like3.png'));
-	            button.parentElement.nextElementSibling.innerHTML = likesNumber;
-	        });
-			req.send(body);
+			function like(ev){
+				var item = this.getAttribute('data-pic-id');
+				var body = "pic_id=" + item;
+				const req = new XMLHttpRequest();
+				req.open('POST', 'http://localhost:8100/picture/like');
+				req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				req.addEventListener("load", function(event) {
+		            let likesNumber = event.target.responseText;
+		            let button = document.querySelectorAll("[data-pic-id='" + item + "']")[1];
+		            let tmp = parseInt(button.parentElement.nextElementSibling.innerHTML);
+		            if (likesNumber - tmp == -1)
+		            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like4.png'));
+		            else
+		            	(button.getElementsByTagName('img')[0].setAttribute('src', 'http://localhost:8100/templates/img/like3.png'));
+		            button.parentElement.nextElementSibling.innerHTML = likesNumber;
+		        });
+				req.send(body);
 			};
 	</script>
 	<script type="text/javascript">
@@ -194,10 +188,8 @@ use application\models\Picture;
 		for (var i = 0 ; i < like_btn.length; i++) {
 			dell_btn[i].addEventListener('click', dell, false);
 		};
-
 		function dell(ev) {
 			var toDell = this.getAttribute('data-pic-id');
-			console.log(toDell);
 			var author = this.getAttribute('data-author');
 			var body = "toDell=" + toDell + "&author=" + author;
 			const req = new XMLHttpRequest();

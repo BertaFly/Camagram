@@ -1,6 +1,6 @@
 <?php 
-use application\components\Model;
-use application\models\Picture;
+	use application\components\Model;
+	use application\models\Picture;
 ?>
 
 <section class="camera">
@@ -22,22 +22,26 @@ use application\models\Picture;
 
 			</aside>
 			<div class="video-holder">
-				<video id="video" width="540" height="400" style="background-color: #000;" autoplay></video>
-				<canvas id="preCanvas" width="426" height="400"></canvas>
+				<video id="video" width="540" height="400" autoplay></video>
+				<canvas id="preCanvas" width="540" height="400"></canvas>
 			</div>
 		</div>
 		<div class="camera-featurs">
-			<button id="snap">Snap Photo</button>
+			<button id="snap">
+				Snap Photo
+			</button>
 			<form method="post" action="/" class="camera-featurs--upload">
-				<label for="photo" class="capture-btn">Upload file</label>
+				<label for="photo" class="capture-btn">
+					Upload file
+				</label>
 				<input type="file" id="photo" name="image" accept="image/*">
 			</form>
-			<button id="sendPic">post picture</button>
+			<button id="sendPic">
+				post picture
+			</button>
 		</div>
-			<canvas id="canvas" width="426" height="400"></canvas>
-			
-
-</div>
+			<canvas id="canvas" width="540" height="400"></canvas>
+	</div>
 </section>
 <script type="text/javascript">
 	navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);
@@ -48,13 +52,14 @@ use application\models\Picture;
 	const place = document.getElementById('preCanvas');
 	const input = document.querySelector('input[type=file]');
 	const sendPic = document.getElementById('sendPic');
-	var inputs = document.getElementsByTagName("input"); //or document.forms[0].elements;
+	var snap = document.getElementById('snap');
+	var inputs = document.getElementsByTagName("input");
 	var layers = []; //will contain all checkboxes
 	for (var i = 0; i < inputs.length; i++) {
-	  if (inputs[i].type == "checkbox") {
-	    layers.push(inputs[i]);
-	  }
-	}
+		if (inputs[i].type == "checkbox") {
+			layers.push(inputs[i]);
+		}
+	};
 	
 	for (var i = 0; i < layers.length; i++) {
 		layers[i].addEventListener('click', addCheck, false);
@@ -87,7 +92,7 @@ use application\models\Picture;
 		sticker.src = value;
 		if(key == 1)
 		{
-			x = 260;
+			x = 330;
 			y = 230;
 			width = 200;
 			height = 170;
@@ -115,7 +120,7 @@ use application\models\Picture;
 		}
 		if(key == 5)
 		{
-			x = 180;
+			x = 290;
 			y = 180;
 			width = 220;
 			height = 220;
@@ -136,7 +141,7 @@ use application\models\Picture;
 		}
 		if(key == 8)
 		{
-			x = 170;
+			x = 270;
 			y = 80;
 			width = 230;
 			height = 320;
@@ -145,45 +150,45 @@ use application\models\Picture;
 		{
 			x = 0;
 			y = 0;
-			width = 400;
+			width = 540;
 			height = 400;
 		}
 		if(key == 15)
 		{
 			x = 50;
 			y = 30;
-			width = 340;
-			height = 340;
+			width = 380;
+			height = 350;
 		}
 		place.getContext("2d").drawImage(sticker, x, y, width, height);
 	};
 
-	function drawLayers(){
-		place.getContext("2d").clearRect( 0,0, place.width, place.height );
+	function drawLayers(event){
+		place.getContext("2d").clearRect(0, 0, place.width, place.height);
 		forDrow.forEach(logMapElements);
 	};
 
-if (navigator.getUserMedia) {
-   navigator.getUserMedia({ audio: false, video: { width: 426, height: 400 } },
-	  function(stream) {
-		 video.srcObject = stream;
-		 video.onloadedmetadata = function(e) {
-		   video.play();
-		 };
-	  },
-	  function(err) {
-		 console.log("The following error occurred: " + err.name);
-	  }
-   );
-} else {
-   console.log("getUserMedia not supported");
-}
+	if (navigator.getUserMedia)
+	{
+		navigator.getUserMedia({ audio: false, video: { width: 540, height: 400 } },
+		function(stream) {
+			video.srcObject = stream;
+			video.onloadedmetadata = function(e) {
+				video.play();
+			};
+		},
+		function(err) {
+			console.log("The following error occurred: " + err.name);
+		});
+	}
+	else
+		console.log("getUserMedia not supported");
 
-	var snap = document.getElementById('snap');
+	
 	snap.onclick = function draw(){
-		canvas.getContext("2d").drawImage(video, 0, 0, 426, 400, 0, 0, 426, 400);
+		canvas.getContext("2d").drawImage(video, 0, 0, 540, 400, 0, 0, 540, 400);
 		var tmp = document.getElementById('preCanvas');
-		canvas.getContext("2d").drawImage(tmp, 0, 0, 426, 400, 0, 0, 426, 400);
+		canvas.getContext("2d").drawImage(tmp, 0, 0, 540, 400, 0, 0, 540, 400);
 		photo = canvas.toDataURL();
 	};
 
@@ -192,14 +197,15 @@ if (navigator.getUserMedia) {
 		const file = files[0];
 		var FR = new FileReader();
 		FR.onload = function(e) {
-		   var img = new Image();
-		   img.addEventListener("load", function() {
-			 canvas.getContext("2d").drawImage(img, 0, 0, 426, 400);
+			var img = new Image();
+			img.addEventListener("load", function() {
+				canvas.getContext("2d").drawImage(img, 0, 0, 540, 400);
 				photo = canvas.toDataURL();
-		   });
-		   img.src = e.target.result;
-		};       
-		FR.readAsDataURL(file);
+			});
+			img.src = e.target.result;
+		};
+		if (file !== undefined)
+			FR.readAsDataURL(file);
 	});
 
 	sendPic.onclick = function(){
@@ -211,10 +217,28 @@ if (navigator.getUserMedia) {
 			var body = 'image=' + photo;
 			req.addEventListener("load", function(event) {
 				alert("Your photo was uploaded");
-				canvas.getContext("2d").clearRect( 0,0, 426, 400 );
+				canvas.getContext("2d").clearRect( 0,0, 540, 400 );
 				photo = undefined;
+				place.getContext("2d").clearRect( 0,0, place.width, place.height );
 			});
 			req.send(body);
 		}
 	};
+</script>
+<script type="text/javascript">
+	function resize()
+    {
+    	if(window.innerWidth < 200 || window.innerHeight < 1000 || (window.innerWidth < 590 && window.innerHeight < 1090))
+    		return;
+    	const menu = document.getElementsByClassName('top')[0].offsetHeight;
+    	if(window.innerWidth < 1081)
+    		var heights = window.innerHeight - menu -40;
+    	else
+        	heights = window.innerHeight - menu - 60;
+        document.getElementsByClassName("camera")[0].style.height = heights + "px";
+    }
+    resize();
+    window.onresize = function() {
+        resize();
+    };
 </script>

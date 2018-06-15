@@ -76,7 +76,7 @@ class PictureController extends Controller
 			$mail_to = $user->extractUserByLogin($whoPictureBelongs);
 			$mail_to = $mail_to[0]['email'];
 			$mail_subject = 'You got new comment (=^-^=)';
-			$mail_message = 'Hey, '.$whoPictureBelongs.'<br>Your <a href="http://localhost:8070/singlePhoto/'.$picLink.'">photo</a> was commented by '.$_SESSION['authorizedUser'].': "'.$_POST['txt'].'".<br>Best regurds, Cramata';
+			$mail_message = 'Hey, '.$whoPictureBelongs.'<br>Your <a href="http://localhost:8100/singlePhoto/'.$picLink.'">photo</a> was commented by '.$_SESSION['authorizedUser'].': "'.$_POST['txt'].'".<br>Best regurds, Cramata';
 			UserController::sendMail($mail_to, $mail_subject, $mail_message);
 		}
 		$this->model->insertComment($id_pic, $userRow[0]['id'], $txt);
