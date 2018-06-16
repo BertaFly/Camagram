@@ -17,10 +17,7 @@ class View
 	
 	public function render($title, $vars = [])
 	{
-		// echo "<br>before extract vars";
 		extract($vars);
-		// var_dump($vars);
-		// print($this->path);
 		if ($title == "")
 		{
 			$path = 'application/views/'.$this->path.'.php';
@@ -28,9 +25,7 @@ class View
 		else
 		{
 			$path = 'application/views/'.$title.'.php';	
-		}
-		
-		// print($path);
+		}		
 		if (file_exists($path))
 		{
 			ob_start();
@@ -56,7 +51,6 @@ class View
 		{
 			require $path;
 		}
-		exit;
 	}
 
 	public function redirect($url)
@@ -64,5 +58,4 @@ class View
 		header('location: '.$url);
 		exit;
 	}
-
 }

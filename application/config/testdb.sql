@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 15, 2018 at 07:46 AM
+-- Generation Time: Jun 16, 2018 at 08:54 AM
 -- Server version: 5.7.21
 -- PHP Version: 7.1.16
 
@@ -47,7 +47,12 @@ INSERT INTO `comments` (`id`, `id_pic`, `who_comment`, `comment_text`) VALUES
 (31, 46, 18, 'like your style!'),
 (33, 49, 18, 'Продам котят, недорого'),
 (34, 42, 19, 'Call me cacao))'),
-(35, 51, 19, 'bOOOOOOO))');
+(35, 51, 19, 'bOOOOOOO))'),
+(36, 66, 16, 'looks delicious))'),
+(37, 62, 16, 'I want to travel a lot!'),
+(38, 64, 16, 'so bright colors... must be fresh oranges)'),
+(39, 63, 16, 'looks like screen saver from apple))'),
+(40, 60, 16, 'wona try))))');
 
 -- --------------------------------------------------------
 
@@ -126,7 +131,26 @@ INSERT INTO `likes` (`id`, `id_pic`, `user_id`, `time`) VALUES
 (52, 47, 20, '2018-06-15 14:29:27'),
 (53, 46, 20, '2018-06-15 14:29:30'),
 (54, 45, 20, '2018-06-15 14:29:31'),
-(55, 42, 20, '2018-06-15 14:29:31');
+(55, 42, 20, '2018-06-15 14:29:31'),
+(56, 66, 16, '2018-06-16 13:36:42'),
+(57, 65, 16, '2018-06-16 13:36:43'),
+(58, 64, 16, '2018-06-16 13:36:43'),
+(59, 61, 16, '2018-06-16 13:36:44'),
+(60, 62, 16, '2018-06-16 13:36:45'),
+(61, 63, 16, '2018-06-16 13:36:46'),
+(62, 60, 16, '2018-06-16 13:36:49'),
+(63, 52, 16, '2018-06-16 13:36:50'),
+(64, 51, 16, '2018-06-16 13:36:51'),
+(65, 50, 16, '2018-06-16 13:36:52'),
+(66, 49, 16, '2018-06-16 13:36:53'),
+(67, 47, 16, '2018-06-16 13:36:53'),
+(68, 46, 16, '2018-06-16 13:36:56'),
+(69, 45, 16, '2018-06-16 13:36:57'),
+(70, 68, 16, '2018-06-16 13:42:41'),
+(71, 70, 16, '2018-06-16 13:42:43'),
+(72, 69, 16, '2018-06-16 13:42:43'),
+(73, 67, 16, '2018-06-16 13:42:45'),
+(74, 71, 16, '2018-06-16 15:51:41');
 
 -- --------------------------------------------------------
 
@@ -148,20 +172,25 @@ CREATE TABLE `pics` (
 
 INSERT INTO `pics` (`id_pic`, `user_id`, `link`, `likes`, `date`) VALUES
 (42, 16, '../../public/test/2yZ1M3KEVx.png', 5, '2018-06-08 15:54:55'),
-(45, 17, '../../public/test/ArV5dhGKf6.png', 4, '2018-06-15 13:58:34'),
-(46, 17, '../../public/test/FxRNg6PdXl.png', 4, '2018-06-15 13:58:34'),
-(47, 18, '../../public/test/PLDIiUvrhq.png', 3, '2018-06-15 14:01:58'),
-(49, 18, '../../public/test/s0vW9dj8az.png', 3, '2018-06-15 14:01:58'),
-(50, 19, '../../public/test/TrqSmCoctU.png', 2, '2018-06-15 14:06:31'),
-(51, 19, '../../public/test/vEqL1kXFNn.png', 2, '2018-06-15 14:06:31'),
-(52, 19, '../../public/test/x3zVCbmjLT.png', 2, '2018-06-15 14:10:07'),
-(60, 20, '../../public/test/DBtLx7HeVP.png', 1, '2018-06-15 14:27:20'),
-(61, 20, '../../public/test/4gToIJFNSi.png', 1, '2018-06-15 14:28:23'),
-(62, 20, '../../public/test/pseZqmRTX3.png', 1, '2018-06-15 14:28:32'),
-(63, 20, '../../public/test/SajhcyLReP.png', 1, '2018-06-15 14:28:42'),
-(64, 20, '../../public/test/tUhx54KbEi.png', 1, '2018-06-15 14:28:50'),
-(65, 20, '../../public/test/d7oYRTPlmO.png', 1, '2018-06-15 14:29:01'),
-(66, 20, '../../public/test/0jiKkIoMTv.png', 1, '2018-06-15 14:29:10');
+(45, 17, '../../public/test/ArV5dhGKf6.png', 5, '2018-06-15 13:58:34'),
+(46, 17, '../../public/test/FxRNg6PdXl.png', 5, '2018-06-15 13:58:34'),
+(47, 18, '../../public/test/PLDIiUvrhq.png', 4, '2018-06-15 14:01:58'),
+(49, 18, '../../public/test/s0vW9dj8az.png', 4, '2018-06-15 14:01:58'),
+(50, 19, '../../public/test/TrqSmCoctU.png', 3, '2018-06-15 14:06:31'),
+(51, 19, '../../public/test/vEqL1kXFNn.png', 3, '2018-06-15 14:06:31'),
+(52, 19, '../../public/test/x3zVCbmjLT.png', 3, '2018-06-15 14:10:07'),
+(60, 20, '../../public/test/DBtLx7HeVP.png', 2, '2018-06-15 14:27:20'),
+(61, 20, '../../public/test/4gToIJFNSi.png', 2, '2018-06-15 14:28:23'),
+(62, 20, '../../public/test/pseZqmRTX3.png', 2, '2018-06-15 14:28:32'),
+(63, 20, '../../public/test/SajhcyLReP.png', 2, '2018-06-15 14:28:42'),
+(64, 20, '../../public/test/tUhx54KbEi.png', 2, '2018-06-15 14:28:50'),
+(65, 20, '../../public/test/d7oYRTPlmO.png', 2, '2018-06-15 14:29:01'),
+(66, 20, '../../public/test/0jiKkIoMTv.png', 2, '2018-06-15 14:29:10'),
+(67, 16, '../../public/test/PuL9KMJarN.png', 1, '2018-06-16 13:39:24'),
+(68, 16, '../../public/test/dXaQGHJuRr.png', 1, '2018-06-16 13:39:48'),
+(69, 16, '../../public/test/jt6RKSif8A.png', 1, '2018-06-16 13:41:44'),
+(70, 16, '../../public/test/s4USVl1cm3.png', 1, '2018-06-16 13:42:12'),
+(71, 16, '../../public/test/PotAyjxU8V.png', 1, '2018-06-16 15:45:54');
 
 -- --------------------------------------------------------
 
@@ -212,7 +241,9 @@ INSERT INTO `users` (`id`, `login`, `pass`, `email`, `isEmailConfirmed`, `token`
 (17, 'totoshka', '$2y$10$V/y6ChQRtNGNYGBoOpVj1.udG.JKgZPVPLEggYHsJMkzXxrLFNfgG', 'ishtar@gmail.com', 1, 'yxadRzA8r!13NIPkUi(w'),
 (18, 'MiriamMaisel', '$2y$10$g5PVqMNLel1nZXaoFAgk6.vmv87kJnSRZJRERRYLfrxxeFPuQp4zu', 'ishtar@gmail.com', 1, '8VNfM362Igu4*pXRawoP'),
 (19, 'Zorro', '$2y$10$U89JokxeXU4m4Ecqxx7V2ueniIDm/1iIG1pAn9t4esRfgdaoht9gW', 'ishtar@gmail.com', 1, '$Z*pIGCV4F13vhY0UPsn'),
-(20, 'SelectedPhoto', '$2y$10$FWdJnJeX1EsVMvMmob5DaObljx.TX6xi1v6AsqO17KgS3GYEIeIwa', 'ishtar929@gmail.com', 1, '81shl5oxe0Wp/AUvqb3j');
+(20, 'SelectedPhoto', '$2y$10$FWdJnJeX1EsVMvMmob5DaObljx.TX6xi1v6AsqO17KgS3GYEIeIwa', 'ishtar@gmail.com', 1, '81shl5oxe0Wp/AUvqb3j'),
+(24, 'qwerty', '$2y$10$ACtoOgKzOUC1gIk0De98VOZGFYDvsuOv5i8HurPFTbgg3TXkViNri', 'ishtar929@gmail.com', 0, '5iyV8oR*)vFjuAb!lScD'),
+(25, 'qwerty', '$2y$10$BT/gHAbxHejRq6BIJybD..WgnyvFgfgp6HsWm4YO8RqqyQM/T9xHm', 'ishtar929@gmail.com', 0, 'VvZUoi2$mCcd8*/6tfjq');
 
 --
 -- Indexes for dumped tables
@@ -262,7 +293,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `layers`
@@ -274,13 +305,13 @@ ALTER TABLE `layers`
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `pics`
 --
 ALTER TABLE `pics`
-  MODIFY `id_pic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id_pic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `subscription`
@@ -292,7 +323,7 @@ ALTER TABLE `subscription`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

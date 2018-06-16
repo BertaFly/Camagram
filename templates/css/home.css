@@ -72,6 +72,10 @@ button:focus {
     outline: none;
 }
 
+.like:hover {
+    cursor: pointer;
+}
+
 
 footer {
     text-align: center;

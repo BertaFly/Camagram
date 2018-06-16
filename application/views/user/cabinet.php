@@ -152,13 +152,14 @@ use application\models\Picture;
 			<img src="../../templates/img/cam.png">
 		</a>
 	</div>
-	
-	<script>
+	<!-- For pop-up subscription settings -->
+	<script type="text/javascript">
 		function show(state, str) {
 			document.getElementById(str).style.display = state;	
 			document.getElementById('grey').style.display = state;
 		}
 	</script>
+	<!-- make likes with ajax -->
 	<script type="text/javascript">
 		const like_btn = document.getElementsByClassName('like');
 		for (var i = 0 ; i < like_btn.length; i++) {
@@ -183,6 +184,7 @@ use application\models\Picture;
 				req.send(body);
 			};
 	</script>
+	<!-- delete posted pictures -->
 	<script type="text/javascript">
 		const dell_btn = document.getElementsByClassName('feed-item--dell');
 		for (var i = 0 ; i < like_btn.length; i++) {

@@ -59,6 +59,7 @@
 		</div>
 	</div>
 </section>
+<!-- Makes likes -->
 <script type="text/javascript">
 	const like_btn = document.getElementsByClassName('like');
 	for (var i = 0 ; i < like_btn.length; i++) {
@@ -83,6 +84,7 @@
 		req.send(body);
 	}; 
 </script>
+<!-- Makes comments -->
 <script type="text/javascript">
 	const commentBtn = document.getElementsByClassName('comment-btn')[0];
 	commentBtn.addEventListener('click', drowCommField, false);
@@ -137,6 +139,7 @@
 		});
 	};
 </script>
+<!-- Forses page be full height -->
 <script type="text/javascript">
 	function resize()
     {

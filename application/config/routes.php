@@ -1,11 +1,5 @@
 <?php
 
-// return array(
-//     '' => 'home/view',
-//     'about' => 'about/view',
-//     'user' => 'user/signin', //actionSignin in UserController
-// );
-
 return [
 
 	'' => [
@@ -92,21 +86,6 @@ return [
 		'controller' => 'user',
 		'action' => 'cabinet',
 	],
-
-	// 'user/changeLogin' => [
-	// 	'controller' => 'user',
-	// 	'action' => 'changeLogin',
-	// ],
-
-	// 'user/changePass' => [
-	// 	'controller' => 'user',
-	// 	'action' => 'changePass',
-	// ],
-
-	// 'user/changeEmail' => [
-	// 	'controller' => 'user',
-	// 	'action' => 'changeEmail',
-	// ],
 
 	'user/changeUserData' => [
 		'controller' => 'user',

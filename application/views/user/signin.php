@@ -7,8 +7,8 @@
 			<div data-tip="Input at least 5 characters">
 				<input type="text" name="login" placeholder="username" value="" required/>
 			</div>
-			<div data-tip="Input at least 7 characters">
-				<input type="password" name="passwd" placeholder="password" title="Input at least 7 characters" value="" required/>
+			<div data-tip="Input at least 7 characters and 1 uppercase letter">
+				<input type="password" name="passwd" placeholder="password" value="" required/>
 			</div>
 			<input type="password" name="cpasswd" placeholder="confirm your password" value="" required/>
 			<div data-tip="We will send you an activation link">

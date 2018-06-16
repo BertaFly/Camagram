@@ -120,14 +120,9 @@ class User extends Model
 
 	public function extractUsersPics($login)
 	{
-		// print_r($login."<br>");
 		$tmp = $this->db->row("SELECT * FROM users WHERE login='$login'");
-		// var_dump($tmp);
-		// echo "<br>after select user by login<br>";
 		$uI = $tmp[0]['id'];
 		$res = $this->db->row("SELECT * FROM pics WHERE user_id='$uI' ORDER BY id_pic DESC");
-		// var_dump($res);
-		// echo "<br>after select pictuser by user id<br>";
 		return $res;
 	}
 
@@ -147,34 +142,23 @@ class User extends Model
 	{
 		if (array_key_exists("login", $param) === true)
 		{
-			// echo "in checking<br>";
 			$user = $this->extractUserByLogin($param['login']);
 			$user_id = $user[0]['id'];
-			// echo "user_id = ".$user_id."<br>";
-
 			$subPreferences = $this->db->row("SELECT * FROM subscription WHERE user_id='$user_id'");
-			// var_dump($subPreferences);
 
 			if (array_key_exists("checkLogin", $param) === true) {
-				// echo "HERE 1<br>";
-
 				if ($subPreferences[0]['sub_login'] == 1)
 					return true;
 			}
 			elseif (array_key_exists("checkPass", $param) === true) {
-				// echo "HERE 2<br>";
-
 				if ($subPreferences[0]['sub_pass'] == 1)
 					return true;
 			}
 			elseif (array_key_exists("checkComment", $param) === true) {
-				// echo "HERE 3<br>";
-
 				if ($subPreferences[0]['sub_comment'] == 1)
 					return true;
 			}
 		}
 		return false;
 	}
-
 }

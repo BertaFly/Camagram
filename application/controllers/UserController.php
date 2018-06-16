@@ -54,33 +54,24 @@ class UserController extends Controller
 			{
 				$res = $this->model->extractUserByLogin($login);
 				if ($res != null && password_verify($passwd, $res[0]['pass']) && $res[0]['isEmailConfirmed'] == 1)
-				{
 					$this->model->authorize($login);
-				}
 				else
-				{
 					$msg = "Wrong login or password. In addition, check if your verify your email.";
-				}
 			}
 			else
-			{
 				$msg = "Please fill login or password field";
-			}
 			$arr['msg'] = $msg;
 			$this->showMsg($arr);
 			header('refresh:2; url=login');
 		}
 		else
-		{
 			$this->view->render('');
-		}
 		return true;
 	}
 
 	public function signinAction()
 	{
 		$msg = "";
-		// var_dump($_POST);
 		if (isset($_POST['submit']) && isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['cpasswd']) && isset($_POST['email']))
 		{
 			$login = htmlspecialchars($_POST['login'], ENT_QUOTES);
@@ -88,20 +79,16 @@ class UserController extends Controller
 			$cpasswd = $_POST['cpasswd'];
 			$email = $_POST['email'];
 			$wrongLogin = ($login == "" || strlen($login) < 5);
-			$wrongPass = ($passwd == "" || $cpasswd != $passwd || strlen($passwd) < 7 || strlen($passwd) > 140);
+			$wrongPass = ($passwd == "" || $cpasswd != $passwd || strlen($passwd) < 7 || strlen($passwd) > 140 || preg_match("([A-Z]+)", $passwd) == false);
 			$wrongEmail = ($email == "" || filter_var($email, FILTER_VALIDATE_EMAIL) == false);
 			if ($wrongLogin || $wrongPass || $wrongEmail)
-			{
 				$msg = "Check your inputs";
-			}
 			else
 			{
 				$isLoginTaken = $this->model->extractUserByLogin($login);
 				$isEmailTaken = $this->model->extractUsersByEmail($email);
-				if ($isLoginTaken != null || ($isEmailTaken != null && $isEmailTaken[0]['isEmailConfirmed'] === '0'))
-				{
+				if (($isLoginTaken != null && $isLoginTaken[0]['isEmailConfirmed'] === '1') || ($isEmailTaken != null && $isEmailTaken[0]['isEmailConfirmed'] === '1'))
 					$isLoginTaken != null ? $msg = 'This login has already taken' : $msg = 'This email has already registered';
-				}
 				else
 				{
 					$token = $this->generateToken();
@@ -123,7 +110,7 @@ class UserController extends Controller
 			$this->showMsg($arr);
 			$msg == "Success, check your email" ? header('refresh:2; url=http://localhost:8100/home') : header('refresh:2; url=http://localhost:8100/user/signin');
 		}
-		elseif (isset($_SESSION['isUser']) == false)
+		elseif (isset($_SESSION['isUser']) === false)
 			$this->view->render('');
 		else
 			$this->view->render('home');
@@ -175,6 +162,7 @@ class UserController extends Controller
 		else
 		{
 			View::errorCode(404);
+			header('refresh:3; url=http://localhost:8100/user/login');
 		}
 	}
 
@@ -221,7 +209,7 @@ class UserController extends Controller
 			$user = $_SESSION['who_change_pass'];
 			$pass = $_POST['passwd'];
 			$tmp = $this->model->extractUserByLogin($user);
-			if ($tmp != null && $pass === $_POST['cpasswd'] && $pass != "" && $_POST['cpasswd'] != "" && $user != "")
+			if ($tmp != null && $pass === $_POST['cpasswd'] && $pass != "" && $user != "" && preg_match("([A-Z]+)", $pass))
 			{
 				if (password_verify($pass, $tmp[0]['pass']))
 				{
@@ -265,6 +253,11 @@ class UserController extends Controller
 			unset($_SESSION['isUser']);
 			session_destroy();
 			header('location: http://localhost:8100/home');
+		}
+		else
+		{
+			View::errorCode(404);
+			header('refresh:3; url=http://localhost:8100/user/login');
 		}
 	}
 
@@ -417,6 +410,11 @@ class UserController extends Controller
 			else
 				header('refresh:3; url=http://localhost:8100/user/cabinet');
 		}
+		else
+		{
+			View::errorCode(404);
+			header('refresh:3; url=http://localhost:8100/user/login');
+		}
 	}
 
 	public function showMsg($arr)
@@ -430,6 +428,11 @@ class UserController extends Controller
 		{
 			$userPics = $this->model->extractUsersPics($_SESSION['authorizedUser']);
 			$this->view->render('user/cabinet', $userPics);
+		}
+		else
+		{
+			View::errorCode(404);
+			header('refresh:3; url=http://localhost:8100/user/login');
 		}
 	}
 
@@ -446,6 +449,11 @@ class UserController extends Controller
 			}
 			$userPics = $this->model->extractUsersPics($_SESSION['authorizedUser']);
 			header('location: http://localhost:8100/user/cabinet');
+		}
+		else
+		{
+			View::errorCode(404);
+			header('refresh:3; url=http://localhost:8100/user/login');
 		}
 	}
 }
